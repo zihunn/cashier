@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(fontFamily: 'Jakarta'),
       title: 'Flutter Demo',
       navigatorKey: navigatorKey,
-      home: DashboardCashierView(),
+      home: DashboardAdminView(),
     );
   }
 }

@@ -1,11 +1,8 @@
-// ignore_for_file: camel_case_types, prefer_typing_uninitialized_variables
-
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
-import 'package:kasir/utils/core/color.dart';
 import 'package:kasir/widget/appbar.dart';
-
-import '../utils/core/constant.dart';
+import '../utils/color.dart';
+import '../utils/constant.dart';
 
 class CartWaiterView extends StatefulWidget {
   const CartWaiterView({Key? key}) : super(key: key);

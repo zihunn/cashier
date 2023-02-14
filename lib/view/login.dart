@@ -1,14 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'package:ionicons/ionicons.dart';
-import 'package:kasir/utils/core/color.dart';
-import 'package:kasir/utils/core/constant.dart';
-import 'package:kasir/utils/core/navigation_helper.dart';
-import 'package:kasir/view/dashboard_admin.dart';
 import 'package:kasir/view/register.dart';
+import 'package:provider/provider.dart';
 
-class LoginView extends StatelessWidget {
+import '../utils/color.dart';
+import '../utils/constant.dart';
+import '../utils/navigation_helper.dart';
+import 'dashboard_admin.dart';
+
+class LoginView extends StatefulWidget {
   const LoginView({super.key});
 
+  @override
+  State<LoginView> createState() => _LoginViewState();
+}
+
+class _LoginViewState extends State<LoginView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -69,7 +77,6 @@ class LoginView extends StatelessWidget {
                             height: 20.0,
                           ),
                           TextField(
-                            keyboardType: TextInputType.text,
                             decoration: InputDecoration(
                               labelText: 'Password',
                               hintStyle: TextStyle(fontSize: 16),

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import '../utils/core/navigation_helper.dart';
+import '../utils/navigation_helper.dart';
 import '../view/history.dart';
 
 class DrawerWaiter extends StatelessWidget {

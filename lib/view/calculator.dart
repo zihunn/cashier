@@ -1,12 +1,11 @@
-// ignore_for_file: camel_case_types, prefer_typing_uninitialized_variables, sort_child_properties_last
-
 import 'package:flutter/material.dart';
-import 'package:kasir/utils/core/color.dart';
-import 'package:kasir/utils/core/constant.dart';
-import 'package:kasir/utils/core/navigation_helper.dart';
 import 'package:kasir/view/mybutton.dart';
 import 'package:kasir/view/receipt.dart';
 import 'package:math_expressions/math_expressions.dart';
+
+import '../utils/color.dart';
+import '../utils/constant.dart';
+import '../utils/navigation_helper.dart';
 
 class CalculatorView extends StatefulWidget {
   const CalculatorView({Key? key}) : super(key: key);

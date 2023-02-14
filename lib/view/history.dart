@@ -1,12 +1,11 @@
 import 'package:date_picker_timeline/date_picker_timeline.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:kasir/utils/core/color.dart';
-import 'package:kasir/utils/core/constant.dart';
 import 'package:kasir/view/detail_transaction.dart';
-import '../utils/core/navigation_helper.dart';
+import '../utils/color.dart';
+import '../utils/constant.dart';
 import 'package:date_picker_timeline/date_widget.dart';
-
+import '../utils/navigation_helper.dart';
 import '../widget/appbar.dart';
 
 class HistoryView extends StatefulWidget {
@@ -17,6 +16,7 @@ class HistoryView extends StatefulWidget {
 }
 
 class _HistoryViewState extends State<HistoryView> {
+  var date = new DateTime(2023, 2, 9);
   final _colors = [kBlueSoft, kSecondaryColor];
   @override
   Widget build(BuildContext context) {
@@ -33,29 +33,29 @@ class _HistoryViewState extends State<HistoryView> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+              padding:const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
               child: Container(
                   child: DatePicker(
-                DateTime.now(),
+                DateTime(date.year, date.month, date.day - 8),
                 height: 100,
                 width: 60,
                 initialSelectedDate: DateTime.now(),
                 selectionColor: kPrimaryColor,
                 selectedTextColor: Colors.white,
                 deactivatedColor: Colors.amber,
-                monthTextStyle: TextStyle(
+                monthTextStyle:const TextStyle(
                   color: Colors.grey,
                 ),
-                dayTextStyle: TextStyle(
+                dayTextStyle: const TextStyle(
                   color: Colors.grey,
                 ),
-                dateTextStyle: TextStyle(
+                dateTextStyle:const TextStyle(
                   color: Colors.grey,
                 ),
-                daysCount: 22,
+                daysCount: 30,
               )),
             ),
-            TabBar(
+            const TabBar(
               indicatorPadding: EdgeInsets.symmetric(horizontal: 70),
               unselectedLabelColor: Colors.black38,
               labelColor: Colors.black,
@@ -83,11 +83,11 @@ class _HistoryViewState extends State<HistoryView> {
                   padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
                   child: ListView.builder(
                     itemCount: 16,
-                    physics: BouncingScrollPhysics(),
+                    physics:const BouncingScrollPhysics(),
                     itemBuilder: (BuildContext context, int index) {
                       return GestureDetector(
                         onTap: () {
-                          goPush(DetailTransactionView());
+                          goPush(const DetailTransactionView());
                         },
                         child: Card(
                           shape: RoundedRectangleBorder(
@@ -134,13 +134,13 @@ class _HistoryViewState extends State<HistoryView> {
                               ),
                               trailing: Row(
                                 mainAxisSize: MainAxisSize.min,
-                                children: [
+                                children:const  [
                                   VerticalDivider(),
                                   RotatedBox(
                                       quarterTurns: -1,
                                       child: Text(
                                         "Succeed",
-                                        style: const TextStyle(fontSize: 10),
+                                        style:  TextStyle(fontSize: 10),
                                       )),
                                 ],
                               ),
@@ -151,7 +151,7 @@ class _HistoryViewState extends State<HistoryView> {
                     },
                   ),
                 ),
-                Center(
+                const Center(
                   child: Text("text"),
                 )
               ]),

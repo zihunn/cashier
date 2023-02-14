@@ -1,5 +1,8 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+import '../models/account_model.dart';
 
 GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
@@ -48,3 +51,13 @@ TextStyle get subtitleStyle {
     ),
   );
 }
+
+var url = "http://40.40.41.148:8000/api";
+var urlDrink = "http://40.40.41.148:8000/api/menus?category=drink";
+var urlFood = "http://40.40.41.148:8000/api/menus?category=food";
+var urlDessert = "http://40.40.41.148:8000/api/menus?category=dessert";
+
+var dio = Dio();
+String? barrier;
+Account? user;
+String? role;

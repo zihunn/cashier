@@ -1,13 +1,9 @@
-// ignore_for_file: camel_case_types, prefer_typing_uninitialized_variables
-
+import 'package:date_picker_timeline/date_picker_timeline.dart';
 import 'package:flutter/material.dart';
+import 'package:kasir/utils/navigation_helper.dart';
 import 'package:kasir/widget/drawer.dart';
-
-import '../utils/core/color.dart';
-import '../utils/core/constant.dart';
-import 'package:flutter/src/material/tab_controller.dart';
-
-import '../utils/core/navigation_helper.dart';
+import '../utils/color.dart';
+import '../utils/constant.dart';
 import 'detail_transaction.dart';
 
 class DashboardOwnerView extends StatefulWidget {
@@ -18,6 +14,7 @@ class DashboardOwnerView extends StatefulWidget {
 }
 
 class _DashboardOwnerViewState extends State<DashboardOwnerView> {
+  var date = new DateTime(2023, 2, 9);
   final tabList = ['Tab 1', 'Tab 2'];
 
   final _colors = [kBlueSoft, kSecondaryColor];
@@ -55,6 +52,27 @@ class _DashboardOwnerViewState extends State<DashboardOwnerView> {
           padding: const EdgeInsets.only(top: 20),
           child: Column(
             children: [
+              Container(
+                  margin: const EdgeInsets.symmetric(vertical: 12),
+                  child: DatePicker(
+                    DateTime(date.year, date.month, date.day - 8),
+                    height: 100,
+                    width: 60,
+                    initialSelectedDate: DateTime.now(),
+                    selectionColor: kPrimaryColor,
+                    selectedTextColor: Colors.white,
+                    deactivatedColor: Colors.amber,
+                    monthTextStyle: const TextStyle(
+                      color: Colors.grey,
+                    ),
+                    dayTextStyle: const TextStyle(
+                      color: Colors.grey,
+                    ),
+                    dateTextStyle: const TextStyle(
+                      color: Colors.grey,
+                    ),
+                    daysCount: 30,
+                  )),
               const TabBar(
                 indicatorPadding: EdgeInsets.symmetric(horizontal: 70),
                 unselectedLabelColor: Colors.black38,
@@ -86,11 +104,11 @@ class _DashboardOwnerViewState extends State<DashboardOwnerView> {
                         const EdgeInsets.only(top: 20, left: 20, right: 20),
                     child: ListView.builder(
                       itemCount: 16,
-                      physics: BouncingScrollPhysics(),
+                      physics: const BouncingScrollPhysics(),
                       itemBuilder: (BuildContext context, int index) {
                         return GestureDetector(
                           onTap: () {
-                            goPush(DetailTransactionView());
+                            goPush(const DetailTransactionView());
                           },
                           child: Card(
                             shape: RoundedRectangleBorder(
@@ -138,13 +156,13 @@ class _DashboardOwnerViewState extends State<DashboardOwnerView> {
                                 ),
                                 trailing: Row(
                                   mainAxisSize: MainAxisSize.min,
-                                  children: [
+                                  children: const [
                                     VerticalDivider(),
                                     RotatedBox(
                                         quarterTurns: -1,
                                         child: Text(
                                           "Succeed",
-                                          style: const TextStyle(fontSize: 10),
+                                          style: TextStyle(fontSize: 10),
                                         )),
                                   ],
                                 ),
@@ -155,8 +173,11 @@ class _DashboardOwnerViewState extends State<DashboardOwnerView> {
                       },
                     ),
                   ),
-                  Center(
-                    child: Text("text"),
+                  SingleChildScrollView(
+                    controller: ScrollController(),
+                    child: const Center(
+                      child: Text("text"),
+                    ),
                   )
                 ]),
               ),

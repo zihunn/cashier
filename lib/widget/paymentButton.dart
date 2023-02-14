@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:kasir/utils/core/color.dart';
 import '../../view/calculator.dart';
-import '../utils/core/navigation_helper.dart';
+import '../utils/color.dart';
+import '../utils/navigation_helper.dart';
 
 class PaymentButton extends StatelessWidget {
   const PaymentButton({super.key});

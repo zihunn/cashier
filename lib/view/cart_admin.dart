@@ -1,12 +1,10 @@
-// ignore_for_file: camel_case_types, prefer_typing_uninitialized_variables
-
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
-import 'package:kasir/utils/core/color.dart';
-import 'package:kasir/utils/core/constant.dart';
-import 'package:kasir/utils/core/navigation_helper.dart';
 import 'package:kasir/view/payment_method.dart';
 import 'package:kasir/widget/appbar.dart';
+import '../utils/color.dart';
+import '../utils/constant.dart';
+import '../utils/navigation_helper.dart';
 
 class CartAdminView extends StatefulWidget {
   const CartAdminView({Key? key}) : super(key: key);

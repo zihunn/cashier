@@ -1,11 +1,9 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-
-import 'package:kasir/utils/core/color.dart';
-import 'package:kasir/utils/core/constant.dart';
-import 'package:kasir/utils/core/navigation_helper.dart';
 import 'package:kasir/view/dashboard_admin.dart';
+import '../utils/color.dart';
+import '../utils/constant.dart';
+import '../utils/navigation_helper.dart';
 
 class ReceiptView extends StatefulWidget {
   const ReceiptView({

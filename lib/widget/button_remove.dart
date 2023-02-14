@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../utils/core/color.dart';
+
+import '../utils/color.dart';
 
 class ButtonRemoveView extends StatelessWidget {
   final onPressed;

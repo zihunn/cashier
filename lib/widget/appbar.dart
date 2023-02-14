@@ -1,8 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-import 'package:kasir/utils/core/constant.dart';
 
-import '../utils/core/navigation_helper.dart';
+import '../utils/constant.dart';
+import '../utils/navigation_helper.dart';
 
 class CustomAppbar extends StatelessWidget {
   var text;

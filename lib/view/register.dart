@@ -2,9 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
-
-import '../utils/core/color.dart';
-import '../utils/core/navigation_helper.dart';
+import '../utils/color.dart';
+import '../utils/navigation_helper.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({super.key});
@@ -15,6 +14,13 @@ class RegisterView extends StatefulWidget {
 
 class _RegisterViewState extends State<RegisterView> {
   var _index = 0;
+  var _posisiSelectedValue;
+
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController roleController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

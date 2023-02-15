@@ -52,10 +52,10 @@ TextStyle get subtitleStyle {
   );
 }
 
-var url = "http://40.40.41.148:8000/api";
-var urlDrink = "http://40.40.41.148:8000/api/menus?category=drink";
-var urlFood = "http://40.40.41.148:8000/api/menus?category=food";
-var urlDessert = "http://40.40.41.148:8000/api/menus?category=dessert";
+var url = "http://192.168.1.13:8000/api";
+var urlDrink = "http://192.168.1.13:8000/api/menus?category=drink";
+var urlFood = "http://192.168.1.13:8000/api/menus?category=food";
+var urlDessert = "http://192.168.1.13:8000/api/menus?category=dessert";
 
 var dio = Dio();
 String? barrier;

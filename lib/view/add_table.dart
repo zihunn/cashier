@@ -4,6 +4,7 @@ import 'package:kasir/models/table_model.dart';
 import 'package:kasir/provider/table_provider.dart';
 import 'package:kasir/utils/constant.dart';
 import 'package:provider/provider.dart';
+import '../repository/table_respository.dart';
 import '../utils/color.dart';
 import '../widget/appbar.dart';
 import '../widget/dialogAddTable.dart';
@@ -23,8 +24,8 @@ class _AddTableViewState extends State<AddTableView> {
     return ChangeNotifierProvider(
       create: (_) => TableProvider(),
       child: Consumer<TableProvider>(
-        builder: (context, value, child) {
-          final tables = value.listTable;
+        builder: (context, tableProv, child) {
+          final tables = tableProv.listTable;
           return Scaffold(
             appBar: PreferredSize(
               child: CustomAppbar(
@@ -84,32 +85,30 @@ class _AddTableViewState extends State<AddTableView> {
                             padding: const EdgeInsets.only(bottom: 10),
                             child: Dismissible(
                               background: Container(
-                                width: 20,
+                                margin: EdgeInsets.symmetric(vertical: 6),
+                                height: 70,
                                 decoration: BoxDecoration(
-                                    color: Colors.red[400],
+                                    color: kPrimaryColor,
                                     borderRadius: BorderRadius.circular(20)),
-                                child: Align(
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: <Widget>[
-                                      Icon(
-                                        Icons.delete,
-                                        color: Colors.white,
-                                      ),
-                                      Text(
-                                        " Delete",
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w700,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(right: 20),
+                                  child: Align(
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        IconButton(
+                                          onPressed: () {},
+                                          icon: Image.asset(
+                                            "assets/images/bin.png",
+                                            width: 94.0,
+                                            fit: BoxFit.fill,
+                                          ),
                                         ),
-                                        textAlign: TextAlign.right,
-                                      ),
-                                      SizedBox(
-                                        width: 20,
-                                      ),
-                                    ],
+                                        Text("Delete", style: titleStyle),
+                                      ],
+                                    ),
+                                    alignment: Alignment.centerRight,
                                   ),
-                                  alignment: Alignment.centerRight,
                                 ),
                               ),
                               direction: DismissDirection.endToStart,
@@ -138,8 +137,9 @@ class _AddTableViewState extends State<AddTableView> {
                                   ),
                                 ),
                               ),
-                              onDismissed: (direction) {
-                                TableProvider().deleteTable('${item.number}');
+                              onDismissed: (direction) async {
+                                await TableProvider()
+                                    .deleteTable('${item.number}');
                               },
                             ),
                           );

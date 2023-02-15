@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_core/get_core.dart';
+import 'package:kasir/models/table_model.dart';
+import 'package:kasir/provider/menu_provider.dart';
 import 'package:kasir/provider/table_provider.dart';
 import 'package:kasir/repository/table_respository.dart';
+import 'package:kasir/utils/navigation_helper.dart';
 import 'package:provider/provider.dart';
 import '../utils/color.dart';
+import 'package:get/get.dart';
 
 class DialogAddTableView extends StatefulWidget {
   const DialogAddTableView({Key? key}) : super(key: key);
@@ -12,14 +17,17 @@ class DialogAddTableView extends StatefulWidget {
 }
 
 class _DialogAddTableViewState extends State<DialogAddTableView> {
-  TableRepository repository = TableRepository();
   final numberController = TextEditingController();
+  load() async {
+    await TableProvider().getAllTable();
+  }
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (_) => TableProvider(),
       child: Consumer<TableProvider>(
-        builder: (context, value, child) {
+        builder: (context, tableProv, child) {
           return Dialog(
             elevation: 0,
             backgroundColor: Colors.transparent,
@@ -69,7 +77,8 @@ class _DialogAddTableViewState extends State<DialogAddTableView> {
                             left: 10, right: 10, top: 20, bottom: 5),
                         child: ElevatedButton(
                           onPressed: () async {
-                            TableProvider().addTable(numberController.text);
+                            tableProv.addTable(numberController.text);
+                            tableProv.getAllTable();
                           },
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,

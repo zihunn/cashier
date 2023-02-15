@@ -92,10 +92,12 @@ class _EditProductViewState extends State<EditProductView> {
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 6),
                             child: ListTile(
-                              leading: Image.network(
-                                "${menu.image}",
-                                width: 64.0,
-                                height: 64.0,
+                              leading: CircleAvatar(
+                                child: Image.network(
+                                  "${menu.image}",
+                                  width: 64.0,
+                                  height: 64.0,
+                                ),
                               ),
                               title: Text(
                                 "${menu.name}",

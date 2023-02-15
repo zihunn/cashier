@@ -1,6 +1,11 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:kasir/models/menu_model.dart';
 import 'package:kasir/repository/menu_repository.dart';
+import 'package:kasir/view/dashboard_admin.dart';
+
+import '../utils/custom_snackbar.dart';
+import '../utils/navigation_helper.dart';
 
 class MenuProvider extends ChangeNotifier {
   MenuProvider() {
@@ -55,10 +60,20 @@ class MenuProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  // Future addMenu(data) async {
+  //   final response =
+  //       await repository.addMenu(data);
+  //   notifyListeners();
+  // }
   Future addMenu(data) async {
-    final response =
-        await repository.addMenu(data);
-    notifyListeners();
+    var res = await MenuRepository.addMenu(data);
+    if (res['status'] == 200) {
+      infoSnackBar("Berhasil Menambahkan Kelas");
+      goRemove(DashboardAdminView());
+      notifyListeners();
+    } else if (res["status"] == 500) {
+      SnackBar(backgroundColor: Colors.red, content: Text("Error 400"));
+    }
   }
 
   Future deleteMenu(String id) async {

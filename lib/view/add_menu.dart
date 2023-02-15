@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:kasir/provider/menu_provider.dart';
 import 'package:kasir/utils/color.dart';
+import 'package:kasir/utils/navigation_helper.dart';
 
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
@@ -86,24 +87,6 @@ class _AddMenuViewState extends State<AddMenuView> {
           },
         )
       };
-  // Future getImage(ImageSource source) async {
-  //   final image = await ImagePicker().pickImage(source: source);
-  //   if (image == null) return;
-
-  //   final imageTemporary = File(image.path);
-  //   setState(() {
-  //     this._image = imageTemporary;
-  //     print(_image);
-  //   });
-  // }
-
-  // Future<File> saveFilePermanently(String imagePath) async {
-  //   final directory = await getApplicationDocumentsDirectory();
-  //   final name = basename(imagePath);
-  //   final image = File('${directory.path}/$name');
-
-  //   return File(imagePath).copy(image.path);
-  // }
 
   var _categorySelectedValue;
   final priceController = TextEditingController();
@@ -331,10 +314,11 @@ class _AddMenuViewState extends State<AddMenuView> {
                                 "stock": stockController.text,
                                 "description": descriptionController.text,
                                 "category": _categorySelectedValue,
-                                "image": image.toString()
+                                "image": image
                               };
                               print(data);
                               MenuProvider().addMenu(data);
+                              goBack();
                             },
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,

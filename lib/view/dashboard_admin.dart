@@ -180,7 +180,7 @@ class _DashboardAdminViewState extends State<DashboardAdminView> {
                   Consumer<MenuProvider>(
                     builder: (context, value, child) {
                       var drinks = value.drink;
-                      // var foods = value.food;
+                      var foods = value.food;
                       // var desserts = value.dessert;
                       return GridView.builder(
                         gridDelegate:
@@ -190,12 +190,12 @@ class _DashboardAdminViewState extends State<DashboardAdminView> {
                           mainAxisSpacing: 20.0,
                           crossAxisSpacing: 15.0,
                         ),
-                        itemCount: drinks.length,
+                        itemCount: foods.length,
                         shrinkWrap: true,
                         physics: BouncingScrollPhysics(),
                         itemBuilder: (BuildContext context, int index) {
                           var drink = drinks[index];
-                          // var food = foods[index];
+                          var food = foods[index];
                           // var dessert = desserts[index];
                           return Material(
                             elevation: 3,
@@ -213,7 +213,9 @@ class _DashboardAdminViewState extends State<DashboardAdminView> {
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(15),
                                       image: DecorationImage(
-                                        image: NetworkImage("${drink.image}"),
+                                        image: NetworkImage(_index == 0
+                                            ? "${drink.stock}"
+                                            : "${food.stock}"),
                                         fit: BoxFit.contain,
                                       ),
                                     ),

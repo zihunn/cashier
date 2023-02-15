@@ -1,10 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-// To parse this JSON data, do
-//
-//     final accountModel = accountModelFromJson(jsonString);
-
-import 'dart:convert';
-
 // To parse this JSON data, do
 //
 //     final accountModel = accountModelFromJson(jsonString);
@@ -53,24 +46,18 @@ class Account {
         required this.name,
         required this.email,
         required this.role,
-        required this.createdAt,
-        required this.updatedAt,
     });
 
     int id;
     String name;
     String email;
     String role;
-    DateTime createdAt;
-    DateTime updatedAt;
 
     factory Account.fromJson(Map<String, dynamic> json) => Account(
         id: json["id"],
         name: json["name"],
         email: json["email"],
         role: json["role"],
-        createdAt: DateTime.parse(json["created_at"]),
-        updatedAt: DateTime.parse(json["updated_at"]),
     );
 
     Map<String, dynamic> toJson() => {
@@ -78,8 +65,5 @@ class Account {
         "name": name,
         "email": email,
         "role": role,
-        "created_at": createdAt.toIso8601String(),
-        "updated_at": updatedAt.toIso8601String(),
     };
 }
-

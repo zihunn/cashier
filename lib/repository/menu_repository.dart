@@ -1,7 +1,10 @@
 import 'dart:convert';
+import 'dart:developer';
 
+import 'package:dio/dio.dart';
 import 'package:kasir/models/menu_model.dart';
 import "package:http/http.dart" as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../utils/constant.dart';
 
@@ -106,17 +109,44 @@ class MenuRepository {
     return [];
   }
 
-  Future addMenu(data) async {
-    try {
-      final response = await http.post(Uri.parse('$url/menus'), body: data);
+  // Future addMenu(data) async {
+  //   try {
+  //     final response = await http.post(Uri.parse('$url/menus'), body: data);
 
-      if (response.statusCode == 200) {
-        return true;
-      } else {
-        return false;
-      }
-    } catch (err) {
-      print(err);
+  //     if (response.statusCode == 200) {
+  //       return true;
+  //     } else {
+  //       return false;
+  //     }
+  //   } catch (err) {
+  //     print(err);
+  //   }
+  // }
+  static Future addMenu(data) async {
+    String fileName = data["image"] != null
+        ? data["image"].path.split("/").last
+        : "https://picsum.photos/500/300";
+
+    FormData formData = FormData.fromMap({
+      "image": data["image"] != null
+          ? await MultipartFile.fromFile(data["image"].path, filename: fileName)
+          : "https://picsum.photos/500/300",
+      "name": data["name"],
+      "price": data["price"],
+      "stock": data["stock"],
+      "description": data["description"],
+      "category": data["category"],
+    });
+
+    var res = await dio.post(
+      "$url/menus",
+      data: formData,
+    );
+
+    log(res.realUri.toString());
+
+    if (res.statusCode == 200) {
+      return res.data;
     }
   }
 

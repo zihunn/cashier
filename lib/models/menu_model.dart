@@ -22,7 +22,7 @@ class MenuModel {
   int id;
   String name;
   String price;
-  int stock;
+  String stock;
   String description;
   String category;
   String image;

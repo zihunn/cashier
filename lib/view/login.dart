@@ -9,7 +9,6 @@ import '../utils/color.dart';
 import '../utils/constant.dart';
 import '../utils/custom_snackbar.dart';
 import '../utils/navigation_helper.dart';
-import 'dashboard_admin.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -29,29 +28,29 @@ class _LoginViewState extends State<LoginView> {
       child: Consumer<AuthProvider>(
         builder: (context, authProv, _) {
           return Scaffold(
-              body: Stack(
-            children: [
-              Container(
-                height: 350.0,
-                decoration: const BoxDecoration(
-                  color: kBlueSoft,
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.only(top: 300),
-                height: height,
-                width: width,
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(40),
-                    topRight: Radius.circular(40),
+              body: SingleChildScrollView(
+            child: Stack(
+              children: [
+                Container(
+                  height: 350.0,
+                  decoration: const BoxDecoration(
+                    color: kBlueSoft,
                   ),
                 ),
-                child: Container(
-                  margin: EdgeInsets.only(top: 70),
-                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 80),
-                  child: SingleChildScrollView(
+                Container(
+                  margin: EdgeInsets.only(top: 300),
+                  height: height,
+                  width: width,
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(40),
+                      topRight: Radius.circular(40),
+                    ),
+                  ),
+                  child: Container(
+                    margin: EdgeInsets.only(top: 70),
+                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 80),
                     child: Column(
                       children: [
                         Card(
@@ -181,53 +180,53 @@ class _LoginViewState extends State<LoginView> {
                     ),
                   ),
                 ),
-              ),
-              Positioned(
-                top: 375,
-                left: 60,
-                child: Column(
-                  children: [
-                    Text(
-                      "Login",
-                      style: const TextStyle(
-                          fontWeight: FontWeight.w600, fontSize: 26.0),
-                    ),
-                    const SizedBox(
-                      height: 10.0,
-                    ),
-                    const Text(
-                      "please fill out the form below to get started",
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.grey,
+                Positioned(
+                  top: 375,
+                  left: 60,
+                  child: Column(
+                    children: [
+                      Text(
+                        "Login",
+                        style: const TextStyle(
+                            fontWeight: FontWeight.w600, fontSize: 26.0),
                       ),
+                      const SizedBox(
+                        height: 10.0,
+                      ),
+                      const Text(
+                        "please fill out the form below to get started",
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Positioned(
+                  top: 175,
+                  left: 100,
+                  child: Container(
+                    child: Image.asset(
+                      "assets/images/rocket.png",
+                      width: 200,
+                      color: Colors.grey,
                     ),
-                  ],
-                ),
-              ),
-              Positioned(
-                top: 175,
-                left: 100,
-                child: Container(
-                  child: Image.asset(
-                    "assets/images/rocket.png",
-                    width: 200,
-                    color: Colors.grey,
                   ),
                 ),
-              ),
-              Positioned(
-                top: 170,
-                left: 100,
-                child: Container(
-                  child: Image.asset(
-                    "assets/images/rocket.png",
-                    width: 200,
+                Positioned(
+                  top: 170,
+                  left: 100,
+                  child: Container(
+                    child: Image.asset(
+                      "assets/images/rocket.png",
+                      width: 200,
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ));
         },
       ),

@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:ffi';
 
 import 'package:dio/dio.dart';
 import 'package:kasir/models/menu_model.dart';
@@ -17,7 +18,6 @@ class MenuRepository {
 
     if (response.statusCode == 200) {
       final json = jsonDecode(response.body) as List;
-
       final data = json.map((e) {
         return MenuModel(
             id: e['id'],
@@ -28,6 +28,7 @@ class MenuRepository {
             category: e['category'],
             image: e['image']);
       }).toList();
+      print(data);
 
       return data;
     }
@@ -109,20 +110,7 @@ class MenuRepository {
     return [];
   }
 
-  // Future addMenu(data) async {
-  //   try {
-  //     final response = await http.post(Uri.parse('$url/menus'), body: data);
-
-  //     if (response.statusCode == 200) {
-  //       return true;
-  //     } else {
-  //       return false;
-  //     }
-  //   } catch (err) {
-  //     print(err);
-  //   }
-  // }
-  static Future addMenu(data) async {
+  Future addMenu(data) async {
     String fileName = data["image"] != null
         ? data["image"].path.split("/").last
         : "https://picsum.photos/500/300";
@@ -143,26 +131,40 @@ class MenuRepository {
       data: formData,
     );
 
-    log(res.realUri.toString());
-
     if (res.statusCode == 200) {
       return res.data;
     }
   }
 
-  Future deleteMenu(String id) async {
-    try {
-      final response = await http.delete(Uri.parse("$url/menus/"), body: {
-        'id': id,
-      });
 
-      if (response.statusCode == 200) {
-        return true;
-      } else {
-        return false;
+    Future deleteMenu(String id) async {
+      try {
+        final response = await http.delete(Uri.parse("$url/menus"), body: {
+          'id': id,
+        });
+
+        if (response.statusCode == 200) {
+          return true;
+        } else {
+          return false;
+        }
+      } catch (e) {
+        print(e.toString());
       }
-    } catch (e) {
-      print(e.toString());
+    }
+
+    Future editMenu(String id, data) async {
+      try {
+        final response = await http
+            .delete(Uri.parse("$url/menus"), body: {'id': id, 'data': data});
+
+        if (response.statusCode == 200) {
+          return true;
+        } else {
+          return false;
+        }
+      } catch (e) {
+        print(e.toString());
+      }
     }
   }
-}

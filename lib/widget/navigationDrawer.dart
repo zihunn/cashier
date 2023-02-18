@@ -3,11 +3,11 @@
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:kasir/view/add_table.dart';
-import 'package:kasir/view/editMenu.dart';
 import 'package:kasir/view/employee.dart';
 import 'package:kasir/view/history.dart';
 
 import '../utils/navigation_helper.dart';
+import '../view/menu/listMenu.dart';
 
 class NavigationDrawerView extends StatefulWidget {
   const NavigationDrawerView({Key? key}) : super(key: key);
@@ -95,7 +95,7 @@ class _NavigationDrawerViewState extends State<NavigationDrawerView> {
                       ),
                       title: Text('Edit Menu'),
                       onTap: () {
-                        goPush(EditProductView());
+                        goPush(ListMenuView());
                       },
                     ),
                   ),

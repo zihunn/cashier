@@ -2,18 +2,19 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:kasir/models/menu_model.dart';
 import 'package:kasir/repository/menu_repository.dart';
-import 'package:kasir/view/dashboard_admin.dart';
-
+import 'package:kasir/utils/navigation_helper.dart';
 import '../utils/custom_snackbar.dart';
-import '../utils/navigation_helper.dart';
 
 class MenuProvider extends ChangeNotifier {
   MenuProvider() {
+    notifyListeners();
     getAllMenu();
     getDrink();
     getFood();
     getDessert();
+    notifyListeners();
   }
+  bool _isLoading = false;
 
   final repository = MenuRepository();
 
@@ -30,10 +31,21 @@ class MenuProvider extends ChangeNotifier {
   List<MenuModel> get dessert => _dessert;
 
   // Get All Menu
-  Future<void> getAllMenu() async {
+  Future getAllMenu() async {
     final response = await repository.getAllMenu();
-    _allMenu = response;
     notifyListeners();
+    _allMenu = response;
+    print(_allMenu);
+    notifyListeners();
+  }
+
+  Future getAllMenu2() async {
+    final response = await repository.getAllMenu();
+    _isLoading = false;
+    _allMenu = response;
+    print(_allMenu);
+    notifyListeners();
+    goBack();
   }
 
   // Get Drink
@@ -66,18 +78,23 @@ class MenuProvider extends ChangeNotifier {
   //   notifyListeners();
   // }
   Future addMenu(data) async {
-    var res = await MenuRepository.addMenu(data);
-    if (res['status'] == 200) {
-      infoSnackBar("Berhasil Menambahkan Kelas");
-      goRemove(DashboardAdminView());
-      notifyListeners();
-    } else if (res["status"] == 500) {
-      SnackBar(backgroundColor: Colors.red, content: Text("Error 400"));
-    }
+    final response = await repository.addMenu(data);
+    if (response is MenuModel) {
+      successSnackBar(response.name);
+    } else {}
   }
 
   Future deleteMenu(String id) async {
     final response = await repository.deleteMenu(id);
+  }
+
+  Future editMenu(String id, data) async {
+    final response = await repository.editMenu(id, data);
+    notifyListeners();
+    if (response is MenuModel) {
+      notifyListeners();
+      successSnackBar(response.name);
+    } else {}
     notifyListeners();
   }
 }

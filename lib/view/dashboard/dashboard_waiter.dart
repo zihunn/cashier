@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:kasir/view/cart_waiter.dart';
 import 'package:kasir/widget/drawer_waiter.dart';
-import '../utils/color.dart';
-import '../utils/navigation_helper.dart';
+import '../../utils/color.dart';
+import '../../utils/navigation_helper.dart';
 
 class DashboardWaiterVIew extends StatefulWidget {
   const DashboardWaiterVIew({Key? key}) : super(key: key);

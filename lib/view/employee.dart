@@ -20,8 +20,8 @@ class _EmployeViewState extends State<EmployeView> {
     return ChangeNotifierProvider(
       create: (_) => UserProvider(),
       child: Consumer<UserProvider>(
-        builder: (context, value, child) {
-          var users = value.listUser;
+        builder: (context, empolyeeProv, child) {
+          var users = empolyeeProv.listUser;
           return Scaffold(
             appBar: PreferredSize(
                 preferredSize: Size.fromHeight(60),
@@ -106,7 +106,8 @@ class _EmployeViewState extends State<EmployeView> {
                             ),
                             trailing: IconButton(
                               onPressed: () {
-                                UserProvider().deleteUser("${user.id}");
+                                empolyeeProv.deleteUser(user.id.toString());
+                                empolyeeProv.getUser();
                               },
                               icon: Image.asset(
                                 "assets/images/trash.png",

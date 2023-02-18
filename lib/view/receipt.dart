@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:kasir/view/dashboard_admin.dart';
 import '../utils/color.dart';
 import '../utils/constant.dart';
 import '../utils/navigation_helper.dart';

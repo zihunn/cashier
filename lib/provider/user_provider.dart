@@ -18,7 +18,7 @@ class UserProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-   Future<void> deleteUser(String id) async {
+   Future deleteUser(String id) async {
     final response = await repository.delete(id);
     notifyListeners();
   }

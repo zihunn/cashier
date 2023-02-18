@@ -1,15 +1,14 @@
 import 'package:flutter/cupertino.dart';
-import 'package:kasir/view/dashboard_admin.dart';
-import 'package:kasir/view/dashboard_cashier.dart';
-import 'package:kasir/view/dashboard_owner.dart';
-import 'package:kasir/view/dashboard_waiter.dart';
 import 'package:kasir/view/login.dart';
-
 import '../models/account_model.dart';
 import '../repository/auth_repository.dart';
 import '../utils/custom_snackbar.dart';
 import '../utils/navigation_helper.dart';
 import '../utils/session_manager.dart';
+import '../view/dashboard/dashboard_admin.dart';
+import '../view/dashboard/dashboard_cashier.dart';
+import '../view/dashboard/dashboard_owner.dart';
+import '../view/dashboard/dashboard_waiter.dart';
 
 class AuthProvider extends ChangeNotifier {
   Future register(Map<String, dynamic> requestBody) async {

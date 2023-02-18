@@ -1,33 +1,39 @@
 import 'package:flutter/material.dart';
-import 'package:ionicons/ionicons.dart';
+import 'package:kasir/models/menu_model.dart';
 import 'package:kasir/provider/menu_provider.dart';
-import 'package:kasir/view/add_menu.dart';
+import 'package:kasir/view/menu/edit_menu.dart';
 import 'package:provider/provider.dart';
-import '../utils/color.dart';
-import '../utils/constant.dart';
-import '../utils/navigation_helper.dart';
-import '../widget/appbar.dart';
 
-class EditProductView extends StatefulWidget {
-  const EditProductView({Key? key}) : super(key: key);
+import '../../utils/color.dart';
+import '../../utils/constant.dart';
+import '../../utils/modal.dart';
+import '../../utils/navigation_helper.dart';
+import '../../widget/appbar.dart';
+import 'add_menu.dart';
+
+class ListMenuView extends StatefulWidget {
+  ListMenuView({
+    Key? key,
+  }) : super(key: key);
 
   @override
-  State<EditProductView> createState() => _EditProductViewState();
+  State<ListMenuView> createState() => _ListMenuViewState();
 }
 
-class _EditProductViewState extends State<EditProductView> {
+class _ListMenuViewState extends State<ListMenuView> {
   final _colors = [kSecondaryColor, kBlueSoft];
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (_) => MenuProvider(),
       child: Consumer<MenuProvider>(
-        builder: (context, value, child) {
-          var allMenu = value.allMenu;
+        builder: (context, menuProv, child) {
+          var allMenu = menuProv.allMenu;
           return Scaffold(
             appBar: PreferredSize(
               child: CustomAppbar(
-                text: "Edit Menu",
+                text: "Menu",
               ),
               preferredSize: const Size.fromHeight(60),
             ),
@@ -42,7 +48,8 @@ class _EditProductViewState extends State<EditProductView> {
                     children: [
                       ElevatedButton(
                         onPressed: () {
-                          goPush(AddMenuView());
+                          // dialogAddMenu(menuProv);
+                          goPush(AddMenuView(provider: menuProv));
                         },
                         child: Row(
                           children: [
@@ -92,12 +99,11 @@ class _EditProductViewState extends State<EditProductView> {
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 6),
                             child: ListTile(
-                              leading: CircleAvatar(
-                                child: Image.network(
-                                  "${menu.image}",
-                                  width: 64.0,
-                                  height: 64.0,
-                                ),
+                              leading: Image.network(
+                                "${menu.image}",
+                                width: 64.0,
+                                height: 64.0,
+                                fit: BoxFit.fill,
                               ),
                               title: Text(
                                 "${menu.name}",
@@ -109,7 +115,14 @@ class _EditProductViewState extends State<EditProductView> {
                               ),
                               trailing: Wrap(spacing: 0, children: [
                                 IconButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    goPush(
+                                      EditMenuVIew(
+                                        data: menu,
+                                        provider: menuProv,
+                                      ),
+                                    );
+                                  },
                                   icon: Image.asset(
                                     "assets/images/edit.png",
                                     height: 26,
@@ -118,7 +131,9 @@ class _EditProductViewState extends State<EditProductView> {
                                 IconButton(
                                   onPressed: () {
                                     print("s");
-                                    MenuProvider().deleteMenu("${menu.id}");
+                                    dialogWarning(menuProv, menu);
+
+                                    // widget.provider.deleteMenu(widget.data!.id);
                                   },
                                   icon: Image.asset(
                                     "assets/images/trash.png",

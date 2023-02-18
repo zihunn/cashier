@@ -1,12 +1,8 @@
-// ignore_for_file: camel_case_types, prefer_typing_uninitialized_variables
-
-
 import 'package:flutter/material.dart';
-import 'package:kasir/view/dashboard_admin.dart';
-import 'package:kasir/view/dashboard_cashier.dart';
-
 import '../utils/constant.dart';
 import '../utils/navigation_helper.dart';
+import '../view/dashboard/dashboard_admin.dart';
+import '../view/dashboard/dashboard_cashier.dart';
 
 class LoadingScreen extends StatefulWidget {
   const LoadingScreen({Key? key}) : super(key: key);

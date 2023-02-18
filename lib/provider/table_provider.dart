@@ -16,6 +16,7 @@ class TableProvider extends ChangeNotifier {
 
   Future getAllTable() async {
     final response = await repository.getAll();
+    notifyListeners();
     _listTable = response;
     print(_listTable);
     notifyListeners();
@@ -31,7 +32,6 @@ class TableProvider extends ChangeNotifier {
     if (response is TableModel) {
       successSnackBar(response.number);
     } else {}
-    goBack();
     notifyListeners();
   }
 }

@@ -32,6 +32,13 @@ TextStyle get headingStyle {
   );
 }
 
+TextStyle get headingStyle2 {
+  return GoogleFonts.lato(
+    textStyle: const TextStyle(
+        fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black87),
+  );
+}
+
 TextStyle get titleStyle {
   return GoogleFonts.lato(
     textStyle: const TextStyle(
@@ -52,10 +59,10 @@ TextStyle get subtitleStyle {
   );
 }
 
-var url = "http://192.168.1.13:8000/api";
-var urlDrink = "http://192.168.1.13:8000/api/menus?category=drink";
-var urlFood = "http://192.168.1.13:8000/api/menus?category=food";
-var urlDessert = "http://192.168.1.13:8000/api/menus?category=dessert";
+var url = "https://zihun-cashier.xyz/api";
+var urlDrink = "https://zihun-cashier.xyz/api/menus?category=drink";
+var urlFood = "https://zihun-cashier.xyz/api/menus?category=food";
+var urlDessert = "https://zihun-cashier.xyz/api/menus?category=dessert";
 
 var dio = Dio();
 String? barrier;

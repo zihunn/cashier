@@ -3,6 +3,7 @@ import 'package:kasir/component/table_component.dart';
 import 'package:kasir/models/table_model.dart';
 import 'package:kasir/provider/table_provider.dart';
 import 'package:kasir/utils/constant.dart';
+import 'package:kasir/utils/modal.dart';
 import 'package:provider/provider.dart';
 import '../repository/table_respository.dart';
 import '../utils/color.dart';
@@ -40,9 +41,7 @@ class _AddTableViewState extends State<AddTableView> {
                   children: [
                     ElevatedButton(
                       onPressed: () {
-                        showDialog(
-                            context: context,
-                            builder: (context) => const DialogAddTableView());
+                        dialogAddTable(tableProv);
                       },
                       child: Row(
                         children: [
@@ -70,6 +69,7 @@ class _AddTableViewState extends State<AddTableView> {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(15))),
                     ),
+                   
                   ],
                 ),
                 Expanded(

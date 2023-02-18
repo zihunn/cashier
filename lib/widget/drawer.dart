@@ -55,20 +55,24 @@ class DrawerView extends StatelessWidget {
                     const SizedBox(
                       height: 10.0,
                     ),
-                    Card(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      elevation: 3,
-                      child: ListTile(
-                          leading: Image.asset(
-                            "assets/images/logout.png",
-                            width: 30,
+                    Consumer<AuthProvider>(
+                      builder: (context, authProv, child) {
+                        return Card(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15),
                           ),
-                          title: Text('Logout'),
-                          onTap: () {
-                            AuthProvider().logout();
-                          }),
+                          elevation: 3,
+                          child: ListTile(
+                              leading: Image.asset(
+                                "assets/images/logout.png",
+                                width: 30,
+                              ),
+                              title: Text('Logout'),
+                              onTap: () {
+                                authProv.logout();
+                              }),
+                        );
+                      },
                     ),
                   ],
                 ),

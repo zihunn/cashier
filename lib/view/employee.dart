@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:kasir/models/user_model.dart';
+import 'package:kasir/model/user_model.dart';
 import 'package:kasir/provider/user_provider.dart';
-import 'package:kasir/widget/appbar.dart';
+import 'package:kasir/component/appbar.dart';
 import 'package:provider/provider.dart';
 import '../utils/color.dart';
 import '../utils/constant.dart';
@@ -17,11 +17,11 @@ class _EmployeViewState extends State<EmployeView> {
   final _colors = [kSecondaryColor, kBlueSoft];
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
+    return ChangeNotifierProvider<UserProvider>(
       create: (_) => UserProvider(),
       child: Consumer<UserProvider>(
-        builder: (context, empolyeeProv, child) {
-          var users = empolyeeProv.listUser;
+        builder: (context, userProv, child) {
+          var listUser = userProv.listUser;
           return Scaffold(
             appBar: PreferredSize(
                 preferredSize: Size.fromHeight(60),
@@ -75,50 +75,56 @@ class _EmployeViewState extends State<EmployeView> {
                   ),
                 ),
                 Expanded(
-                  child: ListView.builder(
-                    itemCount: users.length,
-                    physics: BouncingScrollPhysics(),
-                    itemBuilder: (BuildContext context, int index) {
-                      var user = users[index];
+                  child: userProv.isLoading
+                      ? Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      : ListView.builder(
+                          itemCount: listUser?.length,
+                          physics: BouncingScrollPhysics(),
+                          itemBuilder: (BuildContext context, int index) {
+                            var user = listUser?[index];
 
-                      print(role);
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 25,
-                        ),
-                        child: Card(
-                          color: _colors[index % _colors.length],
-                          elevation: 0,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10)),
-                          child: ListTile(
-                            leading: Image.asset(
-                              "assets/images/employee.png",
-                              width: 40,
-                            ),
-                            title: Text(
-                              "${user.name}",
-                              style: titleStyle,
-                            ),
-                            subtitle: Text(
-                              "${user.role}",
-                              style: subtitleStyle,
-                            ),
-                            trailing: IconButton(
-                              onPressed: () {
-                                empolyeeProv.deleteUser(user.id.toString());
-                                empolyeeProv.getUser();
-                              },
-                              icon: Image.asset(
-                                "assets/images/trash.png",
-                                width: 30.0,
+                            print(role);
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 25,
                               ),
-                            ),
-                          ),
+                              child: Card(
+                                color: _colors[index % _colors.length],
+                                elevation: 0,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: ListTile(
+                                  leading: Image.asset(
+                                    "assets/images/employee.png",
+                                    width: 40,
+                                  ),
+                                  title: Text(
+                                    user!.name,
+                                    style: titleStyle,
+                                  ),
+                                  subtitle: Text(
+                                    user.role,
+                                    style: subtitleStyle,
+                                  ),
+                                  trailing: IconButton(
+                                    onPressed: () {
+                                      userProv.deleteUser(user.id);
+                                      userProv.getUser();
+                                      // userProv.deleteUser(user.id);
+                                      // userProv.getUser();
+                                    },
+                                    icon: Image.asset(
+                                      "assets/images/trash.png",
+                                      width: 30.0,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
                         ),
-                      );
-                    },
-                  ),
                 ),
               ],
             ),

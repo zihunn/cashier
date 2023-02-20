@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:kasir/widget/list%20menu/dessert.dart';
-import 'package:kasir/widget/list%20menu/drink.dart';
-import 'package:kasir/widget/list%20menu/food.dart';
+import 'package:kasir/component/category.dart';
+import 'package:kasir/provider/dahboard_provider.dart';
 import 'package:provider/provider.dart';
-
-import '../../provider/menu_provider.dart';
 import '../../utils/color.dart';
 import '../../utils/constant.dart';
 import '../../utils/navigation_helper.dart';
-import '../../widget/navigationDrawer.dart';
+import '../../component/navigationDrawer.dart';
 import '../cart_admin.dart';
 
 class DashboardAdminView extends StatefulWidget {
@@ -24,12 +21,9 @@ class _DashboardAdminViewState extends State<DashboardAdminView> {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => MenuProvider(),
-      child: Consumer<MenuProvider>(
-        builder: (context, menuProv, child) {
-          var desserts = menuProv.dessert;
-          var drinks = menuProv.drink;
-          var foods = menuProv.food;
+      create: (_) => DashboardProvider(),
+      child: Consumer<DashboardProvider>(
+        builder: (context, dashProv, child) {
           return Scaffold(
             endDrawer: const NavigationDrawerView(),
             //APPBAR
@@ -76,7 +70,7 @@ class _DashboardAdminViewState extends State<DashboardAdminView> {
                           ElevatedButton(
                             onPressed: () {
                               _index = 0;
-                              menuProv.getFood();
+                              dashProv.getByCategory("food");
                               setState(() {});
                             },
                             child: Row(
@@ -113,7 +107,7 @@ class _DashboardAdminViewState extends State<DashboardAdminView> {
                           ElevatedButton(
                             onPressed: () {
                               _index = 1;
-                              menuProv.getDrink();
+                              dashProv.getByCategory("drink");
                               setState(() {});
                             },
                             child: Row(
@@ -149,7 +143,7 @@ class _DashboardAdminViewState extends State<DashboardAdminView> {
                           ElevatedButton(
                             onPressed: () {
                               _index = 2;
-                              menuProv.getDessert();
+                              dashProv.getByCategory("dessert");
                               setState(() {});
                             },
                             child: Row(
@@ -193,11 +187,38 @@ class _DashboardAdminViewState extends State<DashboardAdminView> {
                     padding:
                         const EdgeInsets.only(left: 20, right: 20, top: 10),
                     child: Stack(children: [
-                      _index == 0
-                          ? FoodList()
-                          : _index == 1
-                              ? DrinkList()
-                              : DessertList(),
+                      dashProv.isLoading
+                          ? Center(
+                              child: CircularProgressIndicator(),
+                            )
+                          : dashProv.listMenu!.isEmpty
+                              ? Center(
+                                  child: Text("text"),
+                                )
+                              : GridView.builder(
+                                  gridDelegate:
+                                      const SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2,
+                                    childAspectRatio: 0.8,
+                                    mainAxisSpacing: 20.0,
+                                    crossAxisSpacing: 15.0,
+                                  ),
+                                  itemCount: dashProv.listMenu!.length,
+                                  shrinkWrap: true,
+                                  physics: BouncingScrollPhysics(),
+                                  itemBuilder: (context, index) {
+                                    var data = dashProv.listMenu?[index];
+
+                                    return dashProv.listMenu == null
+                                        ? Center(
+                                            child: Text("text"),
+                                          )
+                                        : CategoryCard(
+                                            data: data,
+                                            provider: dashProv,
+                                          );
+                                  },
+                                ),
                       Positioned(
                         bottom: 30,
                         right: 10,

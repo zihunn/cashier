@@ -1,7 +1,7 @@
 import 'package:date_picker_timeline/date_picker_timeline.dart';
 import 'package:flutter/material.dart';
 import 'package:kasir/utils/navigation_helper.dart';
-import 'package:kasir/widget/drawer.dart';
+import 'package:kasir/component/drawer.dart';
 import '../../utils/color.dart';
 import '../../utils/constant.dart';
 import '../detail_transaction.dart';
@@ -21,7 +21,7 @@ class _DashboardOwnerViewState extends State<DashboardOwnerView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      endDrawer: const DrawerView(),
+      endDrawer: DrawerView(),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,

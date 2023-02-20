@@ -10,6 +10,30 @@ String userModelToJson(UserModel data) => json.encode(data.toJson());
 
 class UserModel {
     UserModel({
+        required this.data,
+        required this.success,
+        required this.message,
+    });
+
+    List<User> data;
+    bool success;
+    String message;
+
+    factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
+        data: List<User>.from(json["data"].map((x) => User.fromJson(x))),
+        success: json["success"],
+        message: json["message"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "data": List<dynamic>.from(data.map((x) => x.toJson())),
+        "success": success,
+        "message": message,
+    };
+}
+
+class User {
+    User({
         required this.id,
         required this.name,
         required this.email,
@@ -21,7 +45,7 @@ class UserModel {
     String email;
     String role;
 
-    factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
+    factory User.fromJson(Map<String, dynamic> json) => User(
         id: json["id"],
         name: json["name"],
         email: json["email"],
@@ -35,4 +59,3 @@ class UserModel {
         "role": role,
     };
 }
-

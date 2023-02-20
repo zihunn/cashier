@@ -56,7 +56,7 @@ class _RegisterViewState extends State<RegisterView> {
                 child: Column(
                   children: [
                     Container(
-                      margin: const EdgeInsets.only(top: 20, bottom: 20),
+                      margin: const EdgeInsets.only(bottom: 20),
                       child: const Text(
                         "Choose Account Type",
                         style: TextStyle(
@@ -125,7 +125,7 @@ class _RegisterViewState extends State<RegisterView> {
                         child: Column(
                           children: [
                             Text(
-                              _index == 0 ? "Hallo Waiters" : "Hallo Cashier",
+                              _index != 1 ? "Hallo Cashier" : "Hallo Waiter",
                               style: const TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w500,
@@ -177,7 +177,7 @@ class _RegisterViewState extends State<RegisterView> {
                           TextField(
                             controller: emailController,
                             decoration: InputDecoration(
-                              labelText: "Enail",
+                              labelText: "Email",
                               focusedBorder: OutlineInputBorder(
                                 borderSide: const BorderSide(
                                   color: kBlue,

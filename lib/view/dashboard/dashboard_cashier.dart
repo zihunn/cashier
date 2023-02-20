@@ -3,7 +3,7 @@ import 'package:kasir/view/payment_method.dart';
 import '../../utils/color.dart';
 import '../../utils/constant.dart';
 import '../../utils/navigation_helper.dart';
-import '../../widget/drawer_waiter.dart';
+import '../../component/drawer_waiter.dart';
 
 class DashboardCashierView extends StatefulWidget {
   const DashboardCashierView({Key? key}) : super(key: key);

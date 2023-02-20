@@ -3,8 +3,8 @@ import 'package:kasir/utils/constant.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
-import '../models/account_model.dart';
-import '../widget/loading_screen.dart';
+import '../model/account_model.dart';
+import '../component/loading_screen.dart';
 import 'navigation_helper.dart';
 
 class SessionManager {

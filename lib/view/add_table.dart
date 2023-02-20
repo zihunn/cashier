@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:kasir/component/table_component.dart';
-import 'package:kasir/models/table_model.dart';
+import 'package:kasir/model/table_model.dart';
 import 'package:kasir/provider/table_provider.dart';
 import 'package:kasir/utils/constant.dart';
 import 'package:kasir/utils/modal.dart';
 import 'package:provider/provider.dart';
 import '../repository/table_respository.dart';
 import '../utils/color.dart';
-import '../widget/appbar.dart';
-import '../widget/dialogAddTable.dart';
+import '../component/appbar.dart';
+import '../component/dialogAddTable.dart';
 
 class AddTableView extends StatefulWidget {
   const AddTableView({Key? key}) : super(key: key);
@@ -26,7 +25,8 @@ class _AddTableViewState extends State<AddTableView> {
       create: (_) => TableProvider(),
       child: Consumer<TableProvider>(
         builder: (context, tableProv, child) {
-          final tables = tableProv.listTable;
+          var listTable = tableProv.listTable;
+          print(listTable);
           return Scaffold(
             appBar: PreferredSize(
               child: CustomAppbar(
@@ -69,82 +69,91 @@ class _AddTableViewState extends State<AddTableView> {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(15))),
                     ),
-                   
                   ],
                 ),
                 Expanded(
                   child: Container(
-                      padding:
-                          const EdgeInsets.only(top: 20, left: 20, right: 20),
-                      child: ListView.builder(
-                        physics: BouncingScrollPhysics(),
-                        itemCount: tables.length,
-                        itemBuilder: (context, index) {
-                          var item = tables[index];
-                          return Padding(
-                            padding: const EdgeInsets.only(bottom: 10),
-                            child: Dismissible(
-                              background: Container(
-                                margin: EdgeInsets.symmetric(vertical: 6),
-                                height: 70,
-                                decoration: BoxDecoration(
-                                    color: kPrimaryColor,
-                                    borderRadius: BorderRadius.circular(20)),
-                                child: Padding(
-                                  padding: const EdgeInsets.only(right: 20),
-                                  child: Align(
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                        IconButton(
-                                          onPressed: () {},
-                                          icon: Image.asset(
-                                            "assets/images/bin.png",
-                                            width: 94.0,
-                                            fit: BoxFit.fill,
-                                          ),
+                    padding:
+                        const EdgeInsets.only(top: 20, left: 20, right: 20),
+                    child: tableProv.isLoading
+                        ? Center(
+                            child: CircularProgressIndicator(),
+                          )
+                        : ListView.builder(
+                            physics: BouncingScrollPhysics(),
+                            itemCount: listTable?.length,
+                            itemBuilder: (context, index) {
+                              var item = listTable?[index];
+                              return Padding(
+                                padding: const EdgeInsets.only(bottom: 10),
+                                child: Dismissible(
+                                  background: Container(
+                                    margin: EdgeInsets.symmetric(vertical: 6),
+                                    height: 70,
+                                    decoration: BoxDecoration(
+                                        color: kPrimaryColor,
+                                        borderRadius:
+                                            BorderRadius.circular(20)),
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(right: 20),
+                                      child: Align(
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          children: [
+                                            IconButton(
+                                              onPressed: () {
+                                                print(item);
+                                              },
+                                              icon: Image.asset(
+                                                "assets/images/bin.png",
+                                                width: 94.0,
+                                                fit: BoxFit.fill,
+                                              ),
+                                            ),
+                                            Text("Delete", style: titleStyle),
+                                          ],
                                         ),
-                                        Text("Delete", style: titleStyle),
-                                      ],
-                                    ),
-                                    alignment: Alignment.centerRight,
-                                  ),
-                                ),
-                              ),
-                              direction: DismissDirection.endToStart,
-                              key: Key("${item.number}"),
-                              child: Card(
-                                color: color1[index % color1.length],
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(15),
-                                ),
-                                elevation: 1,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: ListTile(
-                                    leading: Image.asset(
-                                      "assets/images/table.png",
-                                      width: 30,
-                                    ),
-                                    title: Text(
-                                      "Table",
-                                      style: titleStyle,
-                                    ),
-                                    subtitle: Text(
-                                      "${item.number}",
-                                      style: subtitleStyle,
+                                        alignment: Alignment.centerRight,
+                                      ),
                                     ),
                                   ),
+                                  direction: DismissDirection.endToStart,
+                                  key: Key("${item?.number}"),
+                                  child: Card(
+                                    color: color1[index % color1.length],
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(15),
+                                    ),
+                                    elevation: 1,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: ListTile(
+                                        leading: Image.asset(
+                                          "assets/images/table.png",
+                                          width: 30,
+                                        ),
+                                        title: Text(
+                                          'Table',
+                                          style: titleStyle,
+                                        ),
+                                        subtitle: Text(
+                                          "${item!.number}",
+                                          style: subtitleStyle,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  onDismissed: (direction) async {
+                                    await tableProv
+                                        .deleteTable('${item.number}');
+                                    tableProv.getTable();
+                                  },
                                 ),
-                              ),
-                              onDismissed: (direction) async {
-                                await TableProvider()
-                                    .deleteTable('${item.number}');
-                              },
-                            ),
-                          );
-                        },
-                      )),
+                              );
+                            },
+                          ),
+                  ),
                 ),
               ],
             ),

@@ -1,19 +1,10 @@
-import 'dart:io';
-
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:kasir/models/menu_model.dart';
-import 'package:kasir/provider/table_provider.dart';
+import 'package:kasir/model/menu_model.dart';
 import 'package:kasir/utils/constant.dart';
 import 'package:kasir/utils/navigation_helper.dart';
 import 'package:lottie/lottie.dart';
-import 'package:provider/provider.dart';
-
-import '../provider/menu_provider.dart';
-import '../widget/appbar.dart';
 import 'color.dart';
+import 'package:lottie/lottie.dart';
 
 final numberController = TextEditingController();
 
@@ -70,8 +61,9 @@ dialogAddTable(var provider) => showDialog(
                     child: ElevatedButton(
                       onPressed: () {
                         provider.addTable(numberController.text);
+                        provider.getTable();
                         numberController.clear();
-                        provider.getAllTable();
+
                         goBack();
                       },
                       child: Row(
@@ -116,7 +108,7 @@ dialogAddTable(var provider) => showDialog(
       );
     }));
 
-dialogSuccess(var provider) => showDialog(
+dialogSuccess(var provider, text) => showDialog(
       context: navigatorKey.currentContext!,
       builder: ((context) {
         return Dialog(
@@ -141,7 +133,7 @@ dialogSuccess(var provider) => showDialog(
                     Container(
                       padding: const EdgeInsets.only(top: 70),
                       child: Text(
-                        "successfully added menu",
+                        text,
                         style: headingStyle,
                       ),
                     ),
@@ -153,8 +145,9 @@ dialogSuccess(var provider) => showDialog(
                       ),
                       child: ElevatedButton(
                         onPressed: () {
-                          provider.getAllMenu();
-                          Navigator.pop(context);
+                          provider.getMenu();
+                          goBack();
+
                           goBack();
                         },
                         child: Row(
@@ -266,7 +259,7 @@ dialogFailed(var provider) => showDialog(
         );
       }),
     );
-dialogWarning(var provider, final MenuModel data) => showDialog(
+dialogWarning(var provider, final Datum data) => showDialog(
       context: navigatorKey.currentContext!,
       builder: ((context) {
         return Dialog(
@@ -307,12 +300,12 @@ dialogWarning(var provider, final MenuModel data) => showDialog(
                           ElevatedButton(
                             onPressed: () {
                               var index = 0;
-                              var allMenu = provider.allMenu;
-                              var menu = allMenu[index];
-                              Navigator.pop(context);
-                              provider.deleteMenu(data.id.toString());
-                              provider.getAllMenu();
-                              provider.getAllMenu();
+                              var listMenu = provider.listMenu;
+                              var menu = listMenu[index];
+                              // Navigator.pop(context);
+                              provider.deleteMenu(data.id);
+                              provider.getMenu();
+                              goBack();
                             },
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -370,4 +363,23 @@ dialogWarning(var provider, final MenuModel data) => showDialog(
           ),
         );
       }),
+    );
+
+dialogLoading() => showDialog(
+      barrierColor: Colors.transparent,
+      context: navigatorKey.currentContext!,
+      builder: (context) {
+        return Container(
+          padding: EdgeInsets.all(100),
+          decoration: const BoxDecoration(
+            color: Colors.transparent,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [Lottie.asset("assets/lottie/loading.json")],
+          ),
+        );
+      },
     );

@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:kasir/provider/menu_provider.dart';
+import 'package:kasir/view/login.dart';
+import 'package:kasir/view/menu/edit_menu.dart';
+import 'package:provider/provider.dart';
 import 'utils/constant.dart';
 import 'view/dashboard/dashboard_admin.dart';
 
@@ -16,7 +20,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(fontFamily: 'Jakarta'),
       title: 'Cashier',
       navigatorKey: navigatorKey,
-      home: DashboardAdminView(),
+      home: LoginView(),
     );
   }
 }

@@ -1,6 +1,6 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
-import 'package:kasir/widget/appbar.dart';
+import 'package:kasir/component/appbar.dart';
 import '../utils/color.dart';
 import '../utils/constant.dart';
 

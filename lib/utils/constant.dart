@@ -2,7 +2,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../models/account_model.dart';
+import '../model/account_model.dart';
+import '../model/table_model.dart';
 
 GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
@@ -66,5 +67,6 @@ var urlDessert = "https://zihun-cashier.xyz/api/menus?category=dessert";
 
 var dio = Dio();
 String? barrier;
-Account? user;
+Meja? meja;
 String? role;
+Account? user;

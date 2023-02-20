@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:kasir/provider/auth_provider.dart';
+import 'package:kasir/utils/modal.dart';
 import 'package:kasir/view/register.dart';
 import 'package:provider/provider.dart';
 
@@ -26,7 +27,7 @@ class _LoginViewState extends State<LoginView> {
     return ChangeNotifierProvider(
       create: (_) => AuthProvider(),
       child: Consumer<AuthProvider>(
-        builder: (context, authProv, _) {
+        builder: (context, authProv, child) {
           return Scaffold(
               body: SingleChildScrollView(
             child: Stack(
@@ -135,7 +136,7 @@ class _LoginViewState extends State<LoginView> {
                                       'email': emailController.text,
                                       'password': passwordController.text
                                     };
-
+                                    print(requestBody);
                                     authProv.login(requestBody);
 
                                     if (!currentFocus.hasPrimaryFocus) {
@@ -231,45 +232,5 @@ class _LoginViewState extends State<LoginView> {
         },
       ),
     );
-  }
-}
-
-class ClipWave extends CustomClipper<Path> {
-  @override
-  Path getClip(Size size) {
-    double width = size.width;
-    double height = size.height;
-    double marginTop = height * 1 / 3;
-
-    Path path = Path();
-
-    path.moveTo(0, marginTop);
-    path.cubicTo(
-      width * 1 / 2,
-      (height / 4) + marginTop,
-      width * 3 / 7,
-      -(height / 25) + marginTop,
-      width * 3 / 4,
-      marginTop,
-    );
-
-    path.cubicTo(
-      width * 4 / 6,
-      (height / 4) + marginTop,
-      width * 6 / 13,
-      -(height / 10) + marginTop,
-      width * 2 / 2,
-      marginTop,
-    );
-
-    path.lineTo(width, height);
-    path.lineTo(0, height);
-
-    return path;
-  }
-
-  @override
-  bool shouldReclip(covariant CustomClipper<Path> oldClipper) {
-    return true;
   }
 }

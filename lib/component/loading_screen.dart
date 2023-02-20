@@ -13,16 +13,16 @@ class LoadingScreen extends StatefulWidget {
 
 class _LoadingScreenState extends State<LoadingScreen> {
   @override
-  void initState() {
-    Future.delayed(Duration(seconds: 2)).whenComplete(() {
-      if (user!.role != "admin" && user!.role != "waiter") {
-        goRemove(DashboardAdminView());
-      } else {
-        goRemove(DashboardCashierView());
-      }
-    });
-    super.initState();
-  }
+  // void initState() {
+  //   Future.delayed(Duration(seconds: 2)).whenComplete(() {
+  //     if (user!.role != "admin" && user!.role != "waiter") {
+  //       goRemove(DashboardAdminView());
+  //     } else {
+  //       goRemove(DashboardCashierView());
+  //     }
+  //   });
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {

@@ -1,12 +1,14 @@
 import 'dart:io';
+import 'package:dio/dio.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:kasir/provider/menu_provider.dart';
 import 'package:kasir/utils/modal.dart';
-
+import 'package:provider/provider.dart';
 import '../../utils/constant.dart';
-import '../../widget/appbar.dart';
+import '../../component/appbar.dart';
 
 class AddMenuView extends StatefulWidget {
   final provider;
@@ -94,251 +96,267 @@ class _AddMenuViewState extends State<AddMenuView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: PreferredSize(
-        child: CustomAppbar(
-          text: "Add New Menu",
-        ),
-        preferredSize: const Size.fromHeight(60),
-      ),
-      body: SingleChildScrollView(
-        physics: BouncingScrollPhysics(),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-          child: Column(
-            children: [
-              Card(
-                elevation: 3,
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(12.0),
-                  ),
-                ),
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        "Informasi Product",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w600, fontSize: 18),
+    return ChangeNotifierProvider(
+      create: (_) => MenuProvider(),
+      child: Consumer<MenuProvider>(
+        builder: (context, value, child) {
+          return Scaffold(
+            appBar: PreferredSize(
+              child: CustomAppbar(
+                text: "Add New Menu",
+              ),
+              preferredSize: const Size.fromHeight(60),
+            ),
+            body: SingleChildScrollView(
+              physics: BouncingScrollPhysics(),
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                child: Column(
+                  children: [
+                    Card(
+                      elevation: 3,
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(12.0),
+                        ),
                       ),
-                      const SizedBox(
-                        height: 10.0,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 15, vertical: 20),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              "Informasi Product",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w600, fontSize: 18),
+                            ),
+                            const SizedBox(
+                              height: 10.0,
+                            ),
+                            Center(
+                              child: IconButton(
+                                  onPressed: () {
+                                    selectImage(getImage);
+                                  },
+                                  icon:
+                                      Image.asset("assets/images/camera.png")),
+                            ),
+                            Container(
+                              width: image != null ? double.infinity : 0,
+                              height: image != null ? 150 : 0,
+                              child: image != null
+                                  ? Image.file(
+                                      image!,
+                                    )
+                                  : Text(""),
+                            ),
+                            const SizedBox(
+                              height: 20.0,
+                            ),
+                            TextField(
+                              controller: nameController,
+                              decoration: InputDecoration(
+                                contentPadding: const EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 18),
+                                labelText: "Type Menu Name",
+                                labelStyle: const TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.grey,
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: const BorderSide(
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: const BorderSide(
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 20.0,
+                            ),
+                            DropdownSearch<String>(
+                              items: data,
+                              mode: Mode.MENU,
+                              popupItemDisabled: (String s) =>
+                                  s.startsWith('I'),
+                              // selectedItem: ,
+                              onChanged: (value) {
+                                setState(() {
+                                  _categorySelectedValue = value;
+                                  print(_categorySelectedValue);
+                                });
+                              },
+                              dropdownSearchDecoration: InputDecoration(
+                                labelStyle: const TextStyle(
+                                  color: Colors.grey,
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: const BorderSide(
+                                      color: Colors.grey,
+                                    )),
+                                labelText: "Category",
+                                contentPadding: const EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 6),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 20.0,
+                            ),
+                            TextField(
+                              controller: priceController,
+                              decoration: InputDecoration(
+                                prefixText: "Rp  ",
+                                contentPadding: const EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 18),
+                                labelText: "Selling Price",
+                                labelStyle: const TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.grey,
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: const BorderSide(
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: const BorderSide(
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 20.0,
+                            ),
+                            TextField(
+                              controller: stockController,
+                              decoration: InputDecoration(
+                                contentPadding: const EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 18),
+                                labelText: "Stock",
+                                labelStyle: const TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.grey,
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: const BorderSide(
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: const BorderSide(
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 20.0,
+                            ),
+                            TextField(
+                              controller: descriptionController,
+                              keyboardType: TextInputType.multiline,
+                              maxLines: null,
+                              decoration: InputDecoration(
+                                contentPadding: const EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 40),
+                                labelText: "Description Menu",
+                                labelStyle: const TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.grey,
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: const BorderSide(
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: const BorderSide(
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                      Center(
-                        child: IconButton(
-                            onPressed: () {
-                              selectImage(getImage);
+                    ),
+                    Padding(
+                        padding: EdgeInsets.symmetric(vertical: 10),
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 60, vertical: 15),
+                          child: ElevatedButton(
+                            onPressed: () async {
+                              if (nameController.text.isNotEmpty &&
+                                  priceController.text.isNotEmpty &&
+                                  stockController.text.isNotEmpty &&
+                                  descriptionController.text.isNotEmpty &&
+                                  _categorySelectedValue != null &&
+                                  image != null) {
+                                var requestBody = {
+                                  "name": nameController.text,
+                                  "price": priceController.text,
+                                  "stock": stockController.text,
+                                  "description": descriptionController.text,
+                                  "category": _categorySelectedValue,
+                                  "image":
+                                      await MultipartFile.fromFile(image!.path)
+                                };
+                                print(requestBody);
+                                widget.provider.addMenu(requestBody);
+                                widget.provider.getMenu();
+                                dialogSuccess(
+                                  widget.provider,
+                                  "successfully added menu",
+                                );
+                              } else {
+                                dialogFailed(widget.provider);
+                              }
                             },
-                            icon: Image.asset("assets/images/camera.png")),
-                      ),
-                      Container(
-                        width: image != null ? double.infinity : 0,
-                        height: image != null ? 150 : 0,
-                        child: image != null
-                            ? Image.file(
-                                image!,
-                              )
-                            : Text(""),
-                      ),
-                      const SizedBox(
-                        height: 20.0,
-                      ),
-                      TextField(
-                        controller: nameController,
-                        decoration: InputDecoration(
-                          contentPadding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 18),
-                          labelText: "Type Menu Name",
-                          labelStyle: const TextStyle(
-                            fontSize: 14,
-                            color: Colors.grey,
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(
-                              color: Colors.grey,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "Save",
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                              ],
                             ),
+                            style: ElevatedButton.styleFrom(
+                                elevation: 0,
+                                primary: Color(0xffA6F3EB),
+                                side: BorderSide(color: Color(0xff0EB7B0)),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15))),
                           ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(
-                              color: Colors.grey,
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 20.0,
-                      ),
-                      DropdownSearch<String>(
-                        items: data,
-                        mode: Mode.MENU,
-                        popupItemDisabled: (String s) => s.startsWith('I'),
-                        // selectedItem: ,
-                        onChanged: (value) {
-                          setState(() {
-                            _categorySelectedValue = value;
-                            print(_categorySelectedValue);
-                          });
-                        },
-                        dropdownSearchDecoration: InputDecoration(
-                          labelStyle: const TextStyle(
-                            color: Colors.grey,
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide: const BorderSide(
-                                color: Colors.grey,
-                              )),
-                          labelText: "Category",
-                          contentPadding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 6),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 20.0,
-                      ),
-                      TextField(
-                        controller: priceController,
-                        decoration: InputDecoration(
-                          prefixText: "Rp  ",
-                          contentPadding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 18),
-                          labelText: "Selling Price",
-                          labelStyle: const TextStyle(
-                            fontSize: 14,
-                            color: Colors.grey,
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(
-                              color: Colors.grey,
-                            ),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(
-                              color: Colors.grey,
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 20.0,
-                      ),
-                      TextField(
-                        controller: stockController,
-                        decoration: InputDecoration(
-                          contentPadding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 18),
-                          labelText: "Stock",
-                          labelStyle: const TextStyle(
-                            fontSize: 14,
-                            color: Colors.grey,
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(
-                              color: Colors.grey,
-                            ),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(
-                              color: Colors.grey,
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 20.0,
-                      ),
-                      TextField(
-                        controller: descriptionController,
-                        keyboardType: TextInputType.multiline,
-                        maxLines: null,
-                        decoration: InputDecoration(
-                          contentPadding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 40),
-                          labelText: "Description Menu",
-                          labelStyle: const TextStyle(
-                            fontSize: 14,
-                            color: Colors.grey,
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(
-                              color: Colors.grey,
-                            ),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(
-                              color: Colors.grey,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                        )),
+                  ],
                 ),
               ),
-              Padding(
-                  padding: EdgeInsets.symmetric(vertical: 10),
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 60, vertical: 15),
-                    child: ElevatedButton(
-                      onPressed: () async {
-                        if (nameController.text.isNotEmpty &&
-                            priceController.text.isNotEmpty &&
-                            stockController.text.isNotEmpty &&
-                            descriptionController.text.isNotEmpty &&
-                            _categorySelectedValue != null &&
-                            image != null) {
-                          var data = {
-                            "name": nameController.text,
-                            "price": priceController.text,
-                            "stock": stockController.text,
-                            "description": descriptionController.text,
-                            "category": _categorySelectedValue,
-                            "image": image
-                          };
-                          widget.provider.addMenu(data);
-                          widget.provider.getAllMenu();
-                          dialogSuccess(widget.provider);
-                        } else {
-                          dialogFailed(widget.provider);
-                        }
-                      },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            "Save",
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w600),
-                          ),
-                        ],
-                      ),
-                      style: ElevatedButton.styleFrom(
-                          elevation: 0,
-                          primary: Color(0xffA6F3EB),
-                          side: BorderSide(color: Color(0xff0EB7B0)),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15))),
-                    ),
-                  )),
-            ],
-          ),
-        ),
+            ),
+          );
+        },
       ),
     );
   }

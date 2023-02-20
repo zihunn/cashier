@@ -6,7 +6,7 @@ import '../utils/color.dart';
 import '../utils/constant.dart';
 import 'package:date_picker_timeline/date_widget.dart';
 import '../utils/navigation_helper.dart';
-import '../widget/appbar.dart';
+import '../component/appbar.dart';
 
 class HistoryView extends StatefulWidget {
   const HistoryView({Key? key}) : super(key: key);

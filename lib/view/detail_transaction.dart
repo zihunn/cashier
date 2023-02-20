@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kasir/widget/appbar.dart';
+import 'package:kasir/component/appbar.dart';
 
 class DetailTransactionView extends StatelessWidget {
   const DetailTransactionView({super.key});

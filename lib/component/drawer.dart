@@ -46,7 +46,7 @@ class DrawerView extends StatelessWidget {
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text('${user!.name}'),
+                                    Text(user!.role),
                                     Text("87391276"),
                                   ],
                                 ),

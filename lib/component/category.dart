@@ -1,30 +1,50 @@
 import 'package:flutter/material.dart';
+import 'package:kasir/model/account_model.dart';
 import 'package:kasir/model/menu_model.dart';
 import 'package:kasir/utils/color.dart';
+import 'package:math_expressions/math_expressions.dart';
 
 class CategoryCard extends StatefulWidget {
   final Datum? data;
   final provider;
-  const CategoryCard({Key? key, this.data, this.provider}) : super(key: key);
+  final Account? user;
+  const CategoryCard({Key? key, this.data, this.provider, this.user})
+      : super(key: key);
 
   @override
   State<CategoryCard> createState() => _CategoryCardState();
 }
 
 class _CategoryCardState extends State<CategoryCard> {
+  int _count = 0;
+  int p = 9;
+  void _incrementCount() {
+    setState(() {
+      _count < p ? _count++ : null;
+    });
+  }
+
+  void _decrementCount() {
+    setState(() {
+      _count == 0 ? _count : _count--;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    var stock = int.parse(widget.data!.stock);
+
     return Material(
       elevation: 3,
       borderRadius: BorderRadius.circular(15),
       child: Container(
-        margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+        margin: const EdgeInsets.symmetric(vertical: 1, horizontal: 5),
         decoration: BoxDecoration(borderRadius: BorderRadius.circular(15)),
         child: Column(
           children: [
             Container(
-              width: 120,
-              height: 100,
+              width: 90,
+              height: 90,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(15),
                 // image: DecorationImage(
@@ -34,16 +54,13 @@ class _CategoryCardState extends State<CategoryCard> {
               ),
               child: Image.network(
                 widget.data!.image,
-                width: 64.0,
-                height: 64.0,
-                fit: BoxFit.fill,
               ),
             ),
             const SizedBox(
-              height: 5,
+              height: 2,
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 5),
+              padding: const EdgeInsets.only(left: 1),
               child: Column(
                 children: [
                   Text(
@@ -51,19 +68,19 @@ class _CategoryCardState extends State<CategoryCard> {
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                   ),
                   const SizedBox(
-                    height: 10.0,
+                    height: 8.0,
                   ),
                   Row(
                     children: [
                       Container(
-                        margin: EdgeInsets.only(left: 37),
+                        margin: EdgeInsets.only(left: 50),
                         height: 8,
                         width: 8,
                         decoration: const BoxDecoration(
                             color: Colors.amber, shape: BoxShape.circle),
                       ),
                       const SizedBox(
-                        width: 8.0,
+                        width: 5.0,
                       ),
                       Text(
                         widget.data!.price,
@@ -78,15 +95,19 @@ class _CategoryCardState extends State<CategoryCard> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       IconButton(
-                        onPressed: () {},
+                        onPressed: _decrementCount,
                         icon: Image.asset(
                           "assets/images/minus.png",
                           width: 24.0,
                         ),
                       ),
-                      Text("1"),
+                      Text("${_count}"),
                       IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          setState(() {
+                            _count < stock ? _count++ : null;
+                          });
+                        },
                         icon: Image.asset(
                           "assets/images/add.png",
                           width: 24.0,
@@ -95,6 +116,36 @@ class _CategoryCardState extends State<CategoryCard> {
                     ],
                   ),
                 ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: ElevatedButton(
+                onPressed: () {
+                  print(widget.user!.id);
+                  var requestBody = {
+                    "menu_id": widget.data!.id,
+                    "qty": _count,
+                    "waiter_id": widget.user!.id,
+                  };
+                  widget.provider.addCart(requestBody);
+                  _count = 0;
+                },
+                child: Text(
+                  "Add to cart",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 12),
+                ),
+                style: ElevatedButton.styleFrom(
+                  elevation: 0,
+                  primary: kPrimaryColor,
+                  side: const BorderSide(color: kCyan),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                ),
               ),
             ),
           ],

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:kasir/component/category.dart';
-import 'package:kasir/provider/dahboard_provider.dart';
+import 'package:kasir/model/account_model.dart';
+import 'package:kasir/model/table_model.dart';
+import 'package:kasir/provider/dashboard_provider.dart';
 import 'package:provider/provider.dart';
 import '../../utils/color.dart';
 import '../../utils/constant.dart';
@@ -9,7 +11,11 @@ import '../../component/navigationDrawer.dart';
 import '../cart_admin.dart';
 
 class DashboardAdminView extends StatefulWidget {
-  const DashboardAdminView({Key? key}) : super(key: key);
+  final Account? data;
+  const DashboardAdminView({
+    Key? key,
+    this.data,
+  }) : super(key: key);
 
   @override
   State<DashboardAdminView> createState() => _DashboardAdminViewState();
@@ -24,8 +30,13 @@ class _DashboardAdminViewState extends State<DashboardAdminView> {
       create: (_) => DashboardProvider(),
       child: Consumer<DashboardProvider>(
         builder: (context, dashProv, child) {
+          var user = widget.data;
+          var test = dashProv.listTable;
           return Scaffold(
-            endDrawer: const NavigationDrawerView(),
+            endDrawer: NavigationDrawerView(
+              data: user,
+              // data: data,
+            ),
             //APPBAR
             appBar: PreferredSize(
                 child: Padding(
@@ -72,6 +83,7 @@ class _DashboardAdminViewState extends State<DashboardAdminView> {
                               _index = 0;
                               dashProv.getByCategory("food");
                               setState(() {});
+                              print(user);
                             },
                             child: Row(
                               children: [
@@ -199,7 +211,7 @@ class _DashboardAdminViewState extends State<DashboardAdminView> {
                                   gridDelegate:
                                       const SliverGridDelegateWithFixedCrossAxisCount(
                                     crossAxisCount: 2,
-                                    childAspectRatio: 0.8,
+                                    childAspectRatio: 0.7,
                                     mainAxisSpacing: 20.0,
                                     crossAxisSpacing: 15.0,
                                   ),
@@ -216,6 +228,7 @@ class _DashboardAdminViewState extends State<DashboardAdminView> {
                                         : CategoryCard(
                                             data: data,
                                             provider: dashProv,
+                                            user: user,
                                           );
                                   },
                                 ),
@@ -225,7 +238,7 @@ class _DashboardAdminViewState extends State<DashboardAdminView> {
                         child: FloatingActionButton.extended(
                           elevation: 2,
                           onPressed: () {
-                            goPush(const CartAdminView());
+                            goPush(CartAdminView(test: test));
                           },
                           extendedPadding:
                               const EdgeInsets.symmetric(horizontal: 20),

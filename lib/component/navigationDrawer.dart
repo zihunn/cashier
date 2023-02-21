@@ -1,7 +1,5 @@
-// ignore_for_file: camel_case_types, prefer_typing_uninitialized_variables
-
 import 'package:flutter/material.dart';
-import 'package:ionicons/ionicons.dart';
+import 'package:kasir/model/account_model.dart';
 import 'package:kasir/view/add_table.dart';
 import 'package:kasir/view/employee.dart';
 import 'package:kasir/view/history.dart';
@@ -10,7 +8,8 @@ import '../utils/navigation_helper.dart';
 import '../view/menu/listMenu.dart';
 
 class NavigationDrawerView extends StatefulWidget {
-  const NavigationDrawerView({Key? key}) : super(key: key);
+  final Account? data;
+  const NavigationDrawerView({Key? key, this.data}) : super(key: key);
 
   @override
   State<NavigationDrawerView> createState() => _NavigationDrawerViewState();
@@ -50,8 +49,8 @@ class _NavigationDrawerViewState extends State<NavigationDrawerView> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text("Muhammad Rizky"),
-                              Text("87391276"),
+                              Text(widget.data!.name),
+                              Text(widget.data!.id.toString()),
                             ],
                           ),
                         ],
@@ -78,6 +77,7 @@ class _NavigationDrawerViewState extends State<NavigationDrawerView> {
                         title: Text('Transaction'),
                         onTap: () {
                           goPush(HistoryView());
+                          // print(widget.data?.id);
                         }),
                   ),
                   const SizedBox(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:kasir/provider/auth_provider.dart';
+import 'package:kasir/provider/dashboard_provider.dart';
 import 'package:kasir/utils/modal.dart';
 import 'package:kasir/view/register.dart';
 import 'package:provider/provider.dart';
@@ -25,9 +26,9 @@ class _LoginViewState extends State<LoginView> {
   Widget build(BuildContext context) {
     FocusScopeNode currentFocus = FocusScope.of(context);
     return ChangeNotifierProvider(
-      create: (_) => AuthProvider(),
-      child: Consumer<AuthProvider>(
-        builder: (context, authProv, child) {
+      create: (_) => DashboardProvider(),
+      child: Consumer<DashboardProvider>(
+        builder: (context, dashProv, child) {
           return Scaffold(
               body: SingleChildScrollView(
             child: Stack(
@@ -137,7 +138,7 @@ class _LoginViewState extends State<LoginView> {
                                       'password': passwordController.text
                                     };
                                     print(requestBody);
-                                    authProv.login(requestBody);
+                                    dashProv.login(requestBody);
 
                                     if (!currentFocus.hasPrimaryFocus) {
                                       currentFocus.unfocus();

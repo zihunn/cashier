@@ -13,7 +13,6 @@ class MenuProvider extends ChangeNotifier {
   }
 
   List<Datum>? listMenu;
- 
 
   bool _isLoading = false;
   bool get isLoading => _isLoading;
@@ -25,9 +24,11 @@ class MenuProvider extends ChangeNotifier {
   // GET ALL MENU
   Future getMenu() async {
     _isLoading = true;
+    notifyListeners();
     var data = await MenuRepository.getMenu();
     notifyListeners();
     if (data is MenuModel) {
+      notifyListeners();
       print(data.message);
       listMenu = data.data;
       print(listMenu);
@@ -38,7 +39,6 @@ class MenuProvider extends ChangeNotifier {
     _isLoading = false;
     notifyListeners();
   }
-  
 
   // DELETE MENU
   Future deleteMenu(int id) async {

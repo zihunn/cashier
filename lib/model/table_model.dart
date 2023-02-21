@@ -15,7 +15,7 @@ class TableModel {
         required this.message,
     });
 
-    List<Meja> data;
+    List<Meja>? data;
     bool success;
     String message;
 
@@ -26,7 +26,9 @@ class TableModel {
     );
 
     Map<String, dynamic> toJson() => {
-        "data": List<dynamic>.from(data.map((x) => x.toJson())),
+        "data": data == null
+            ? []
+            : List<dynamic>.from(data!.map((x) => x.toJson())),
         "success": success,
         "message": message,
     };

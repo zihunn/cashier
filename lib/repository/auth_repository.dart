@@ -32,7 +32,9 @@ class AuthRepository {
       print(res);
       log(res.realUri.toString());
       if (res.statusCode == 200) {
-        return AccountModel.fromJson(res.data);
+        var data = AccountModel.fromJson(res.data);
+        print(data.account.name);
+        return data;
       }
     } catch (e) {
       return null;

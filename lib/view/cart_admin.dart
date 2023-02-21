@@ -1,13 +1,20 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
+import 'package:kasir/model/table_model.dart';
+import 'package:kasir/provider/table_provider.dart';
 import 'package:kasir/view/payment_method.dart';
 import 'package:kasir/component/appbar.dart';
+import 'package:provider/provider.dart';
 import '../utils/color.dart';
 import '../utils/constant.dart';
 import '../utils/navigation_helper.dart';
 
 class CartAdminView extends StatefulWidget {
-  const CartAdminView({Key? key}) : super(key: key);
+  final List<Meja>? test;
+  const CartAdminView({
+    Key? key,
+    this.test,
+  }) : super(key: key);
 
   @override
   State<CartAdminView> createState() => _CartAdminViewState();
@@ -25,6 +32,9 @@ class _CartAdminViewState extends State<CartAdminView> {
   ];
   @override
   Widget build(BuildContext context) {
+    var index = 0;
+    var test1 = widget.test;
+    var p = test1?[index].number;
     return Scaffold(
       appBar: PreferredSize(
           child: CustomAppbar(text: "Cart"),
@@ -36,15 +46,15 @@ class _CartAdminViewState extends State<CartAdminView> {
             Row(children: [
               Container(
                 width: 170,
-                child: DropdownSearch<String>(
-                  items: table,
+                child: DropdownSearch(
+                  items: test1,
                   label: "Select Table",
                   popupTitle: const Padding(
                     padding: EdgeInsets.only(left: 10),
                     child: Text("Table"),
                   ),
                   mode: Mode.MENU,
-                  popupItemDisabled: (String s) => s.startsWith('I'),
+                  // popupItemDisabled: (String s) => s.startsWith('I'),
                   onChanged: (value) {
                     print(value);
                   },
@@ -133,7 +143,8 @@ class _CartAdminViewState extends State<CartAdminView> {
                           onPressed: () {},
                           child: IconButton(
                             onPressed: () {
-                              goPush(PaymentMethodView());
+                              print(p);
+                              // goPush(PaymentMethodView());
                             },
                             icon: Image.asset(
                               "assets/images/pay.png",

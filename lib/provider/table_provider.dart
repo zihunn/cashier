@@ -14,7 +14,7 @@ class TableProvider extends ChangeNotifier {
   }
   final repository = TableRepository();
 
-  List<Meja>? listTable;
+  List<Meja>? listTable = [];
 
   bool _isLoading = false;
   bool get isLoading => _isLoading;

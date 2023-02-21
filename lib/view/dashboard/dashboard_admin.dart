@@ -81,8 +81,10 @@ class _DashboardAdminViewState extends State<DashboardAdminView> {
                           ElevatedButton(
                             onPressed: () {
                               _index = 0;
-                              dashProv.getByCategory("food");
-                              setState(() {});
+
+                              setState(() {
+                                dashProv.getByCategory("food");
+                              });
                               print(user);
                             },
                             child: Row(
@@ -238,7 +240,10 @@ class _DashboardAdminViewState extends State<DashboardAdminView> {
                         child: FloatingActionButton.extended(
                           elevation: 2,
                           onPressed: () {
-                            goPush(CartAdminView(test: test));
+                            setState(() {
+                              dashProv.init();
+                              goPush(CartAdminView(test: test));
+                            });
                           },
                           extendedPadding:
                               const EdgeInsets.symmetric(horizontal: 20),

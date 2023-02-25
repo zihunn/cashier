@@ -1,12 +1,26 @@
+import 'dart:io';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:kasir/model/detail_model.dart';
+import 'package:kasir/model/payment_model.dart';
 import 'package:lottie/lottie.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import '../utils/color.dart';
 import '../utils/constant.dart';
-import '../utils/navigation_helper.dart';
+import 'package:path_provider/path_provider.dart' as path;
 
 class ReceiptView extends StatefulWidget {
+  final Data? detail;
+  final Payment? payment;
+  final provider;
   const ReceiptView({
     Key? key,
+    this.detail,
+    this.payment,
+    this.provider,
   }) : super(key: key);
 
   @override
@@ -16,6 +30,7 @@ class ReceiptView extends StatefulWidget {
 class _ReceiptViewState extends State<ReceiptView> {
   @override
   Widget build(BuildContext context) {
+    var detail = widget.detail;
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -23,7 +38,7 @@ class _ReceiptViewState extends State<ReceiptView> {
         actions: [
           IconButton(
             onPressed: () {
-              goBack();
+              // goBack();
             },
             icon: Image.asset(
               "assets/images/close.png",
@@ -73,8 +88,8 @@ class _ReceiptViewState extends State<ReceiptView> {
                   const SizedBox(
                     height: 10.0,
                   ),
-                  const Text(
-                    "Rp. 200.000",
+                  Text(
+                    'i',
                     style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
                   ),
                   const SizedBox(
@@ -88,19 +103,39 @@ class _ReceiptViewState extends State<ReceiptView> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text("Id Transaction"),
-                      Text("2998"),
+                      Text('widget.detail!.id.toString()'),
                     ],
                   ),
                   ListView.builder(
-                    itemCount: 2,
+                    itemCount: 3,
                     shrinkWrap: true,
                     physics: const ScrollPhysics(),
-                    itemBuilder: (BuildContext context, int index) {
+                    itemBuilder: (context, index) {
+                      // var item = detail.items[index];
                       return ListTile(
                         contentPadding: EdgeInsets.only(left: 0.0, right: 0.0),
-                        title: const Text("spaghetti"),
-                        subtitle: const Text("Rp.20.000 "),
-                        trailing: Text("Rp.100.000"),
+                        title: Text('item.menu.name'),
+                        subtitle: Row(
+                          children: [
+                            Text(
+                              NumberFormat.currency(
+                                      locale: 'id',
+                                      decimalDigits: 0,
+                                      symbol: "Rp ")
+                                  .format(
+                                int.parse('item.menu.price'),
+                              ),
+                            ),
+                            Text(" x {item.qty}"),
+                          ],
+                        ),
+                        trailing: Text(
+                          NumberFormat.currency(
+                                  locale: 'id', decimalDigits: 0, symbol: "Rp ")
+                              .format(
+                            int.parse('item.subtotal'),
+                          ),
+                        ),
                       );
                     },
                   ),
@@ -119,7 +154,7 @@ class _ReceiptViewState extends State<ReceiptView> {
                         ),
                       ),
                       Text(
-                        "Rp.200.000",
+                        's',
                         style: TextStyle(
                           fontSize: 14.0,
                           fontWeight: FontWeight.bold,
@@ -151,7 +186,11 @@ class _ReceiptViewState extends State<ReceiptView> {
                         ),
                       ),
                       Text(
-                        "Rp.200.000",
+                        NumberFormat.currency(
+                                locale: 'id', decimalDigits: 0, symbol: "Rp ")
+                            .format(
+                          int.parse('paymt'),
+                        ),
                         style: TextStyle(
                           fontSize: 14.0,
                           fontWeight: FontWeight.bold,

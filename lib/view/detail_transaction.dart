@@ -1,11 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:kasir/component/appbar.dart';
+import 'package:kasir/model/account_model.dart';
+import 'package:kasir/model/detail_model.dart';
 
-class DetailTransactionView extends StatelessWidget {
-  const DetailTransactionView({super.key});
+class DetailTransactionView extends StatefulWidget {
+  final provider;
+  final Data? data;
+  const DetailTransactionView({
+    super.key,
+    this.provider,
+    this.data,
+  });
 
   @override
+  State<DetailTransactionView> createState() => _DetailTransactionViewState();
+}
+
+class _DetailTransactionViewState extends State<DetailTransactionView> {
+  @override
   Widget build(BuildContext context) {
+    var data = widget.data;
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(70),
@@ -45,8 +60,10 @@ class DetailTransactionView extends StatelessWidget {
                   const SizedBox(
                     height: 10.0,
                   ),
-                  const Text(
-                    "Rp. 200.000",
+                  Text(
+                    NumberFormat.currency(
+                            locale: 'id', symbol: 'Rp ', decimalDigits: 0)
+                        .format(int.parse(data!.total)),
                     style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
                   ),
                   const SizedBox(
@@ -60,7 +77,7 @@ class DetailTransactionView extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text("Id Transaction"),
-                      Text("2998"),
+                      Text('${data.id}'),
                     ],
                   ),
                   const SizedBox(
@@ -70,19 +87,42 @@ class DetailTransactionView extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text("Cashier"),
-                      Text("Messi"),
+                      Text('${data.cashier.name}'),
                     ],
                   ),
                   ListView.builder(
-                    itemCount: 5,
+                    itemCount: data.items.length,
                     shrinkWrap: true,
                     physics: const ScrollPhysics(),
-                    itemBuilder: (BuildContext context, int index) {
+                    itemBuilder: (context, index) {
+                      var item = data.items[index];
                       return ListTile(
                         contentPadding: EdgeInsets.only(left: 0.0, right: 0.0),
-                        title: const Text("spaghetti"),
-                        subtitle: const Text("Rp.20.000 "),
-                        trailing: Text("Rp.20.000"),
+                        title: Text("${item.menu.name}"),
+                        subtitle: Row(
+                          children: [
+                            Text(
+                              NumberFormat.currency(
+                                      locale: 'id',
+                                      symbol: 'Rp ',
+                                      decimalDigits: 0)
+                                  .format(
+                                int.parse(item.menu.price),
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 5.0,
+                            ),
+                            Text('x ${item.qty}'),
+                          ],
+                        ),
+                        trailing: Text(
+                          NumberFormat.currency(
+                                  locale: 'id', symbol: 'Rp', decimalDigits: 0)
+                              .format(
+                            int.parse(item.subtotal),
+                          ),
+                        ),
                       );
                     },
                   ),
@@ -101,7 +141,11 @@ class DetailTransactionView extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        "Rp.40.000",
+                        NumberFormat.currency(
+                                locale: 'id', symbol: 'Rp', decimalDigits: 0)
+                            .format(
+                          int.parse(data.total),
+                        ),
                         style: TextStyle(
                           fontSize: 14.0,
                           fontWeight: FontWeight.bold,
@@ -133,7 +177,11 @@ class DetailTransactionView extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        "Rp.40.000",
+                        NumberFormat.currency(
+                                locale: 'id', symbol: 'Rp', decimalDigits: 0)
+                            .format(
+                          int.parse(data.total),
+                        ),
                         style: TextStyle(
                           fontSize: 14.0,
                           fontWeight: FontWeight.bold,

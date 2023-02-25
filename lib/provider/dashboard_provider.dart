@@ -2,8 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:kasir/model/cart_model.dart';
 import 'package:kasir/model/menu_model.dart';
 import 'package:kasir/model/table_model.dart';
+import 'package:kasir/model/transaction_model.dart';
 import 'package:kasir/repository/dashboard_repository.dart';
 import 'package:kasir/repository/table_respository.dart';
+import 'package:kasir/repository/transaction_repository.dart';
 import 'package:kasir/utils/navigation_helper.dart';
 import 'package:kasir/view/dashboard/dashboard_admin.dart';
 import 'package:kasir/view/dashboard/dashboard_cashier.dart';
@@ -15,6 +17,7 @@ import 'package:kasir/model/account_model.dart';
 
 class DashboardProvider extends ChangeNotifier {
   DashboardProvider() {
+    notifyListeners();
     getByCategory("food");
     init();
   }
@@ -23,10 +26,10 @@ class DashboardProvider extends ChangeNotifier {
     getTable();
   }
 
-  List<Meja>? listTable;
   Account? list;
-  Cart? listCart;
+  List<Data>? cart;
   List<Datum>? listMenu;
+  List<Meja>? listTable;
   bool _isLoading = false;
   bool get isLoading => _isLoading;
   set isLoading(bool val) {
@@ -80,17 +83,27 @@ class DashboardProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future carts(String waiter) async {
+  Future addCart(Map<String, dynamic> requestBody) async {
+    var data = await DashboardRepository.addCarts(requestBody);
+    notifyListeners();
+    if (data is String) {
+      notifyListeners();
+    }
+    notifyListeners();
+  }
+
+  Future getCart(String waiter) async {
     _isLoading = true;
     var res = await DashboardRepository.getCarts(waiter);
+    print(res);
     notifyListeners();
     if (res is CartModel) {
-      print(res.message);
-      // listCart = res.;
-      // print(listMenu);
+      notifyListeners();
+      cart = res.data;
+      print("cart");
     } else {
       notifyListeners();
-      print(res);
+      // print(cart);
     }
     _isLoading = false;
     notifyListeners();
@@ -108,6 +121,15 @@ class DashboardProvider extends ChangeNotifier {
       print(data);
     }
     _isLoading = false;
+    notifyListeners();
+  }
+
+  Future createTransaction(Map<String, dynamic> requestBody) async {
+    var data = await TransactionRepository.createTransaction(requestBody);
+    notifyListeners();
+    if (data is String) {
+      notifyListeners();
+    }
     notifyListeners();
   }
 }

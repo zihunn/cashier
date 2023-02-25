@@ -76,7 +76,9 @@ class _NavigationDrawerViewState extends State<NavigationDrawerView> {
                         ),
                         title: Text('Transaction'),
                         onTap: () {
-                          goPush(HistoryView());
+                          goPush(HistoryView(
+                            user: widget.data,
+                          ));
                           // print(widget.data?.id);
                         }),
                   ),

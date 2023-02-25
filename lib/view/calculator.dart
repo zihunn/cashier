@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:kasir/model/pending_model.dart';
 import 'package:kasir/view/mybutton.dart';
 import 'package:kasir/view/receipt.dart';
 import 'package:math_expressions/math_expressions.dart';
@@ -8,7 +10,9 @@ import '../utils/constant.dart';
 import '../utils/navigation_helper.dart';
 
 class CalculatorView extends StatefulWidget {
-  const CalculatorView({Key? key}) : super(key: key);
+  final provider;
+  final test;
+  const CalculatorView({Key? key, this.provider, this.test}) : super(key: key);
 
   @override
   State<CalculatorView> createState() => _CalculatorViewState();
@@ -21,33 +25,52 @@ class _CalculatorViewState extends State<CalculatorView> {
 
   final myTextStyle = TextStyle(fontSize: 30, color: Colors.black);
 
-  final List<String> buttons = [
-    '7',
-    '8',
-    '9',
-    'Hapus',
-    '4',
-    '5',
-    '6',
-    '210.000',
-    '1',
-    '2',
-    '3',
-    '205.000',
-    '0',
-    '00',
-    '000',
-    'Uang Pas',
-  ];
-  bool isOprator(String x) {
-    if (x == '%' || x == ':' || x == 'x' || x == '_' || x == '+' || x == '=') {
-      return true;
-    }
-    return false;
-  }
+  var index = 0;
 
   @override
   Widget build(BuildContext context) {
+    var data = widget.provider.pending;
+    var p1 = int.parse(widget.test.total);
+    bool isOprator(String x) {
+      if (x ==
+          NumberFormat.currency(locale: 'id', decimalDigits: 0, symbol: '')
+              .format(p1 + 5000)) {
+        return true;
+      }
+      return false;
+    }
+
+    final List<String> buttons = [
+      '7',
+      '8',
+      '9',
+      'Hapus',
+      '4',
+      '5',
+      '6',
+      '210.000',
+      '1',
+      '2',
+      '3',
+      '205.000',
+      '0',
+      '00',
+      '000',
+      NumberFormat.currency(locale: 'id', decimalDigits: 0, symbol: '')
+          .format(p1 + 5000),
+    ];
+
+    void equalPressed() {
+      String finalQueston = userQuestion;
+
+      Parser s = Parser();
+      Expression exp = s.parse(finalQueston);
+      ContextModel cm = ContextModel();
+      double eval = exp.evaluate(EvaluationType.REAL, cm);
+
+      userAnswer = eval.toString();
+    }
+
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -127,7 +150,7 @@ class _CalculatorViewState extends State<CalculatorView> {
                           buttonText: buttons[index],
                         ),
                       );
-                    } else if (index == 7 || index == 11 || index == 15) {
+                    } else if (index == 7 || index == 11) {
                       return Card(
                         elevation: 3,
                         shape: RoundedRectangleBorder(
@@ -137,6 +160,23 @@ class _CalculatorViewState extends State<CalculatorView> {
                             setState(() {
                               userQuestion += buttons[index];
                             });
+                          },
+                          color: kBlue,
+                          textColor: Colors.white,
+                          buttonText: buttons[index],
+                        ),
+                      );
+                    } else if (index == 15) {
+                      return Card(
+                        elevation: 3,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20)),
+                        child: MyButton(
+                          buttonTapped: () {
+                            setState(() {
+                              userQuestion += buttons[index];
+                            });
+                            equalPressed();
                           },
                           color: kBlue,
                           textColor: Colors.white,
@@ -187,6 +227,7 @@ class _CalculatorViewState extends State<CalculatorView> {
               padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 15),
               child: ElevatedButton(
                 onPressed: () {
+                  setState(() {});
                   goPush(const ReceiptView());
                 },
                 child: Row(

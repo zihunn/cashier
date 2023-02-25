@@ -1,16 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
 import 'package:ionicons/ionicons.dart';
-import 'package:kasir/provider/auth_provider.dart';
 import 'package:kasir/provider/dashboard_provider.dart';
-import 'package:kasir/utils/modal.dart';
-import 'package:kasir/view/register.dart';
+import 'package:kasir/view/authentication/register.dart';
 import 'package:provider/provider.dart';
-
-import '../utils/color.dart';
-import '../utils/constant.dart';
-import '../utils/custom_snackbar.dart';
-import '../utils/navigation_helper.dart';
+import '../../utils/color.dart';
+import '../../utils/constant.dart';
+import '../../utils/custom_snackbar.dart';
+import '../../utils/navigation_helper.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});

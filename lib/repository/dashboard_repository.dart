@@ -41,10 +41,12 @@ class DashboardRepository {
       return null;
     }
   }
-    static Future getCarts (String waiter) async {
+
+  static Future getCarts(String id) async {
     try {
-      var res =
-          await dio.get('$url/carts', queryParameters: {'waiter_id': waiter});
+      var res = await dio.get(
+        'https://zihun-cashier.xyz/api/carts?waiter_id=$id',
+      );
       print(res);
       log(res.realUri.toString());
       if (res.statusCode == 200) {

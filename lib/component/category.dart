@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:kasir/model/account_model.dart';
 import 'package:kasir/model/menu_model.dart';
 import 'package:kasir/utils/color.dart';
@@ -33,8 +34,9 @@ class _CategoryCardState extends State<CategoryCard> {
   @override
   Widget build(BuildContext context) {
     var stock = int.parse(widget.data!.stock);
-
+    var amount = widget.data!.price;
     return Material(
+      color: Color(0xffF7F7F7),
       elevation: 3,
       borderRadius: BorderRadius.circular(15),
       child: Container(
@@ -73,7 +75,7 @@ class _CategoryCardState extends State<CategoryCard> {
                   Row(
                     children: [
                       Container(
-                        margin: EdgeInsets.only(left: 50),
+                        margin: EdgeInsets.only(left: 44),
                         height: 8,
                         width: 8,
                         decoration: const BoxDecoration(
@@ -83,7 +85,11 @@ class _CategoryCardState extends State<CategoryCard> {
                         width: 5.0,
                       ),
                       Text(
-                        widget.data!.price,
+                        NumberFormat.currency(
+                          locale: 'id',
+                          symbol: 'Rp ',
+                          decimalDigits: 0,
+                        ).format(int.parse(amount)),
                         style: const TextStyle(
                             fontSize: 12,
                             color: kCyan,
@@ -129,6 +135,7 @@ class _CategoryCardState extends State<CategoryCard> {
                     "waiter_id": widget.user!.id,
                   };
                   widget.provider.addCart(requestBody);
+                  widget.provider.getCart(widget.user!.id.toString());
                   _count = 0;
                 },
                 child: Text(

@@ -108,7 +108,7 @@ class _DashboardOwnerViewState extends State<DashboardOwnerView> {
                       itemBuilder: (BuildContext context, int index) {
                         return GestureDetector(
                           onTap: () {
-                            goPush(const DetailTransactionView());
+                            goPush( DetailTransactionView());
                           },
                           child: Card(
                             shape: RoundedRectangleBorder(

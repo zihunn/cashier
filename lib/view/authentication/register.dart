@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:kasir/provider/auth_provider.dart';
 import 'package:provider/provider.dart';
-import '../utils/color.dart';
-import '../utils/custom_snackbar.dart';
-import '../utils/navigation_helper.dart';
+import '../../utils/color.dart';
+import '../../utils/custom_snackbar.dart';
+import '../../utils/navigation_helper.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({super.key});

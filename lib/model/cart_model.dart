@@ -1,4 +1,4 @@
-// To parse this JSON data, do
+// // To parse this JSON data, do
 //
 //     final cartModel = cartModelFromJson(jsonString);
 
@@ -10,30 +10,30 @@ String cartModelToJson(CartModel data) => json.encode(data.toJson());
 
 class CartModel {
     CartModel({
-        required this.cart,
+        required this.data,
         required this.success,
         required this.message,
     });
 
-    List<Cart> cart;
+    List<Data> data;
     bool success;
     String message;
 
     factory CartModel.fromJson(Map<String, dynamic> json) => CartModel(
-        cart: List<Cart>.from(json["cart"].map((x) => Cart.fromJson(x))),
+        data: List<Data>.from(json["data"].map((x) => Data.fromJson(x))),
         success: json["success"],
         message: json["message"],
     );
 
     Map<String, dynamic> toJson() => {
-        "cart": List<dynamic>.from(cart.map((x) => x.toJson())),
+        "data": List<dynamic>.from(data.map((x) => x.toJson())),
         "success": success,
         "message": message,
     };
 }
 
-class Cart {
-    Cart({
+class Data {
+    Data({
         required this.id,
         required this.qty,
         required this.subtotal,
@@ -49,7 +49,7 @@ class Cart {
     String menuId;
     Menu menu;
 
-    factory Cart.fromJson(Map<String, dynamic> json) => Cart(
+    factory Data.fromJson(Map<String, dynamic> json) => Data(
         id: json["id"],
         qty: json["qty"],
         subtotal: json["subtotal"],

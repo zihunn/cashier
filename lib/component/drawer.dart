@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kasir/model/account_model.dart';
 import 'package:kasir/model/menu_model.dart';
 import 'package:kasir/provider/auth_provider.dart';
 import 'package:kasir/utils/constant.dart';
@@ -7,7 +8,8 @@ import '../view/history.dart';
 
 class DrawerView extends StatelessWidget {
   final MenuModel? data;
-  const DrawerView({super.key, this.data});
+  final Account? user;
+  const DrawerView({super.key, this.data, this.user});
 
   @override
   Widget build(BuildContext context) {

@@ -1,6 +1,10 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:kasir/model/account_model.dart';
+import 'package:kasir/model/cart_model.dart';
 import 'package:kasir/model/table_model.dart';
+import 'package:kasir/provider/dashboard_provider.dart';
 import 'package:kasir/provider/table_provider.dart';
 import 'package:kasir/view/payment_method.dart';
 import 'package:kasir/component/appbar.dart';
@@ -10,10 +14,16 @@ import '../utils/constant.dart';
 import '../utils/navigation_helper.dart';
 
 class CartAdminView extends StatefulWidget {
-  final List<Meja>? test;
+  final List<Meja>? table;
+  final List<Data>? cart;
+  final provider;
+  final Account? user;
   const CartAdminView({
     Key? key,
-    this.test,
+    this.table,
+    this.cart,
+    this.provider,
+    this.user,
   }) : super(key: key);
 
   @override
@@ -21,20 +31,13 @@ class CartAdminView extends StatefulWidget {
 }
 
 class _CartAdminViewState extends State<CartAdminView> {
-  List<String> table = [
-    '1',
-    '2',
-    '3',
-    '4',
-    '5',
-    '6',
-    '7',
-  ];
+  var _categorySelectedValue;
+  TextEditingController nameController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
-    var index = 0;
-    var test1 = widget.test;
-    var p = test1?[index].number;
+    var table = widget.table;
+    // var i = widget.provider.cart;
     return Scaffold(
       appBar: PreferredSize(
           child: CustomAppbar(text: "Cart"),
@@ -47,16 +50,21 @@ class _CartAdminViewState extends State<CartAdminView> {
               Container(
                 width: 170,
                 child: DropdownSearch(
-                  items: test1,
+                  items: table?.map((e) {
+                    return (e.number);
+                  }).toList(),
                   label: "Select Table",
                   popupTitle: const Padding(
                     padding: EdgeInsets.only(left: 10),
                     child: Text("Table"),
                   ),
                   mode: Mode.MENU,
-                  // popupItemDisabled: (String s) => s.startsWith('I'),
+                  popupItemDisabled: (String s) => s.startsWith('I'),
                   onChanged: (value) {
-                    print(value);
+                    setState(() {
+                      _categorySelectedValue = value;
+                      print(_categorySelectedValue);
+                    });
                   },
                   dropdownSearchDecoration: InputDecoration(
                     labelStyle: TextStyle(
@@ -83,6 +91,7 @@ class _CartAdminViewState extends State<CartAdminView> {
                 width: 170,
                 margin: const EdgeInsets.only(),
                 child: TextFormField(
+                  controller: nameController,
                   decoration: InputDecoration(
                     labelText: 'Name',
                     labelStyle: TextStyle(
@@ -101,7 +110,6 @@ class _CartAdminViewState extends State<CartAdminView> {
                       ),
                     ),
                   ),
-                  onChanged: (value) {},
                 ),
               ),
             ]),
@@ -110,23 +118,27 @@ class _CartAdminViewState extends State<CartAdminView> {
                 padding: EdgeInsets.only(top: 20),
                 child: Stack(children: [
                   ListView.builder(
-                    itemCount: 15,
+                    itemCount: widget.cart!.length,
                     physics: BouncingScrollPhysics(),
                     itemBuilder: (BuildContext context, int index) {
+                      var item = widget.cart?[index];
                       return ListTile(
-                        leading: Image.asset(
-                          "assets/images/spaghetti.png",
-                          width: 50,
+                        leading: Image.network(
+                          item!.menu.image,
+                          width: 64.0,
+                          height: 64.0,
                         ),
                         title: Text(
-                          "Spaghetti",
+                          item.menu.name,
                           style: titleStyle,
                         ),
                         subtitle: Text(
-                          "20.000",
+                          NumberFormat.currency(
+                                  locale: 'id', decimalDigits: 0, symbol: 'Rp ')
+                              .format(int.parse(item.menu.price)),
                           style: subtitleStyle,
                         ),
-                        trailing: Text("1x"),
+                        trailing: Text("${item.qty}x"),
                       );
                     },
                   ),
@@ -143,8 +155,15 @@ class _CartAdminViewState extends State<CartAdminView> {
                           onPressed: () {},
                           child: IconButton(
                             onPressed: () {
-                              print(p);
-                              // goPush(PaymentMethodView());
+                              // print(_categorySelectedValue);
+                              // print(nameController.text);
+                              // print(widget.user?.id);
+                              var requestBody = {
+                                'customer_name': nameController.text,
+                                'table_number': _categorySelectedValue,
+                                'waiter_id': widget.user?.id,
+                              };
+                              widget.provider.createTransaction(requestBody);
                             },
                             icon: Image.asset(
                               "assets/images/pay.png",

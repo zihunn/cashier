@@ -30,8 +30,10 @@ class _DashboardAdminViewState extends State<DashboardAdminView> {
       create: (_) => DashboardProvider(),
       child: Consumer<DashboardProvider>(
         builder: (context, dashProv, child) {
+          
           var user = widget.data;
-          var test = dashProv.listTable;
+          var table = dashProv.listTable;
+          var data = dashProv.cart;
           return Scaffold(
             endDrawer: NavigationDrawerView(
               data: user,
@@ -120,6 +122,9 @@ class _DashboardAdminViewState extends State<DashboardAdminView> {
                           ),
                           ElevatedButton(
                             onPressed: () {
+                              var date = DateTime.now();
+                              var date2 = date.toString().split(" ")[0];
+                              print(date2);
                               _index = 1;
                               dashProv.getByCategory("drink");
                               setState(() {});
@@ -234,27 +239,37 @@ class _DashboardAdminViewState extends State<DashboardAdminView> {
                                           );
                                   },
                                 ),
-                      Positioned(
-                        bottom: 30,
-                        right: 10,
-                        child: FloatingActionButton.extended(
-                          elevation: 2,
-                          onPressed: () {
-                            setState(() {
-                              dashProv.init();
-                              goPush(CartAdminView(test: test));
-                            });
-                          },
-                          extendedPadding:
-                              const EdgeInsets.symmetric(horizontal: 20),
-                          label: const Text('Cart'),
-                          icon: Image.asset(
-                            "assets/images/online-shopping.png",
-                            width: 30.0,
-                          ),
-                          backgroundColor: kCyan,
-                        ),
-                      ),
+                      data == null
+                          ? Text("")
+                          : Positioned(
+                              bottom: 30,
+                              right: 10,
+                              child: FloatingActionButton.extended(
+                                elevation: 2,
+                                onPressed: () {
+                                  setState(() {
+                                    dashProv
+                                        .getCart(widget.data!.id.toString());
+                                    dashProv.init();
+                                    print(data);
+                                    goPush(CartAdminView(
+                                      table: table,
+                                      cart: data,
+                                      user: user,
+                                      provider: dashProv,
+                                    ));
+                                  });
+                                },
+                                extendedPadding:
+                                    const EdgeInsets.symmetric(horizontal: 20),
+                                label: const Text('Cart'),
+                                icon: Image.asset(
+                                  "assets/images/online-shopping.png",
+                                  width: 30.0,
+                                ),
+                                backgroundColor: kCyan,
+                              ),
+                            ),
                     ]),
                   ),
                 ),

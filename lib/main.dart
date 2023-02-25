@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:kasir/provider/menu_provider.dart';
-import 'package:kasir/view/login.dart';
-import 'package:kasir/view/menu/edit_menu.dart';
-import 'package:provider/provider.dart';
+import 'package:kasir/view/authentication/login.dart';
+import 'package:kasir/view/payment.dart';
+import 'package:kasir/view/receipt.dart';
 import 'utils/constant.dart';
-import 'view/dashboard/dashboard_admin.dart';
 
 void main() {
   runApp(const MyApp());

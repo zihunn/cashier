@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:kasir/model/menu_model.dart';
 import 'package:kasir/provider/menu_provider.dart';
 import 'package:kasir/view/menu/edit_menu.dart';
@@ -116,7 +117,11 @@ class _ListMenuViewState extends State<ListMenuView> {
                                       style: titleStyle,
                                     ),
                                     subtitle: Text(
-                                      "${menu.price}",
+                                      NumberFormat.currency(
+                                              locale: 'id',
+                                              symbol: 'Rp ',
+                                              decimalDigits: 0)
+                                          .format(int.parse(menu.price)),
                                       style: subtitleStyle,
                                     ),
                                     trailing: Wrap(spacing: 0, children: [

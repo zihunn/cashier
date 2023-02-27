@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../../view/calculator.dart';
 import '../utils/color.dart';
 import '../utils/navigation_helper.dart';
+import '../view/transactions/calculator.dart';
 
 class PaymentButton extends StatelessWidget {
   const PaymentButton({super.key});

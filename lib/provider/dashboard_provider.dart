@@ -15,6 +15,8 @@ import 'package:kasir/utils/custom_snackbar.dart';
 import 'package:kasir/repository/auth_repository.dart';
 import 'package:kasir/model/account_model.dart';
 
+import '../repository/menu_repository.dart';
+
 class DashboardProvider extends ChangeNotifier {
   DashboardProvider() {
     notifyListeners();
@@ -49,10 +51,14 @@ class DashboardProvider extends ChangeNotifier {
         ));
       }
       if (data.account.role == "waiter") {
-        goRemove(DashboardWaiterVIew());
+        goRemove(DashboardWaiterVIew(
+          data: list,
+        ));
       }
       if (data.account.role == "cashier") {
-        goRemove(DashboardCashierView());
+        goRemove(DashboardCashierView(
+          user: list,
+        ));
       }
       if (data.account.role == "owner") {
         goRemove(DashboardOwnerView());
@@ -127,9 +133,26 @@ class DashboardProvider extends ChangeNotifier {
   Future createTransaction(Map<String, dynamic> requestBody) async {
     var data = await TransactionRepository.createTransaction(requestBody);
     notifyListeners();
+    print(data);
     if (data is String) {
       notifyListeners();
     }
+    notifyListeners();
+  }
+
+  Future searachMenu(String keyword) async {
+    _isLoading = true;
+    var res = await MenuRepository.searchMenu(keyword);
+    notifyListeners();
+    if (res is MenuModel) {
+      print(res.message);
+      listMenu = res.data;
+      print(listMenu);
+    } else {
+      notifyListeners();
+      print(res);
+    }
+    _isLoading = false;
     notifyListeners();
   }
 }

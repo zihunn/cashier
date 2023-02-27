@@ -23,8 +23,8 @@ class TransactionProvider extends ChangeNotifier {
     getHistoryCompleted("completed ", date2);
   }
 
-  List<Completed>? completed;
-  List<Datum>? pending;
+  List<Completed>? completed = [];
+  List<Datum>? pending = [];
   Payment? payments;
   Data? _details;
   Data? get details => _details;
@@ -73,27 +73,24 @@ class TransactionProvider extends ChangeNotifier {
   Future getDetail(int id) async {
     _isLoading = true;
     var res = await TransactionRepository.getDatail(id);
-    notifyListeners();
     print(res);
     if (res is DetailModel) {
       print(res.message);
-
       _details = res.data;
       _isLoading = false;
       print("details");
     } else {
-      notifyListeners();
       print("res");
     }
     _isLoading = false;
     notifyListeners();
   }
 
-  Future payment(
-      int id, int cashier_id, String payment_method, int total) async {
+  Future payment(int id, int cashier_id, String payment_method, int total,
+      double discount) async {
     _isLoading = true;
     var res = await TransactionRepository.payment(
-        id, cashier_id, payment_method, total);
+        id, cashier_id, payment_method, total, discount);
     notifyListeners();
     if (res is PaymentModel) {
       print(res.message);
@@ -119,7 +116,7 @@ class TransactionProvider extends ChangeNotifier {
   Future downloadFile(int id, fileName) async {
     Directory? directory;
     getStoragePermission();
-    directory = Directory('/storage/emulated/0/Download');
+    directory = Directory('/storage/emulated/0/Documents');
     if (!await directory.exists()) {
       directory = await getExternalStorageDirectory();
     }

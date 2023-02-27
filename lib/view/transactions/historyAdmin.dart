@@ -1,144 +1,102 @@
+import 'package:date_picker_timeline/date_picker_timeline.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:kasir/component/drawer.dart';
 import 'package:kasir/model/account_model.dart';
 import 'package:kasir/provider/transaction_provider.dart';
 import 'package:kasir/view/transactions/detail_transaction.dart';
 import 'package:kasir/view/transactions/payment.dart';
-import 'package:kasir/view/transactions/payment_method.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import '../../utils/color.dart';
 import '../../utils/constant.dart';
 import '../../utils/navigation_helper.dart';
-import '../../component/drawer_waiter.dart';
+import '../../component/appbar.dart';
 
-class DashboardCashierView extends StatefulWidget {
+class HistoryView extends StatefulWidget {
   final Account? user;
-  const DashboardCashierView({Key? key, this.user}) : super(key: key);
+  const HistoryView({Key? key, this.user}) : super(key: key);
 
   @override
-  State<DashboardCashierView> createState() => _DashboardCashierViewState();
+  State<HistoryView> createState() => _HistoryViewState();
 }
 
-class _DashboardCashierViewState extends State<DashboardCashierView> {
+class _HistoryViewState extends State<HistoryView> {
+  var date = new DateTime(2023, 2, 9);
   final _colors = [kBlueSoft, kSecondaryColor];
   @override
   Widget build(BuildContext context) {
-    var date = DateTime.now();
-    var date2 = date.toString().split(" ")[0];
-    return ChangeNotifierProvider(
-      create: (_) => TransactionProvider(),
-      child: Consumer<TransactionProvider>(
-        builder: (context, transactionProv, child) {
-          var listCompleted = transactionProv.completed;
-          var listPending = transactionProv.pending;
-          return Scaffold(
-            endDrawer: DrawerView(
-              data: widget.user,
-            ),
-            appBar: PreferredSize(
-              preferredSize: Size.fromHeight(60),
-              child: Padding(
-                padding: const EdgeInsets.only(left: 6, right: 14, top: 10),
-                child: AppBar(
-                  centerTitle: true,
-                  backgroundColor: Colors.transparent,
-                  elevation: 0,
-                  title: Text(
-                    "Cashier",
-                    style: const TextStyle(
-                      color: Colors.black,
-                    ),
-                  ),
-                  actions: [
-                    Builder(
-                      builder: (context) {
-                        return IconButton(
-                          icon: Image.asset(
-                            "assets/images/menu.png",
-                            width: 40,
-                          ),
-                          onPressed: () => Scaffold.of(context).openEndDrawer(),
-                        );
-                      },
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            body: DefaultTabController(
+    return Scaffold(
+      appBar: PreferredSize(
+        child: CustomAppbar(
+          text: "Transaction History",
+        ),
+        preferredSize: const Size.fromHeight(60),
+      ),
+      body: ChangeNotifierProvider(
+        create: (_) => TransactionProvider(),
+        child: Consumer<TransactionProvider>(
+          builder: (context, transactionProv, child) {
+            var listCompleted = transactionProv.completed;
+            var listPending = transactionProv.pending;
+            return DefaultTabController(
               length: 2,
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                    margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 6.0,
-                      horizontal: 12.0,
-                    ),
-                    decoration: BoxDecoration(
-                      color: Colors.grey[200],
-                      borderRadius: const BorderRadius.all(
-                        Radius.circular(12.0),
-                      ),
-                      border: Border.all(
-                        width: 1.0,
-                        color: Colors.grey[400]!,
-                      ),
-                    ),
-                    child: Row(
-                      children: [
-                        const Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Icon(Icons.search),
-                        ),
-                        Expanded(
-                          child: TextFormField(
-                            initialValue: null,
-                            decoration: const InputDecoration.collapsed(
-                              filled: true,
-                              fillColor: Colors.transparent,
-                              hoverColor: Colors.transparent,
-                              hintText: "Search",
+                  widget.user!.role == "admin"
+                      ? Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 12),
+                          child: Container(
+                              child: DatePicker(
+                            DateTime(date.year, date.month, date.day - 8),
+                            height: 100,
+                            width: 60,
+                            initialSelectedDate: DateTime.now(),
+                            selectionColor: kPrimaryColor,
+                            selectedTextColor: Colors.white,
+                            deactivatedColor: Colors.amber,
+                            onDateChange: (selectedDate) {
+                              var date = selectedDate;
+                              var date2 = date.toString().split(" ")[0];
+                              transactionProv.getHistoryPending(
+                                  "pending", date2);
+                              transactionProv.getHistoryCompleted(
+                                  "completed ", date2);
+                            },
+                            monthTextStyle: const TextStyle(
+                              color: Colors.grey,
                             ),
-                            onFieldSubmitted: (value) {},
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  TabBar(
+                            dayTextStyle: const TextStyle(
+                              color: Colors.grey,
+                            ),
+                            dateTextStyle: const TextStyle(
+                              color: Colors.grey,
+                            ),
+                            daysCount: 30,
+                          )),
+                        )
+                      : Container(),
+                  const TabBar(
                     indicatorPadding: EdgeInsets.symmetric(horizontal: 70),
                     unselectedLabelColor: Colors.black38,
                     labelColor: Colors.black,
                     indicatorColor: kCyan,
                     tabs: [
-                      InkWell(
-                        onTap: () {
-                          transactionProv.getHistoryCompleted(
-                              "completed ", date2);
-                        },
-                        child: const Padding(
-                          padding: EdgeInsets.only(bottom: 10, top: 10),
-                          child: Text(
-                            "Completed",
-                            style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.w600),
-                          ),
+                      Padding(
+                        padding: EdgeInsets.only(bottom: 10, top: 20),
+                        child: Text(
+                          "Completed",
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.w600),
                         ),
                       ),
-                      InkWell(
-                        onTap: () {
-                          transactionProv.getHistoryPending("pending", date2);
-                        },
-                        child: const Padding(
-                          padding: EdgeInsets.only(bottom: 10, top: 10),
-                          child: Text(
-                            "In Progress",
-                            style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.w600),
-                          ),
+                      Padding(
+                        padding: EdgeInsets.only(bottom: 10),
+                        child: Text(
+                          "In Progress",
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.w600),
                         ),
                       ),
                     ],
@@ -356,9 +314,9 @@ class _DashboardCashierViewState extends State<DashboardCashierView> {
                   ),
                 ],
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }

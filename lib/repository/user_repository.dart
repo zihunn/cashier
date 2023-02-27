@@ -39,6 +39,23 @@ class UserRepository {
       return null;
     }
   }
+
+  static Future searchUser(String keyword) async {
+    try {
+      var res =
+          await dio.get('$url/users', queryParameters: {'search': keyword});
+      print(res);
+      log(res.realUri.toString());
+      if (res.statusCode == 200) {
+        return UserModel.fromJson(res.data);
+      }
+    } on DioError catch (e) {
+      var error = DioHandler.parseDioErrorMessage(e);
+      return error;
+    } catch (e) {
+      return null;
+    }
+  }
 }
 
 

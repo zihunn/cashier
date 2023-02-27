@@ -3,6 +3,8 @@ import 'package:kasir/model/table_model.dart';
 import 'package:kasir/provider/table_provider.dart';
 import 'package:kasir/utils/constant.dart';
 import 'package:kasir/utils/modal.dart';
+import 'package:kasir/utils/navigation_helper.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import '../repository/table_respository.dart';
 import '../utils/color.dart';
@@ -29,8 +31,34 @@ class _AddTableViewState extends State<AddTableView> {
           print(listTable);
           return Scaffold(
             appBar: PreferredSize(
-              child: CustomAppbar(
-                text: "Add New Table",
+              child: AppBar(
+                centerTitle: true,
+                elevation: 0,
+                backgroundColor: Colors.transparent,
+                title: Text(
+                  "Table",
+                  style: headingStyle,
+                ),
+                leading: IconButton(
+                  onPressed: () {
+                    goBack();
+                  },
+                  icon: Image.asset(
+                    "assets/images/left.png",
+                    width: 30.0,
+                  ),
+                ),
+                actions: [
+                  IconButton(
+                    onPressed: () {
+                      tableProv.getTable();
+                    },
+                    icon: Image.asset(
+                      "assets/images/refresh.png",
+                      width: 45.0,
+                    ),
+                  ),
+                ],
               ),
               preferredSize: const Size.fromHeight(60),
             ),
@@ -76,9 +104,10 @@ class _AddTableViewState extends State<AddTableView> {
                     padding:
                         const EdgeInsets.only(top: 20, left: 20, right: 20),
                     child: tableProv.isLoading
-                        ? Center(
-                            child: CircularProgressIndicator(),
-                          )
+                        ? Container(
+                            margin: EdgeInsets.only(bottom: 100),
+                            width: 180,
+                            child: Lottie.asset("assets/lottie/avocado.json"))
                         : ListView.builder(
                             physics: BouncingScrollPhysics(),
                             itemCount: listTable?.length,

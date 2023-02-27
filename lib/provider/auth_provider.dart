@@ -41,7 +41,9 @@ class AuthProvider extends ChangeNotifier {
         goRemove(DashboardAdminView());
       }
       if (data.account.role == "waiter") {
-        goRemove(DashboardWaiterVIew());
+        goRemove(DashboardWaiterVIew(
+          data: list,
+        ));
       }
       if (data.account.role == "cashier") {
         goRemove(DashboardCashierView());

@@ -38,28 +38,20 @@ class UserProvider extends ChangeNotifier {
     }
     notifyListeners();
   }
+
+  Future searachUser(String keyword) async {
+    _isLoading = true;
+    var res = await UserRepository.searchUser(keyword);
+    notifyListeners();
+    if (res is UserModel) {
+      print(res.message);
+      listUser = res.data;
+      print(listUser);
+    } else {
+      notifyListeners();
+      print(res);
+    }
+    _isLoading = false;
+    notifyListeners();
+  }
 }
-
-
-
-// class UserProvider extends ChangeNotifier {
-//   UserProvider() {
-//     getUser();
-//   }
-
-//   final repository = UserRepository();
-//   List<UserModel> _listUser = [];
-//   List<UserModel> get listUser => _listUser;
-
-//   Future<void> getUser() async {
-//     final response = await repository.getUser();
-//     _listUser = response;
-//     print(_listUser);
-//     notifyListeners();
-//   }
-
-//    Future deleteUser(String id) async {
-//     final response = await repository.delete(id);
-//     notifyListeners();
-//   }
-// }

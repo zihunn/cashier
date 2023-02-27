@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kasir/model/user_model.dart';
 import 'package:kasir/provider/user_provider.dart';
 import 'package:kasir/component/appbar.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import '../utils/color.dart';
 import '../utils/constant.dart';
@@ -49,7 +50,9 @@ class _EmployeViewState extends State<EmployeView> {
                     child: Row(
                       children: [
                         IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            userProv.searachUser(user!.name);
+                          },
                           icon: Image.asset(
                             "assets/images/search.png",
                             width: 30.0,
@@ -60,6 +63,9 @@ class _EmployeViewState extends State<EmployeView> {
                         ),
                         Expanded(
                           child: TextFormField(
+                            onChanged: (value) {
+                              userProv.searachUser(value);
+                            },
                             initialValue: null,
                             decoration: const InputDecoration.collapsed(
                               filled: true,
@@ -76,9 +82,10 @@ class _EmployeViewState extends State<EmployeView> {
                 ),
                 Expanded(
                   child: userProv.isLoading
-                      ? Center(
-                          child: CircularProgressIndicator(),
-                        )
+                      ? Container(
+                          margin: EdgeInsets.only(bottom: 100),
+                          width: 180,
+                          child: Lottie.asset("assets/lottie/kentang.json"))
                       : ListView.builder(
                           itemCount: listUser?.length,
                           physics: BouncingScrollPhysics(),

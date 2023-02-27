@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../component/appbar.dart';
-import '../component/paymentButton.dart';
+import '../../component/appbar.dart';
+import '../../component/paymentButton.dart';
 
 class PaymentMethodView extends StatefulWidget {
   const PaymentMethodView({super.key});

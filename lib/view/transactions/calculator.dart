@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:kasir/model/pending_model.dart';
 import 'package:kasir/view/mybutton.dart';
-import 'package:kasir/view/receipt.dart';
+import 'package:kasir/view/transactions/receipt.dart';
 import 'package:math_expressions/math_expressions.dart';
-
-import '../utils/color.dart';
-import '../utils/constant.dart';
-import '../utils/navigation_helper.dart';
+import '../../utils/color.dart';
+import '../../utils/constant.dart';
+import '../../utils/navigation_helper.dart';
 
 class CalculatorView extends StatefulWidget {
   final provider;

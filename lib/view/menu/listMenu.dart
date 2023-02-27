@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:kasir/model/menu_model.dart';
 import 'package:kasir/provider/menu_provider.dart';
 import 'package:kasir/view/menu/edit_menu.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
 import '../../utils/color.dart';
@@ -33,10 +34,36 @@ class _ListMenuViewState extends State<ListMenuView> {
           var listMenu = menuProv.listMenu;
           return Scaffold(
             appBar: PreferredSize(
-              child: CustomAppbar(
-                text: "Menu",
+              child: AppBar(
+                centerTitle: true,
+                elevation: 0,
+                backgroundColor: Colors.transparent,
+                title: Text(
+                  "Menu",
+                  style: headingStyle,
+                ),
+                leading: IconButton(
+                  onPressed: () {
+                    goBack();
+                  },
+                  icon: Image.asset(
+                    "assets/images/left.png",
+                    width: 30.0,
+                  ),
+                ),
+                actions: [
+                  IconButton(
+                    onPressed: () {
+                      menuProv.getMenu();
+                    },
+                    icon: Image.asset(
+                      "assets/images/refresh.png",
+                      width: 45.0,
+                    ),
+                  ),
+                ],
               ),
-              preferredSize: const Size.fromHeight(60),
+              preferredSize: const Size.fromHeight(70),
             ),
             body: Padding(
               padding: const EdgeInsets.symmetric(
@@ -47,6 +74,42 @@ class _ListMenuViewState extends State<ListMenuView> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
+                      Container(
+                        width: 270,
+                        height: 43,
+                        decoration: BoxDecoration(
+                            color: kBlueSoft,
+                            borderRadius: BorderRadius.circular(10)),
+                        child: Row(
+                          children: [
+                            IconButton(
+                              onPressed: () {},
+                              icon: Image.asset(
+                                "assets/images/search.png",
+                                width: 30.0,
+                              ),
+                            ),
+                            Expanded(
+                              child: TextFormField(
+                                onChanged: (value) {
+                                  menuProv.searachMenu(value);
+                                },
+                                initialValue: null,
+                                decoration: const InputDecoration.collapsed(
+                                  filled: true,
+                                  fillColor: kBlueSoft,
+                                  hoverColor: Colors.transparent,
+                                  hintText: "Search Menu",
+                                ),
+                                onFieldSubmitted: (value) {},
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 5.0,
+                      ),
                       ElevatedButton(
                         onPressed: () {
                           // dialogAddMenu(menuProv);
@@ -54,31 +117,18 @@ class _ListMenuViewState extends State<ListMenuView> {
                             provider: menuProv,
                           ));
                         },
-                        child: Row(
-                          children: [
-                            Image.asset(
-                              "assets/images/shopping-bag.png",
-                              width: 20,
-                            ),
-                            const SizedBox(
-                              width: 5.0,
-                            ),
-                            Text(
-                              "Add New Menu",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                          ],
+                        child: Image.asset(
+                          "assets/images/shopping-bag.png",
+                          width: 20,
                         ),
                         style: ElevatedButton.styleFrom(
                             elevation: 0,
                             padding: EdgeInsets.symmetric(
-                                vertical: 10, horizontal: 26),
+                                vertical: 10, horizontal: 2),
                             primary: kPrimaryColor,
                             side: BorderSide(color: kCyan),
                             shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15))),
+                                borderRadius: BorderRadius.circular(10))),
                       ),
                     ],
                   ),
@@ -87,9 +137,10 @@ class _ListMenuViewState extends State<ListMenuView> {
                   ),
                   Expanded(
                     child: menuProv.isLoading
-                        ? Center(
-                            child: CircularProgressIndicator(),
-                          )
+                        ? Container(
+                            margin: EdgeInsets.only(bottom: 100),
+                            width: 230,
+                            child: Lottie.asset("assets/lottie/orange.json"))
                         : ListView.builder(
                             itemCount: listMenu?.length,
                             shrinkWrap: true,

@@ -8,7 +8,7 @@ import 'package:kasir/model/pending_model.dart';
 import 'package:kasir/utils/color.dart';
 import 'package:kasir/utils/constant.dart';
 import 'package:kasir/utils/navigation_helper.dart';
-import 'package:kasir/view/receipt.dart';
+import 'package:kasir/view/transactions/receipt.dart';
 
 class PaymentView extends StatefulWidget {
   final Account? user;
@@ -70,8 +70,8 @@ class _PaymentViewState extends State<PaymentView> {
     RegExp regex = RegExp(r'([.]*0)(?!.*\d)');
 
     String s = value.toString().replaceAll(regex, '');
-    var details = widget.provider.details;
-    var payments = widget.provider.payments;
+    var detail = widget.data;
+    var pay = widget.provider.payments;
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -83,7 +83,7 @@ class _PaymentViewState extends State<PaymentView> {
         backgroundColor: Colors.white,
         leading: IconButton(
           onPressed: () {
-            // print(details);
+            // print(detail!.payment);
             goBack();
           },
           icon: Image.asset(
@@ -294,6 +294,7 @@ class _PaymentViewState extends State<PaymentView> {
                                       borderRadius: BorderRadius.circular(15))),
                               onPressed: () {
                                 setState(() {
+                                  print(widget.user?.role);
                                   discount = 5;
                                 });
                                 _index = 1;
@@ -552,17 +553,21 @@ class _PaymentViewState extends State<PaymentView> {
                     var data = {
                       'cashier_id': 12,
                       'payment_method': "cash",
-                      'payment': 353000
+                      'payment': 353000,
+                      'discount': 5
                     };
                     print(data);
 
-                    widget.provider.payment(
-                        widget.data!.id, widget.user!.id, "cash", int.parse(s));
+                    widget.provider.payment(widget.data!.id, widget.user!.id,
+                        "cash", int.parse(s), discount);
                     widget.provider.getDetail(widget.data!.id);
                     goPush(ReceiptView(
-                      detail: details,
-                      payment: payments,
+                      payment: _payment,
+                      ds: discount,
+                      test: value.toString(),
+                      data: detail,
                       provider: widget.provider,
+                      user: widget.user,
                     ));
                   },
                   // ignore: sort_child_properties_last

@@ -5,6 +5,8 @@ import 'package:kasir/model/menu_model.dart';
 import 'package:kasir/utils/color.dart';
 import 'package:math_expressions/math_expressions.dart';
 
+import '../utils/custom_snackbar.dart';
+
 class CategoryCard extends StatefulWidget {
   final Datum? data;
   final provider;
@@ -49,10 +51,6 @@ class _CategoryCardState extends State<CategoryCard> {
               height: 90,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(15),
-                // image: DecorationImage(
-                //   image: NetworkImage(item.image),
-                //   fit: BoxFit.contain,
-                // ),
               ),
               child: Image.network(
                 widget.data!.image,
@@ -129,14 +127,19 @@ class _CategoryCardState extends State<CategoryCard> {
               child: ElevatedButton(
                 onPressed: () {
                   print(widget.user!.id);
-                  var requestBody = {
-                    "menu_id": widget.data!.id,
-                    "qty": _count,
-                    "waiter_id": widget.user!.id,
-                  };
-                  widget.provider.addCart(requestBody);
-                  widget.provider.getCart(widget.user!.id.toString());
-                  _count = 0;
+                  print(_count);
+                  if (_count != 0) {
+                    var requestBody = {
+                      "menu_id": widget.data!.id,
+                      "qty": _count,
+                      "waiter_id": widget.user!.id,
+                    };
+                    widget.provider.addCart(requestBody);
+                    widget.provider.getCart(widget.user!.id.toString());
+                    _count = 0;
+                  } else {
+                    errorSnackBar("Qty cannot be empty");
+                  }
                 },
                 child: Text(
                   "Add to cart",

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:kasir/model/account_model.dart';
 import 'package:kasir/view/add_table.dart';
+import 'package:kasir/view/authentication/login.dart';
 import 'package:kasir/view/employee.dart';
-import 'package:kasir/view/history.dart';
-
+import 'package:kasir/view/transactions/historyAdmin.dart';
 import '../utils/navigation_helper.dart';
 import '../view/menu/listMenu.dart';
 
@@ -147,13 +147,14 @@ class _NavigationDrawerViewState extends State<NavigationDrawerView> {
                     ),
                     elevation: 3,
                     child: ListTile(
-                      leading: Image.asset(
-                        "assets/images/logout.png",
-                        width: 30,
-                      ),
-                      title: Text('Logout'),
-                      onTap: () => {Navigator.of(context).pop()},
-                    ),
+                        leading: Image.asset(
+                          "assets/images/logout.png",
+                          width: 30,
+                        ),
+                        title: Text('Logout'),
+                        onTap: () {
+                          goRemove(LoginView());
+                        }),
                   ),
                 ],
               ),

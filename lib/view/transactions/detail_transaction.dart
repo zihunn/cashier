@@ -1,65 +1,34 @@
-import 'dart:io';
-
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:kasir/component/appbar.dart';
+import 'package:kasir/model/account_model.dart';
 import 'package:kasir/model/detail_model.dart';
-import 'package:kasir/model/payment_model.dart';
-import 'package:lottie/lottie.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:permission_handler/permission_handler.dart';
-import '../utils/color.dart';
-import '../utils/constant.dart';
-import 'package:path_provider/path_provider.dart' as path;
+import 'package:kasir/model/transaction_model.dart';
 
-class ReceiptView extends StatefulWidget {
-  final Data? detail;
-  final Payment? payment;
-  final provider;
-  const ReceiptView({
-    Key? key,
-    this.detail,
-    this.payment,
-    this.provider,
-  }) : super(key: key);
+class DetailTransactionView extends StatefulWidget {
+  final Completed? data;
+  const DetailTransactionView({
+    super.key,
+    this.data,
+  });
 
   @override
-  State<ReceiptView> createState() => _ReceiptViewState();
+  State<DetailTransactionView> createState() => _DetailTransactionViewState();
 }
 
-class _ReceiptViewState extends State<ReceiptView> {
+class _DetailTransactionViewState extends State<DetailTransactionView> {
   @override
   Widget build(BuildContext context) {
-    var detail = widget.detail;
+    var data = widget.data;
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-        actions: [
-          IconButton(
-            onPressed: () {
-              // goBack();
-            },
-            icon: Image.asset(
-              "assets/images/close.png",
-              width: 50,
-            ),
-          ),
-        ],
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(70),
+        child: CustomAppbar(text: "Details Transaction"),
       ),
       body: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
         child: Column(
           children: [
-            Center(
-              child: Lottie.asset(
-                "assets/lottie/success.json",
-                width: 100.0,
-              ),
-            ),
-            const SizedBox(
-              height: 18.0,
-            ),
             const Text(
               "payment successfully",
               style: TextStyle(fontWeight: FontWeight.w500, fontSize: 18),
@@ -68,7 +37,9 @@ class _ReceiptViewState extends State<ReceiptView> {
               height: 20.0,
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 20,
+              ),
               child: Container(
                 padding:
                     const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
@@ -89,7 +60,9 @@ class _ReceiptViewState extends State<ReceiptView> {
                     height: 10.0,
                   ),
                   Text(
-                    'i',
+                    NumberFormat.currency(
+                            locale: 'id', decimalDigits: 0, symbol: "Rp ")
+                        .format(int.parse(data!.total)),
                     style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
                   ),
                   const SizedBox(
@@ -103,38 +76,47 @@ class _ReceiptViewState extends State<ReceiptView> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text("Id Transaction"),
-                      Text('widget.detail!.id.toString()'),
+                      Text('${data.id}'),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 10.0,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("Cashier"),
+                      Text('${data.cashier.name}'),
                     ],
                   ),
                   ListView.builder(
-                    itemCount: 3,
+                    itemCount: data.items.length,
                     shrinkWrap: true,
                     physics: const ScrollPhysics(),
                     itemBuilder: (context, index) {
-                      // var item = detail.items[index];
+                      var item = data.items[index];
                       return ListTile(
                         contentPadding: EdgeInsets.only(left: 0.0, right: 0.0),
-                        title: Text('item.menu.name'),
+                        title: Text("${item.menu.name}"),
                         subtitle: Row(
                           children: [
                             Text(
                               NumberFormat.currency(
                                       locale: 'id',
-                                      decimalDigits: 0,
-                                      symbol: "Rp ")
-                                  .format(
-                                int.parse('item.menu.price'),
-                              ),
+                                      symbol: 'Rp ',
+                                      decimalDigits: 0)
+                                  .format(int.parse(item.menu.price)),
                             ),
-                            Text(" x {item.qty}"),
+                            const SizedBox(
+                              width: 5.0,
+                            ),
+                            Text('x ${item.qty}'),
                           ],
                         ),
                         trailing: Text(
                           NumberFormat.currency(
-                                  locale: 'id', decimalDigits: 0, symbol: "Rp ")
-                              .format(
-                            int.parse('item.subtotal'),
-                          ),
+                                  locale: 'id', symbol: 'Rp ', decimalDigits: 0)
+                              .format(int.parse(item.subtotal)),
                         ),
                       );
                     },
@@ -154,7 +136,9 @@ class _ReceiptViewState extends State<ReceiptView> {
                         ),
                       ),
                       Text(
-                        's',
+                        NumberFormat.currency(
+                                locale: 'id', symbol: 'Rp ', decimalDigits: 0)
+                            .format(int.parse(data.total)),
                         style: TextStyle(
                           fontSize: 14.0,
                           fontWeight: FontWeight.bold,
@@ -187,10 +171,30 @@ class _ReceiptViewState extends State<ReceiptView> {
                       ),
                       Text(
                         NumberFormat.currency(
-                                locale: 'id', decimalDigits: 0, symbol: "Rp ")
-                            .format(
-                          int.parse('paymt'),
+                                locale: 'id', symbol: 'Rp ', decimalDigits: 0)
+                            .format(int.parse(data.payment)),
+                        style: TextStyle(
+                          fontSize: 14.0,
+                          fontWeight: FontWeight.bold,
                         ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 10.0,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Discount",
+                        style: TextStyle(
+                          fontSize: 14.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Text(
+                        '${data.discount}%',
                         style: TextStyle(
                           fontSize: 14.0,
                           fontWeight: FontWeight.bold,
@@ -218,7 +222,7 @@ class _ReceiptViewState extends State<ReceiptView> {
                                 color: Colors.grey),
                           ),
                           Text(
-                            "8.30, 02/02/23",
+                            DateFormat('yyyy-MM-dd').format(data.createdAt),
                             style: TextStyle(
                               fontSize: 10,
                               color: Colors.grey,
@@ -236,7 +240,7 @@ class _ReceiptViewState extends State<ReceiptView> {
                                 color: Colors.grey),
                           ),
                           Text(
-                            "Cash",
+                            data.paymentMethod,
                             style: const TextStyle(
                               fontSize: 10,
                               color: Colors.grey,
@@ -249,56 +253,6 @@ class _ReceiptViewState extends State<ReceiptView> {
                 ]),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 75),
-              child: Container(
-                height: 70,
-                width: width,
-                decoration: const BoxDecoration(
-                  boxShadow: const [
-                    BoxShadow(
-                      color: Colors.grey,
-                      blurRadius: 3,
-                      offset: Offset(0, -1),
-                    ),
-                  ],
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20)),
-                  color: Colors.white,
-                ),
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 60, vertical: 15),
-                  child: ElevatedButton(
-                    onPressed: () {},
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.asset(
-                          "assets/images/printer.png",
-                          width: 16,
-                        ),
-                        const SizedBox(
-                          width: 5.0,
-                        ),
-                        Text(
-                          "Print Receipt",
-                          style: TextStyle(
-                              color: Colors.black, fontWeight: FontWeight.w600),
-                        ),
-                      ],
-                    ),
-                    style: ElevatedButton.styleFrom(
-                        elevation: 0,
-                        primary: kPrimaryColor,
-                        side: BorderSide(color: kCyan),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15))),
-                  ),
-                ),
-              ),
-            )
           ],
         ),
       ),

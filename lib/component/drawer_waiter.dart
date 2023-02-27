@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:kasir/model/account_model.dart';
 import '../utils/navigation_helper.dart';
-import '../view/history.dart';
+import '../view/transactions/historyAdmin.dart';
 
-class DrawerWaiter extends StatelessWidget {
-  const DrawerWaiter({super.key});
+class DrawerWaiter extends StatefulWidget {
+  final Account? data;
+  const DrawerWaiter({super.key, this.data});
 
+  @override
+  State<DrawerWaiter> createState() => _DrawerWaiterState();
+}
+
+class _DrawerWaiterState extends State<DrawerWaiter> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -37,8 +44,8 @@ class DrawerWaiter extends StatelessWidget {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text("Muhammad Rizky"),
-                              Text("87391276"),
+                              Text(widget.data!.name),
+                              Text(widget.data!.id.toString()),
                             ],
                           ),
                         ],
@@ -64,7 +71,9 @@ class DrawerWaiter extends StatelessWidget {
                         ),
                         title: Text('Transaction'),
                         onTap: () {
-                          goPush(HistoryView());
+                          goPush(HistoryView(
+                            user: widget.data,
+                          ));
                         }),
                   ),
                   const SizedBox(

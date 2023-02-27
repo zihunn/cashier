@@ -2,9 +2,9 @@ import 'package:date_picker_timeline/date_picker_timeline.dart';
 import 'package:flutter/material.dart';
 import 'package:kasir/utils/navigation_helper.dart';
 import 'package:kasir/component/drawer.dart';
+import 'package:kasir/view/transactions/detail_transaction.dart';
 import '../../utils/color.dart';
 import '../../utils/constant.dart';
-import '../detail_transaction.dart';
 
 class DashboardOwnerView extends StatefulWidget {
   const DashboardOwnerView({Key? key}) : super(key: key);

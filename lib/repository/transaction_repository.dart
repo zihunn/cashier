@@ -83,7 +83,7 @@ class TransactionRepository {
   }
 
   static Future payment(
-      int id, int cashier_id, String payment_method, int total) async {
+      int id, int cashier_id, String payment_method, int total, double discount) async {
     try {
       var res = await dio.post(
           '$url/transactions/$id/payment?cashier_id=$cashier_id&payment_method=$payment_method&payment=$total',
@@ -91,7 +91,8 @@ class TransactionRepository {
             'id': id,
             'cashier_id': cashier_id,
             'payment_method': payment_method,
-            'total': total
+            'total': total,
+            'discount': discount
           });
       print(res);
       log(res.realUri.toString());
@@ -105,13 +106,16 @@ class TransactionRepository {
       return null;
     }
   }
-   static Future downloadFile(int id, fileName, directory) async {
+
+  static Future downloadFile(int id, fileName, directory) async {
     String? progressString;
     try {
-      var res = await dio.download('$url/transactions/$id/print', '${directory.path}/$fileName',
+      var res = await dio.download(
+          '$url/transactions/$id/print', '${directory.path}/$fileName',
           onReceiveProgress: (rec, total) {
         progressString = "${((rec / total) * 100).toStringAsFixed(0)}%";
       });
+      log(res.realUri.toString());
       if (res.statusCode == 200) {
         if (progressString == "100%") {
           return progressString;

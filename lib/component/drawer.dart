@@ -3,89 +3,89 @@ import 'package:kasir/model/account_model.dart';
 import 'package:kasir/model/menu_model.dart';
 import 'package:kasir/provider/auth_provider.dart';
 import 'package:kasir/utils/constant.dart';
+import 'package:kasir/utils/navigation_helper.dart';
+import 'package:kasir/view/authentication/login.dart';
 import 'package:provider/provider.dart';
-import '../view/history.dart';
 
-class DrawerView extends StatelessWidget {
-  final MenuModel? data;
-  final Account? user;
-  const DrawerView({super.key, this.data, this.user});
+class DrawerView extends StatefulWidget {
+  final Account? data;
+  const DrawerView({
+    super.key,
+    this.data,
+  });
 
   @override
+  State<DrawerView> createState() => _DrawerViewState();
+}
+
+class _DrawerViewState extends State<DrawerView> {
+  @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => AuthProvider(),
-      child: Consumer<AuthProvider>(
-        builder: (context, authProv, child) {
-          // var data = authProv.list;
-          return SizedBox(
-            width: 240,
-            child: Drawer(
-              child: ListView(
-                physics: BouncingScrollPhysics(),
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 15, vertical: 20),
-                    child: Column(
-                      children: [
-                        Card(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          elevation: 3,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 30),
-                            child: Row(
-                              children: [
-                                CircleAvatar(
-                                    radius: 24,
-                                    backgroundImage:
-                                        AssetImage("assets/images/team.png")),
-                                const SizedBox(
-                                  width: 10.0,
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(user!.role),
-                                    Text("87391276"),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 10.0,
-                        ),
-                        Divider(),
-                        const SizedBox(
-                          height: 10.0,
-                        ),
-                        Card(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          elevation: 3,
-                          child: ListTile(
-                              leading: Image.asset(
-                                "assets/images/logout.png",
-                                width: 30,
-                              ),
-                              title: Text('Logout'),
-                              onTap: () {
-                                AuthProvider().logout();
-                              }),
-                        ),
-                      ],
+    return SizedBox(
+      width: 240,
+      child: Drawer(
+        child: ListView(
+          physics: BouncingScrollPhysics(),
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 15, vertical: 30),
+              child: Column(
+                children: [
+                  Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15),
                     ),
+                    elevation: 3,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 30),
+                      child: Row(
+                        children: [
+                          CircleAvatar(
+                              radius: 24,
+                              backgroundImage:
+                                  AssetImage("assets/images/team.png")),
+                          const SizedBox(
+                            width: 10.0,
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(widget.data!.name),
+                              Text(widget.data!.id.toString()),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10.0,
+                  ),
+                  Divider(),
+                  const SizedBox(
+                    height: 10.0,
+                  ),
+                  Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    elevation: 3,
+                    child: ListTile(
+                        leading: Image.asset(
+                          "assets/images/logout.png",
+                          width: 30,
+                        ),
+                        title: Text('Logout'),
+                        onTap: () {
+                          goRemove(LoginView());
+                        }),
                   ),
                 ],
               ),
             ),
-          );
-        },
+          ],
+        ),
       ),
     );
   }

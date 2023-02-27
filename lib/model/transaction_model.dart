@@ -47,6 +47,10 @@ class Completed {
         required this.tableNumber,
         required this.createdAt,
         required this.updatedAt,
+        this.discount,
+        required this.cashier,
+        required this.waiter,
+        required this.items,
     });
 
     int id;
@@ -62,6 +66,10 @@ class Completed {
     String tableNumber;
     DateTime createdAt;
     DateTime updatedAt;
+    dynamic discount;
+    Cashier cashier;
+    Cashier waiter;
+    List<Item> items;
 
     factory Completed.fromJson(Map<String, dynamic> json) => Completed(
         id: json["id"],
@@ -77,6 +85,10 @@ class Completed {
         tableNumber: json["table_number"],
         createdAt: DateTime.parse(json["created_at"]),
         updatedAt: DateTime.parse(json["updated_at"]),
+        discount: json["discount"],
+        cashier: Cashier.fromJson(json["cashier"]),
+        waiter: Cashier.fromJson(json["waiter"]),
+        items: List<Item>.from(json["items"].map((x) => Item.fromJson(x))),
     );
 
     Map<String, dynamic> toJson() => {
@@ -93,5 +105,113 @@ class Completed {
         "table_number": tableNumber,
         "created_at": createdAt.toIso8601String(),
         "updated_at": updatedAt.toIso8601String(),
+        "discount": discount,
+        "cashier": cashier.toJson(),
+        "waiter": waiter.toJson(),
+        "items": List<dynamic>.from(items.map((x) => x.toJson())),
+    };
+}
+
+class Cashier {
+    Cashier({
+        required this.id,
+        required this.name,
+        required this.email,
+        required this.role,
+    });
+
+    int id;
+    String name;
+    String email;
+    String role;
+
+    factory Cashier.fromJson(Map<String, dynamic> json) => Cashier(
+        id: json["id"],
+        name: json["name"],
+        email: json["email"],
+        role: json["role"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "id": id,
+        "name": name,
+        "email": email,
+        "role": role,
+    };
+}
+
+class Item {
+    Item({
+        required this.id,
+        required this.qty,
+        required this.subtotal,
+        required this.transactionId,
+        required this.menuId,
+        required this.menu,
+    });
+
+    int id;
+    String qty;
+    String subtotal;
+    String transactionId;
+    String menuId;
+    Menu menu;
+
+    factory Item.fromJson(Map<String, dynamic> json) => Item(
+        id: json["id"],
+        qty: json["qty"],
+        subtotal: json["subtotal"],
+        transactionId: json["transaction_id"],
+        menuId: json["menu_id"],
+        menu: Menu.fromJson(json["menu"]),
+    );
+
+    Map<String, dynamic> toJson() => {
+        "id": id,
+        "qty": qty,
+        "subtotal": subtotal,
+        "transaction_id": transactionId,
+        "menu_id": menuId,
+        "menu": menu.toJson(),
+    };
+}
+
+class Menu {
+    Menu({
+        required this.id,
+        required this.name,
+        required this.price,
+        required this.stock,
+        required this.description,
+        required this.category,
+        required this.image,
+    });
+
+    int id;
+    String name;
+    String price;
+    String stock;
+    String description;
+    String category;
+    String image;
+
+    factory Menu.fromJson(Map<String, dynamic> json) => Menu(
+        id: json["id"],
+        name: json["name"],
+        price: json["price"],
+        stock: json["stock"],
+        description: json["description"],
+        category: json["category"],
+        image: json["image"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "id": id,
+        "name": name,
+        "price": price,
+        "stock": stock,
+        "description": description,
+        "category": category,
+        "image": image,
     };
 }

@@ -1,8 +1,9 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:kasir/component/appbar.dart';
-import '../utils/color.dart';
-import '../utils/constant.dart';
+import '../../utils/color.dart';
+import '../../utils/constant.dart';
+
 
 class CartWaiterView extends StatefulWidget {
   const CartWaiterView({Key? key}) : super(key: key);

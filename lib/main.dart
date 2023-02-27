@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kasir/view/authentication/login.dart';
-import 'package:kasir/view/payment.dart';
-import 'package:kasir/view/receipt.dart';
+
 import 'utils/constant.dart';
 
 void main() {

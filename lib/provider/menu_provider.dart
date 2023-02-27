@@ -69,6 +69,22 @@ class MenuProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future searachMenu(String keyword) async {
+    _isLoading = true;
+    var res = await MenuRepository.searchMenu(keyword);
+    notifyListeners();
+    if (res is MenuModel) {
+      print(res.message);
+      listMenu = res.data;
+      print(listMenu);
+    } else {
+      notifyListeners();
+      print(res);
+    }
+    _isLoading = false;
+    notifyListeners();
+  }
+
   notifyListeners();
 }
 

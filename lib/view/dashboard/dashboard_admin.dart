@@ -3,12 +3,13 @@ import 'package:kasir/component/category.dart';
 import 'package:kasir/model/account_model.dart';
 import 'package:kasir/model/table_model.dart';
 import 'package:kasir/provider/dashboard_provider.dart';
+import 'package:kasir/view/transactions/cart_admin.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import '../../utils/color.dart';
 import '../../utils/constant.dart';
 import '../../utils/navigation_helper.dart';
 import '../../component/navigationDrawer.dart';
-import '../cart_admin.dart';
 
 class DashboardAdminView extends StatefulWidget {
   final Account? data;
@@ -30,7 +31,6 @@ class _DashboardAdminViewState extends State<DashboardAdminView> {
       create: (_) => DashboardProvider(),
       child: Consumer<DashboardProvider>(
         builder: (context, dashProv, child) {
-          
           var user = widget.data;
           var table = dashProv.listTable;
           var data = dashProv.cart;
@@ -73,7 +73,7 @@ class _DashboardAdminViewState extends State<DashboardAdminView> {
             body: Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
+                  padding: const EdgeInsets.only(top: 10, left: 20, right: 20),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -207,38 +207,35 @@ class _DashboardAdminViewState extends State<DashboardAdminView> {
                         const EdgeInsets.only(left: 20, right: 20, top: 10),
                     child: Stack(children: [
                       dashProv.isLoading
-                          ? Center(
-                              child: CircularProgressIndicator(),
-                            )
-                          : dashProv.listMenu!.isEmpty
-                              ? Center(
-                                  child: Text("text"),
-                                )
-                              : GridView.builder(
-                                  gridDelegate:
-                                      const SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 2,
-                                    childAspectRatio: 0.7,
-                                    mainAxisSpacing: 20.0,
-                                    crossAxisSpacing: 15.0,
-                                  ),
-                                  itemCount: dashProv.listMenu!.length,
-                                  shrinkWrap: true,
-                                  physics: BouncingScrollPhysics(),
-                                  itemBuilder: (context, index) {
-                                    var data = dashProv.listMenu?[index];
+                          ? Container(
+                              margin: EdgeInsets.only(top: 170),
+                              width: 230,
+                              child: Lottie.asset("assets/lottie/walking.json"))
+                          : GridView.builder(
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                childAspectRatio: 0.7,
+                                mainAxisSpacing: 20.0,
+                                crossAxisSpacing: 15.0,
+                              ),
+                              itemCount: dashProv.listMenu?.length,
+                              shrinkWrap: true,
+                              physics: BouncingScrollPhysics(),
+                              itemBuilder: (context, index) {
+                                var data = dashProv.listMenu?[index];
 
-                                    return dashProv.listMenu == null
-                                        ? Center(
-                                            child: Text("text"),
-                                          )
-                                        : CategoryCard(
-                                            data: data,
-                                            provider: dashProv,
-                                            user: user,
-                                          );
-                                  },
-                                ),
+                                return dashProv.listMenu == null
+                                    ? Center(
+                                        child: Text("text"),
+                                      )
+                                    : CategoryCard(
+                                        data: data,
+                                        provider: dashProv,
+                                        user: user,
+                                      );
+                              },
+                            ),
                       data == null
                           ? Text("")
                           : Positioned(

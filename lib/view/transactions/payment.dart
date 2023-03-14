@@ -77,10 +77,16 @@ class _PaymentViewState extends State<PaymentView> {
         centerTitle: true,
         title: Text(
           "Payment",
-          style: headingStyle,
+          style: headingStyle.copyWith(
+            color: Theme.of(context).brightness == Brightness.light
+                ? Colors.black87
+                : Colors.white,
+          ),
         ),
         elevation: 0,
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).brightness == Brightness.light
+            ? Colors.white
+            : Color(0xff282828),
         leading: IconButton(
           onPressed: () {
             // print(detail!.payment);
@@ -101,7 +107,9 @@ class _PaymentViewState extends State<PaymentView> {
               height: height,
               width: width,
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: Theme.of(context).brightness == Brightness.light
+                    ? Colors.white
+                    : Color(0xff282828),
               ),
               child: Column(
                 children: [
@@ -109,8 +117,10 @@ class _PaymentViewState extends State<PaymentView> {
                     padding: EdgeInsets.symmetric(vertical: 20, horizontal: 30),
                     width: width,
                     height: 180.0,
-                    decoration: const BoxDecoration(
-                      color: Colors.white,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).brightness == Brightness.light
+                          ? Colors.white
+                          : Color(0xff282828),
                       boxShadow: [
                         BoxShadow(
                           color: Color(0xffDDDDDD),
@@ -129,7 +139,12 @@ class _PaymentViewState extends State<PaymentView> {
                       children: [
                         Text(
                           "Total Discount",
-                          style: headingStyle,
+                          style: headingStyle.copyWith(
+                            color:
+                                Theme.of(context).brightness == Brightness.light
+                                    ? Colors.black87
+                                    : Colors.white,
+                          ),
                         ),
                         const SizedBox(
                           height: 10.0,
@@ -155,7 +170,11 @@ class _PaymentViewState extends State<PaymentView> {
                                 Text(
                                   "Total bill",
                                   style: subtitleStyle.copyWith(
-                                      color: Colors.black, fontSize: 14),
+                                      color: Theme.of(context).brightness ==
+                                              Brightness.light
+                                          ? Colors.black87
+                                          : Colors.white,
+                                      fontSize: 14),
                                 ),
                                 const SizedBox(
                                   height: 10.0,
@@ -176,7 +195,10 @@ class _PaymentViewState extends State<PaymentView> {
                                 Text(
                                   "Discount",
                                   style: subtitleStyle.copyWith(
-                                    color: Colors.black,
+                                    color: Theme.of(context).brightness ==
+                                            Brightness.light
+                                        ? Colors.black87
+                                        : Colors.white,
                                     fontSize: 14,
                                   ),
                                 ),
@@ -211,11 +233,21 @@ class _PaymentViewState extends State<PaymentView> {
                         children: [
                           Text(
                             "Enter",
-                            style: headingStyle2,
+                            style: headingStyle2.copyWith(
+                              color: Theme.of(context).brightness ==
+                                      Brightness.light
+                                  ? Colors.black87
+                                  : Colors.white,
+                            ),
                           ),
                           Text(
                             "bill",
-                            style: subtitleStyle,
+                            style: subtitleStyle.copyWith(
+                              color: Theme.of(context).brightness ==
+                                      Brightness.light
+                                  ? Colors.grey
+                                  : Colors.white,
+                            ),
                           ),
                         ],
                       ),
@@ -226,6 +258,9 @@ class _PaymentViewState extends State<PaymentView> {
                           vertical: 10,
                         ),
                         child: TextField(
+                          style: TextStyle(
+                            color: Colors.black87,
+                          ),
                           keyboardType: TextInputType.numberWithOptions(),
                           controller: billController,
                           onEditingComplete: () {
@@ -244,6 +279,7 @@ class _PaymentViewState extends State<PaymentView> {
                           decoration: InputDecoration(
                               prefixIcon: Icon(
                                 Ionicons.wallet_outline,
+                                color: Colors.black87,
                               ),
                               fillColor: kBlueSoft,
                               filled: true,
@@ -269,11 +305,21 @@ class _PaymentViewState extends State<PaymentView> {
                         children: [
                           Text(
                             "Choose",
-                            style: headingStyle2,
+                            style: headingStyle2.copyWith(
+                              color: Theme.of(context).brightness ==
+                                      Brightness.light
+                                  ? Colors.black87
+                                  : Colors.white,
+                            ),
                           ),
                           Text(
                             "discount",
-                            style: subtitleStyle,
+                            style: subtitleStyle.copyWith(
+                              color: Theme.of(context).brightness ==
+                                      Brightness.light
+                                  ? Colors.grey
+                                  : Colors.white,
+                            ),
                           ),
                         ],
                       ),
@@ -399,6 +445,10 @@ class _PaymentViewState extends State<PaymentView> {
                             fillColor: kBlueSoft,
                             prefixIcon: Icon(
                               Icons.percent,
+                              color: Theme.of(context).brightness ==
+                                      Brightness.light
+                                  ? Colors.white
+                                  : Colors.black87,
                               size: 16,
                             ),
                             filled: true,
@@ -425,11 +475,21 @@ class _PaymentViewState extends State<PaymentView> {
                         children: [
                           Text(
                             "Choose",
-                            style: headingStyle2,
+                            style: headingStyle2.copyWith(
+                              color: Theme.of(context).brightness ==
+                                      Brightness.light
+                                  ? Colors.black87
+                                  : Colors.white,
+                            ),
                           ),
                           Text(
                             "Payment",
-                            style: subtitleStyle,
+                            style: subtitleStyle.copyWith(
+                              color: Theme.of(context).brightness ==
+                                      Brightness.light
+                                  ? Colors.grey
+                                  : Colors.white,
+                            ),
                           ),
                         ],
                       ),

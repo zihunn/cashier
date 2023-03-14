@@ -103,31 +103,30 @@ class _EmployeViewState extends State<EmployeView> {
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(10)),
                                 child: ListTile(
-                                  leading: Image.asset(
-                                    "assets/images/employee.png",
-                                    width: 40,
-                                  ),
-                                  title: Text(
-                                    user!.name,
-                                    style: titleStyle,
-                                  ),
-                                  subtitle: Text(
-                                    user.role,
-                                    style: subtitleStyle,
-                                  ),
-                                  trailing: IconButton(
-                                    onPressed: () {
-                                      userProv.deleteUser(user.id);
-                                      userProv.getUser();
-                                      // userProv.deleteUser(user.id);
-                                      // userProv.getUser();
-                                    },
-                                    icon: Image.asset(
-                                      "assets/images/trash.png",
-                                      width: 30.0,
+                                    leading: Image.asset(
+                                      "assets/images/employee.png",
+                                      width: 40,
                                     ),
-                                  ),
-                                ),
+                                    title: Text(
+                                      user!.name,
+                                      style: titleStyle,
+                                    ),
+                                    subtitle: Text(
+                                      user.role,
+                                      style: subtitleStyle,
+                                    ),
+                                    trailing: IconButton(
+                                      onPressed: () {
+                                        userProv.deleteUser(user.id);
+                                        userProv.getUser();
+                                        // userProv.deleteUser(user.id);
+                                        // userProv.getUser();
+                                      },
+                                      icon: Image.asset(
+                                        "assets/images/trash.png",
+                                        width: 30.0,
+                                      ),
+                                    )),
                               ),
                             );
                           },

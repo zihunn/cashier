@@ -87,4 +87,3 @@ class MenuProvider extends ChangeNotifier {
 
   notifyListeners();
 }
-

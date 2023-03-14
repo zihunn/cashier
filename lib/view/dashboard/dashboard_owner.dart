@@ -1,189 +1,442 @@
 import 'package:date_picker_timeline/date_picker_timeline.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:kasir/component/drawer_waiter.dart';
+import 'package:kasir/component/navigationDrawer.dart';
+import 'package:kasir/model/account_model.dart';
+import 'package:kasir/provider/transaction_provider.dart';
 import 'package:kasir/utils/navigation_helper.dart';
 import 'package:kasir/component/drawer.dart';
 import 'package:kasir/view/transactions/detail_transaction.dart';
+import 'package:lottie/lottie.dart';
+import 'package:provider/provider.dart';
+import 'package:table_calendar/table_calendar.dart';
 import '../../utils/color.dart';
 import '../../utils/constant.dart';
+import '../transactions/payment.dart';
+
+var now = DateTime.now();
+var firstDay = DateTime(now.year, now.month - 3, now.day);
+var lastDay = DateTime(now.year, now.month + 3, now.day);
 
 class DashboardOwnerView extends StatefulWidget {
-  const DashboardOwnerView({Key? key}) : super(key: key);
+  final Account? user;
+  const DashboardOwnerView({Key? key, this.user}) : super(key: key);
 
   @override
   State<DashboardOwnerView> createState() => _DashboardOwnerViewState();
 }
 
 class _DashboardOwnerViewState extends State<DashboardOwnerView> {
-  var date = new DateTime(2023, 2, 9);
+  var date = new DateTime(2023, 3, 5);
   final tabList = ['Tab 1', 'Tab 2'];
 
   final _colors = [kBlueSoft, kSecondaryColor];
+
+  CalendarFormat format = CalendarFormat.twoWeeks;
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      endDrawer: DrawerView(),
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text("brunch", style: headingStyle),
-            Text("Restaurnt", style: headingStyle),
-          ],
-        ),
-        actions: [
-          Builder(
-            builder: (context) {
-              return IconButton(
-                icon: Image.asset(
-                  "assets/images/menu.png",
-                  width: 40,
-                ),
-                onPressed: () => Scaffold.of(context).openEndDrawer(),
-              );
-            },
-          ),
-        ],
-      ),
-      body: DefaultTabController(
-        length: 2,
-        child: Padding(
-          padding: const EdgeInsets.only(top: 20),
-          child: Column(
-            children: [
-              Container(
-                  margin: const EdgeInsets.symmetric(vertical: 12),
-                  child: DatePicker(
-                    DateTime(date.year, date.month, date.day - 8),
-                    height: 100,
-                    width: 60,
-                    initialSelectedDate: DateTime.now(),
-                    selectionColor: kPrimaryColor,
-                    selectedTextColor: Colors.white,
-                    deactivatedColor: Colors.amber,
-                    monthTextStyle: const TextStyle(
-                      color: Colors.grey,
-                    ),
-                    dayTextStyle: const TextStyle(
-                      color: Colors.grey,
-                    ),
-                    dateTextStyle: const TextStyle(
-                      color: Colors.grey,
-                    ),
-                    daysCount: 30,
-                  )),
-              const TabBar(
-                indicatorPadding: EdgeInsets.symmetric(horizontal: 70),
-                unselectedLabelColor: Colors.black38,
-                labelColor: Colors.black,
-                indicatorColor: kCyan,
-                tabs: [
-                  Padding(
-                    padding: EdgeInsets.only(bottom: 10),
-                    child: Text(
-                      "Completed",
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(bottom: 10),
-                    child: Text(
-                      "In Progress",
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                    ),
-                  ),
+    var user = widget.user;
+    return ChangeNotifierProvider(
+      create: (_) => TransactionProvider(),
+      child: Consumer<TransactionProvider>(
+        builder: (context, transactionProv, child) {
+          var listCompleted = transactionProv.completed;
+          var listPending = transactionProv.pending;
+          return Scaffold(
+            endDrawer: NavigationDrawerView(
+              data: user,
+            ),
+            appBar: AppBar(
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+              title: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("Zihun",
+                      style: headingStyle.copyWith(
+                        color: Theme.of(context).brightness == Brightness.light
+                            ? Colors.black87
+                            : Colors.white,
+                      )),
+                  Text("Restaurnt",
+                      style: headingStyle.copyWith(
+                        color: Theme.of(context).brightness == Brightness.light
+                            ? Colors.black87
+                            : Colors.white,
+                      )),
                 ],
               ),
-              Expanded(
-                child: TabBarView(children: [
-                  Padding(
-                    padding:
-                        const EdgeInsets.only(top: 20, left: 20, right: 20),
-                    child: ListView.builder(
-                      itemCount: 16,
-                      physics: const BouncingScrollPhysics(),
-                      itemBuilder: (BuildContext context, int index) {
-                        return GestureDetector(
-                          onTap: () {
-                            goPush( DetailTransactionView());
-                          },
-                          child: Card(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(14)),
-                            color: _colors[index % _colors.length],
-                            elevation: 0,
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 14),
-                              child: ListTile(
-                                leading: Image.asset(
-                                  "assets/images/transaction-history.png",
-                                  width: 60,
-                                  height: 40,
-                                ),
-                                title: Text(
-                                  "Id. 34256",
-                                  style: titleStyle,
-                                ),
-                                subtitle: Padding(
-                                  padding: const EdgeInsets.only(top: 5),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        "Table 5",
-                                        style: subtitleStyle,
-                                      ),
-                                      const SizedBox(
-                                        height: 5.0,
-                                      ),
-                                      Text(
-                                        "Customer : Zihunn",
-                                        style: subtitleStyle,
-                                      ),
-                                      const SizedBox(
-                                        height: 5.0,
-                                      ),
-                                      Text(
-                                        "Rp. 200.000",
-                                        style: subtitleStyle,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                trailing: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: const [
-                                    VerticalDivider(),
-                                    RotatedBox(
-                                        quarterTurns: -1,
-                                        child: Text(
-                                          "Succeed",
-                                          style: TextStyle(fontSize: 10),
-                                        )),
-                                  ],
-                                ),
+              actions: [
+                Builder(
+                  builder: (context) {
+                    return IconButton(
+                      icon: Image.asset(
+                        "assets/images/menu.png",
+                        width: 40,
+                      ),
+                      onPressed: () => Scaffold.of(context).openEndDrawer(),
+                    );
+                  },
+                ),
+              ],
+            ),
+            body: DefaultTabController(
+              length: 2,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 20),
+                child: Column(
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(left: 20, right: 20, bottom: 20),
+                      decoration: BoxDecoration(
+                        color: Color(0xff7DE5ED),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: TableCalendar(
+                        focusedDay: now,
+                        firstDay: firstDay,
+                        lastDay: lastDay,
+                        calendarFormat: format,
+                        startingDayOfWeek: StartingDayOfWeek.monday,
+                        headerStyle: const HeaderStyle(
+                          leftChevronIcon: Icon(
+                            Icons.chevron_left,
+                            color: Colors.white,
+                          ),
+                          rightChevronIcon: Icon(
+                            Icons.chevron_right,
+                            color: Colors.white,
+                          ),
+                          headerPadding: EdgeInsets.symmetric(vertical: 5),
+                          formatButtonVisible: false,
+                          titleCentered: true,
+                          titleTextStyle: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                        calendarStyle: const CalendarStyle(
+                            weekendDecoration: BoxDecoration(
+                              color: Colors.transparent,
+                            ),
+                            weekendTextStyle: TextStyle(
+                              color: Colors.white,
+                            ),
+                            defaultTextStyle: TextStyle(
+                              color: Colors.white,
+                            ),
+                            selectedTextStyle: TextStyle(
+                              color: Colors.black,
+                            ),
+                            selectedDecoration: BoxDecoration(
+                                color: Colors.white, shape: BoxShape.circle),
+                            todayDecoration: BoxDecoration(
+                                color: Color(0xffB3FFAE),
+                                shape: BoxShape.circle),
+                            todayTextStyle: TextStyle(
+                              color: Colors.black,
+                            )),
+                        calendarBuilders:
+                            CalendarBuilders(dowBuilder: (context, day) {
+                          String text;
+                          if (day.weekday == DateTime.sunday) {
+                            text = "Sun";
+                          } else if (day.weekday == DateTime.monday) {
+                            text = "Mon";
+                          } else if (day.weekday == DateTime.tuesday) {
+                            text = "Tue";
+                          } else if (day.weekday == DateTime.wednesday) {
+                            text = "Wed";
+                          } else if (day.weekday == DateTime.thursday) {
+                            text = "Thu";
+                          } else if (day.weekday == DateTime.friday) {
+                            text = "Fri";
+                          } else if (day.weekday == DateTime.saturday) {
+                            text = "Sat";
+                          } else {
+                            text = " err";
+                          }
+                          return Center(
+                            child: Text(
+                              text,
+                              style: const TextStyle(
+                                color: Colors.white,
                               ),
                             ),
+                          );
+                        }),
+                        selectedDayPredicate: (day) => isSameDay(day, now),
+                        onDaySelected: ((selectedDay, focusedDay) {
+                          setState(() {
+                            now = focusedDay;
+                            var date = selectedDay;
+                            var date2 = date.toString().split(" ")[0];
+                            transactionProv.getHistoryPending("pending", date2);
+                            transactionProv.getHistoryCompleted(
+                                "completed ", date2);
+                          });
+                        }),
+                      ),
+                    ),
+                    TabBar(
+                      indicatorPadding: EdgeInsets.symmetric(horizontal: 70),
+                      unselectedLabelColor: Colors.black38,
+                      labelColor: Colors.black,
+                      indicatorColor: kCyan,
+                      tabs: [
+                        Padding(
+                          padding: EdgeInsets.only(bottom: 10),
+                          child: Text(
+                            "Completed",
+                            style: TextStyle(
+                                color: Theme.of(context).brightness ==
+                                        Brightness.light
+                                    ? Colors.grey
+                                    : Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600),
                           ),
-                        );
-                      },
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(bottom: 10),
+                          child: Text(
+                            "In Progress",
+                            style: TextStyle(
+                                color: Theme.of(context).brightness ==
+                                        Brightness.light
+                                    ? Colors.grey
+                                    : Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600),
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                  SingleChildScrollView(
-                    controller: ScrollController(),
-                    child: const Center(
-                      child: Text("text"),
+                    Expanded(
+                      child: TabBarView(children: [
+                        transactionProv.isLoading
+                            ? Container(
+                                padding: EdgeInsets.only(
+                                    bottom: 120, right: 150, left: 150),
+                                width: 100,
+                                child:
+                                    Lottie.asset("assets/lottie/loading.json"))
+                            : listCompleted!.isEmpty
+                                ? Container(
+                                    padding: EdgeInsets.only(
+                                        bottom: 120, right: 60, left: 60),
+                                    width: 100,
+                                    child: Lottie.asset(
+                                        "assets/lottie/empty.json"))
+                                : Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: 20, left: 20, right: 20),
+                                    child: ListView.builder(
+                                      itemCount: listCompleted.length,
+                                      physics: const BouncingScrollPhysics(),
+                                      itemBuilder:
+                                          (BuildContext context, int index) {
+                                        var p = listCompleted[index];
+                                        return GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              // transactionProv.getDetail(p.id);
+                                              // Future.delayed(Duration(seconds: 2));
+                                              goPush(DetailTransactionView(
+                                                data: p,
+                                              ));
+                                            });
+                                          },
+                                          child: Card(
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(14)),
+                                            color:
+                                                _colors[index % _colors.length],
+                                            elevation: 0,
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 14),
+                                              child: ListTile(
+                                                leading: Image.asset(
+                                                  "assets/images/transaction-history.png",
+                                                  width: 60,
+                                                  height: 40,
+                                                ),
+                                                title: Text(
+                                                  "Id. ${p.id}",
+                                                  style: titleStyle,
+                                                ),
+                                                subtitle: Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          top: 5),
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Text(
+                                                        "Table ${p.tableNumber}",
+                                                        style: subtitleStyle,
+                                                      ),
+                                                      const SizedBox(
+                                                        height: 5.0,
+                                                      ),
+                                                      Text(
+                                                        "Customer :  ${p.customerName}",
+                                                        style: subtitleStyle,
+                                                      ),
+                                                      const SizedBox(
+                                                        height: 5.0,
+                                                      ),
+                                                      Text(
+                                                        NumberFormat.currency(
+                                                                locale: 'id',
+                                                                symbol: 'Rp ',
+                                                                decimalDigits:
+                                                                    0)
+                                                            .format(int.parse(
+                                                                p.total)),
+                                                        style: subtitleStyle,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                trailing: Row(
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  children: const [
+                                                    VerticalDivider(
+                                                      color: Colors.black,
+                                                    ),
+                                                    RotatedBox(
+                                                        quarterTurns: -1,
+                                                        child: Text(
+                                                          "Succeed",
+                                                          style: TextStyle(
+                                                              fontSize: 10),
+                                                        )),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                        transactionProv.isLoading
+                            ? Center(
+                                child: CircularProgressIndicator(),
+                              )
+                            : listPending!.isEmpty
+                                ? Container(
+                                    padding: EdgeInsets.only(
+                                        bottom: 120, right: 60, left: 60),
+                                    width: 100,
+                                    child: Lottie.asset(
+                                        "assets/lottie/empty.json"))
+                                : Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: 20, left: 20, right: 20),
+                                    child: ListView.builder(
+                                      itemCount: listPending.length,
+                                      physics: const BouncingScrollPhysics(),
+                                      itemBuilder:
+                                          (BuildContext context, int index) {
+                                        var test = listPending[index];
+                                        return GestureDetector(
+                                          child: Card(
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(14)),
+                                            color:
+                                                _colors[index % _colors.length],
+                                            elevation: 0,
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 14),
+                                              child: ListTile(
+                                                leading: Image.asset(
+                                                  "assets/images/transaction-history.png",
+                                                  width: 60,
+                                                  height: 40,
+                                                ),
+                                                title: Text(
+                                                  "Id. ${test.id}",
+                                                  style: titleStyle,
+                                                ),
+                                                subtitle: Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          top: 5),
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Text(
+                                                        "Table ${test.tableNumber}",
+                                                        style: subtitleStyle,
+                                                      ),
+                                                      const SizedBox(
+                                                        height: 5.0,
+                                                      ),
+                                                      Text(
+                                                        "Customer : ${test.customerName}",
+                                                        style: subtitleStyle,
+                                                      ),
+                                                      const SizedBox(
+                                                        height: 5.0,
+                                                      ),
+                                                      Text(
+                                                        NumberFormat.currency(
+                                                                locale: 'id',
+                                                                symbol: 'Rp ',
+                                                                decimalDigits:
+                                                                    0)
+                                                            .format(int.parse(
+                                                                test.total)),
+                                                        style: subtitleStyle,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                trailing: Row(
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  children: const [
+                                                    VerticalDivider(
+                                                      color: Colors.black,
+                                                    ),
+                                                    RotatedBox(
+                                                        quarterTurns: -1,
+                                                        child: Text(
+                                                          "Pending",
+                                                          style: TextStyle(
+                                                              fontSize: 10),
+                                                        )),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                      ]),
                     ),
-                  )
-                ]),
+                  ],
+                ),
               ),
-            ],
-          ),
-        ),
+            ),
+          );
+        },
       ),
     );
   }

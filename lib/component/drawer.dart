@@ -5,6 +5,7 @@ import 'package:kasir/provider/auth_provider.dart';
 import 'package:kasir/utils/constant.dart';
 import 'package:kasir/utils/navigation_helper.dart';
 import 'package:kasir/view/authentication/login.dart';
+import 'package:kasir/view/authentication/test.dart';
 import 'package:provider/provider.dart';
 
 class DrawerView extends StatefulWidget {
@@ -78,7 +79,7 @@ class _DrawerViewState extends State<DrawerView> {
                         ),
                         title: Text('Logout'),
                         onTap: () {
-                          goRemove(LoginView());
+                          goRemove(FirstPage());
                         }),
                   ),
                 ],

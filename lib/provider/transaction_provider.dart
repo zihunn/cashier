@@ -20,7 +20,7 @@ class TransactionProvider extends ChangeNotifier {
     var date = DateTime.now();
     var date2 = date.toString().split(" ")[0];
     getHistoryPending("pending", date2);
-    getHistoryCompleted("completed ", date2);
+    getHistoryCompleted("completed", date2);
   }
 
   List<Completed>? completed = [];

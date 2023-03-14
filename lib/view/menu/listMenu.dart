@@ -40,7 +40,11 @@ class _ListMenuViewState extends State<ListMenuView> {
                 backgroundColor: Colors.transparent,
                 title: Text(
                   "Menu",
-                  style: headingStyle,
+                  style: headingStyle.copyWith(
+                    color: Theme.of(context).brightness == Brightness.light
+                        ? Colors.black87
+                        : Colors.white,
+                  ),
                 ),
                 leading: IconButton(
                   onPressed: () {
@@ -91,16 +95,21 @@ class _ListMenuViewState extends State<ListMenuView> {
                             ),
                             Expanded(
                               child: TextFormField(
+                                style: const TextStyle(
+                                  color: Colors.black,
+                                ),
                                 onChanged: (value) {
                                   menuProv.searachMenu(value);
                                 },
                                 initialValue: null,
                                 decoration: const InputDecoration.collapsed(
-                                  filled: true,
-                                  fillColor: kBlueSoft,
-                                  hoverColor: Colors.transparent,
-                                  hintText: "Search Menu",
-                                ),
+                                    filled: true,
+                                    fillColor: kBlueSoft,
+                                    hoverColor: Colors.transparent,
+                                    hintText: "Search Menu",
+                                    hintStyle: TextStyle(
+                                      color: Colors.grey,
+                                    )),
                                 onFieldSubmitted: (value) {},
                               ),
                             ),

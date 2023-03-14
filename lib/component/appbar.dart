@@ -20,7 +20,11 @@ class CustomAppbar extends StatelessWidget {
       backgroundColor: Colors.transparent,
       title: Text(
         text,
-        style: headingStyle,
+        style: headingStyle.copyWith(
+          color: Theme.of(context).brightness == Brightness.light
+              ? Colors.black87
+              : Colors.white,
+        ),
       ),
       leading: IconButton(
         onPressed: () {

@@ -1,6 +1,7 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:kasir/component/cart.dart';
 import 'package:kasir/model/account_model.dart';
 import 'package:kasir/model/cart_model.dart';
 import 'package:kasir/model/table_model.dart';
@@ -35,6 +36,7 @@ class _CartAdminViewState extends State<CartAdminView> {
   @override
   Widget build(BuildContext context) {
     var table = widget.table;
+    var data = widget.provider.cart;
     // var i = widget.provider.cart;
     return Scaffold(
       appBar: PreferredSize(
@@ -122,33 +124,11 @@ class _CartAdminViewState extends State<CartAdminView> {
                       physics: BouncingScrollPhysics(),
                       itemBuilder: (BuildContext context, int index) {
                         var item = widget.cart?[index];
-                        return Container(
-                          margin: EdgeInsets.symmetric(vertical: 8),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(
-                                color: Colors.grey,
-                              )),
-                          child: ListTile(
-                            leading: Image.network(
-                              item!.menu.image,
-                              width: 64.0,
-                              height: 64.0,
-                            ),
-                            title: Text(
-                              item.menu.name,
-                              style: titleStyle,
-                            ),
-                            subtitle: Text(
-                              NumberFormat.currency(
-                                      locale: 'id',
-                                      decimalDigits: 0,
-                                      symbol: 'Rp ')
-                                  .format(int.parse(item.menu.price)),
-                              style: subtitleStyle,
-                            ),
-                            trailing: Text("${item.qty}x"),
-                          ),
+                        return CartCard(
+                          data: item,
+                          provider: widget.provider,
+                          user: widget.user,
+                          cart: item,
                         );
                       },
                     ),
@@ -164,6 +144,7 @@ class _CartAdminViewState extends State<CartAdminView> {
                             'waiter_id': widget.user?.id,
                           };
                           widget.provider.createTransaction(requestBody);
+                          widget.cart!.clear();
                           goBack();
                         },
                         extendedPadding:
@@ -176,38 +157,6 @@ class _CartAdminViewState extends State<CartAdminView> {
                         backgroundColor: kCyan,
                       ),
                     ),
-                    // Positioned(
-                    //   right: -20,
-                    //   bottom: 10,
-                    //   child: Container(
-                    //     height: 100.0,
-                    //     width: 100.0,
-                    //     child: FittedBox(
-                    //       child: FloatingActionButton(
-                    //         elevation: 0,
-                    //         backgroundColor: Colors.transparent,
-                    //         onPressed: () {},
-                    //         child: IconButton(
-                    //           onPressed: () {
-                    //             // print(_categorySelectedValue);
-                    //             // print(nameController.text);
-                    //             // print(widget.user?.id);
-                    //             var requestBody = {
-                    //               'customer_name': nameController.text,
-                    //               'table_number': _categorySelectedValue,
-                    //               'waiter_id': widget.user?.id,
-                    //             };
-                    //             widget.provider.createTransaction(requestBody);
-                    //           },
-                    //           icon: Image.asset(
-                    //             "assets/images/pay.png",
-                    //             width: 64.0,
-                    //           ),
-                    //         ),
-                    //       ),
-                    //     ),
-                    //   ),
-                    // )
                   ]),
                 ),
               ),

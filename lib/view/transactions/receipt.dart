@@ -9,6 +9,7 @@ import 'package:kasir/utils/navigation_helper.dart';
 import 'package:kasir/view/dashboard/dashboard_admin.dart';
 import 'package:kasir/view/dashboard/dashboard_waiter.dart';
 import 'package:lottie/lottie.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../utils/color.dart';
 import '../../utils/constant.dart';
 import 'package:pdf/pdf.dart';
@@ -96,9 +97,15 @@ class _ReceiptViewState extends State<ReceiptView> {
             const SizedBox(
               height: 18.0,
             ),
-            const Text(
+            Text(
               "payment successfully",
-              style: TextStyle(fontWeight: FontWeight.w500, fontSize: 18),
+              style: TextStyle(
+                fontWeight: FontWeight.w500,
+                fontSize: 18,
+                color: Theme.of(context).brightness == Brightness.light
+                    ? Colors.black87
+                    : Colors.white,
+              ),
             ),
             const SizedBox(
               height: 20.0,
@@ -119,7 +126,11 @@ class _ReceiptViewState extends State<ReceiptView> {
                 child: Column(children: [
                   const Text(
                     "Total Payment",
-                    style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14),
+                    style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 14,
+                      color: Colors.black87,
+                    ),
                   ),
                   const SizedBox(
                     height: 10.0,
@@ -130,7 +141,11 @@ class _ReceiptViewState extends State<ReceiptView> {
                       symbol: 'Rp ',
                       decimalDigits: 0,
                     ).format(double.parse('${widget.test}')),
-                    style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
+                    style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 20,
+                      color: Colors.black87,
+                    ),
                   ),
                   const SizedBox(
                     height: 10.0,
@@ -142,22 +157,52 @@ class _ReceiptViewState extends State<ReceiptView> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("Id Transaction"),
-                      Text(data!.id.toString()),
+                      Text(
+                        "Id Transaction",
+                        style: const TextStyle(
+                          color: Colors.black87,
+                        ),
+                      ),
+                      Text(
+                        data!.id.toString(),
+                        style: const TextStyle(
+                          color: Colors.black87,
+                        ),
+                      ),
                     ],
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("Customer Name"),
-                      Text(data.customerName),
+                      Text(
+                        "Customer Name",
+                        style: const TextStyle(
+                          color: Colors.black87,
+                        ),
+                      ),
+                      Text(
+                        data.customerName,
+                        style: const TextStyle(
+                          color: Colors.black87,
+                        ),
+                      ),
                     ],
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("Table"),
-                      Text(data.tableNumber),
+                      Text(
+                        "Table",
+                        style: const TextStyle(
+                          color: Colors.black87,
+                        ),
+                      ),
+                      Text(
+                        data.tableNumber,
+                        style: const TextStyle(
+                          color: Colors.black87,
+                        ),
+                      ),
                     ],
                   ),
                   ListView.builder(
@@ -168,7 +213,12 @@ class _ReceiptViewState extends State<ReceiptView> {
                       var item = data.items[index];
                       return ListTile(
                         contentPadding: EdgeInsets.only(left: 0.0, right: 0.0),
-                        title: Text('item.menu.name'),
+                        title: Text(
+                          item.menu.name,
+                          style: const TextStyle(
+                            color: Colors.black87,
+                          ),
+                        ),
                         subtitle: Row(
                           children: [
                             Text(
@@ -177,14 +227,25 @@ class _ReceiptViewState extends State<ReceiptView> {
                                       decimalDigits: 0,
                                       symbol: 'Rp ')
                                   .format(int.parse(item.menu.price)),
+                              style: const TextStyle(
+                                color: Colors.black87,
+                              ),
                             ),
-                            Text("  x  ${item.qty}"),
+                            Text(
+                              "  x  ${item.qty}",
+                              style: const TextStyle(
+                                color: Colors.black87,
+                              ),
+                            ),
                           ],
                         ),
                         trailing: Text(
                           NumberFormat.currency(
                                   locale: 'id', decimalDigits: 0, symbol: 'Rp ')
                               .format(int.parse(item.subtotal)),
+                          style: const TextStyle(
+                            color: Colors.black87,
+                          ),
                         ),
                       );
                     },
@@ -199,6 +260,7 @@ class _ReceiptViewState extends State<ReceiptView> {
                       Text(
                         "Total Price",
                         style: TextStyle(
+                          color: Colors.black87,
                           fontSize: 14.0,
                           fontWeight: FontWeight.bold,
                         ),
@@ -208,6 +270,7 @@ class _ReceiptViewState extends State<ReceiptView> {
                                 locale: 'id', decimalDigits: 0, symbol: 'Rp ')
                             .format(int.parse(data.total)),
                         style: TextStyle(
+                          color: Colors.black87,
                           fontSize: 14.0,
                           fontWeight: FontWeight.bold,
                         ),
@@ -233,6 +296,7 @@ class _ReceiptViewState extends State<ReceiptView> {
                       Text(
                         "Total Payment",
                         style: TextStyle(
+                          color: Colors.black87,
                           fontSize: 14.0,
                           fontWeight: FontWeight.bold,
                         ),
@@ -244,6 +308,7 @@ class _ReceiptViewState extends State<ReceiptView> {
                           decimalDigits: 0,
                         ).format(double.parse('${widget.test}')),
                         style: TextStyle(
+                          color: Colors.black87,
                           fontSize: 14.0,
                           fontWeight: FontWeight.bold,
                         ),
@@ -259,6 +324,7 @@ class _ReceiptViewState extends State<ReceiptView> {
                       Text(
                         "Discount",
                         style: TextStyle(
+                          color: Colors.black87,
                           fontSize: 14.0,
                           fontWeight: FontWeight.bold,
                         ),
@@ -266,6 +332,7 @@ class _ReceiptViewState extends State<ReceiptView> {
                       Text(
                         '${dis.toString().replaceAll(regex, ' ')} %',
                         style: TextStyle(
+                          color: Colors.black87,
                           fontSize: 14.0,
                           fontWeight: FontWeight.bold,
                         ),
@@ -275,7 +342,9 @@ class _ReceiptViewState extends State<ReceiptView> {
                   const SizedBox(
                     height: 10.0,
                   ),
-                  const Divider(),
+                  Divider(
+                    color: Colors.grey[300],
+                  ),
                   const SizedBox(
                     height: 10.0,
                   ),
@@ -347,6 +416,10 @@ class _ReceiptViewState extends State<ReceiptView> {
                   child: ElevatedButton(
                     onPressed: () {
                       // widget.provider.downloadFile(data.id, data.customerName);
+                      launchUrl(
+                          Uri.parse(
+                              "https://zihun-cashier.xyz/api/transactions/${data.id}/print"),
+                          mode: LaunchMode.externalApplication);
                     },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,

@@ -237,7 +237,6 @@ class _EditMenuVIewState extends State<EditMenuVIew> {
                           contentPadding: const EdgeInsets.symmetric(
                               horizontal: 10, vertical: 18),
                           labelText: "Selling Price",
-                          hintText: 'widget.data!.price',
                           labelStyle: const TextStyle(
                             fontSize: 14,
                             color: Colors.grey,
@@ -265,7 +264,6 @@ class _EditMenuVIewState extends State<EditMenuVIew> {
                           contentPadding: const EdgeInsets.symmetric(
                               horizontal: 10, vertical: 18),
                           labelText: "Stock",
-                          hintText: 'widget.data!.stock',
                           labelStyle: const TextStyle(
                             fontSize: 14,
                             color: Colors.grey,

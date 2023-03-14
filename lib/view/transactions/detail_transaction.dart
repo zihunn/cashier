@@ -54,7 +54,10 @@ class _DetailTransactionViewState extends State<DetailTransactionView> {
                 child: Column(children: [
                   const Text(
                     "Total Payment",
-                    style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14),
+                    style: TextStyle(
+                        color: Colors.black87,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 14),
                   ),
                   const SizedBox(
                     height: 10.0,
@@ -63,7 +66,10 @@ class _DetailTransactionViewState extends State<DetailTransactionView> {
                     NumberFormat.currency(
                             locale: 'id', decimalDigits: 0, symbol: "Rp ")
                         .format(int.parse(data!.total)),
-                    style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
+                    style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 20,
+                        color: Colors.black87),
                   ),
                   const SizedBox(
                     height: 10.0,
@@ -75,8 +81,14 @@ class _DetailTransactionViewState extends State<DetailTransactionView> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("Id Transaction"),
-                      Text('${data.id}'),
+                      Text(
+                        "Id Transaction",
+                        style: const TextStyle(color: Colors.black87),
+                      ),
+                      Text(
+                        '${data.id}',
+                        style: const TextStyle(color: Colors.black87),
+                      ),
                     ],
                   ),
                   const SizedBox(
@@ -85,8 +97,14 @@ class _DetailTransactionViewState extends State<DetailTransactionView> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("Cashier"),
-                      Text('${data.cashier.name}'),
+                      Text(
+                        "Cashier",
+                        style: const TextStyle(color: Colors.black87),
+                      ),
+                      Text(
+                        '${data.cashier.name}',
+                        style: const TextStyle(color: Colors.black87),
+                      ),
                     ],
                   ),
                   ListView.builder(
@@ -97,7 +115,10 @@ class _DetailTransactionViewState extends State<DetailTransactionView> {
                       var item = data.items[index];
                       return ListTile(
                         contentPadding: EdgeInsets.only(left: 0.0, right: 0.0),
-                        title: Text("${item.menu.name}"),
+                        title: Text(
+                          "${item.menu.name}",
+                          style: const TextStyle(color: Colors.black87),
+                        ),
                         subtitle: Row(
                           children: [
                             Text(
@@ -106,17 +127,22 @@ class _DetailTransactionViewState extends State<DetailTransactionView> {
                                       symbol: 'Rp ',
                                       decimalDigits: 0)
                                   .format(int.parse(item.menu.price)),
+                              style: const TextStyle(color: Colors.grey),
                             ),
                             const SizedBox(
                               width: 5.0,
                             ),
-                            Text('x ${item.qty}'),
+                            Text(
+                              'x ${item.qty}',
+                              style: const TextStyle(color: Colors.grey),
+                            ),
                           ],
                         ),
                         trailing: Text(
                           NumberFormat.currency(
                                   locale: 'id', symbol: 'Rp ', decimalDigits: 0)
                               .format(int.parse(item.subtotal)),
+                          style: const TextStyle(color: Colors.black87),
                         ),
                       );
                     },
@@ -131,6 +157,7 @@ class _DetailTransactionViewState extends State<DetailTransactionView> {
                       Text(
                         "Total Price",
                         style: TextStyle(
+                          color: Colors.black87,
                           fontSize: 14.0,
                           fontWeight: FontWeight.bold,
                         ),
@@ -140,6 +167,7 @@ class _DetailTransactionViewState extends State<DetailTransactionView> {
                                 locale: 'id', symbol: 'Rp ', decimalDigits: 0)
                             .format(int.parse(data.total)),
                         style: TextStyle(
+                          color: Colors.black87,
                           fontSize: 14.0,
                           fontWeight: FontWeight.bold,
                         ),
@@ -165,6 +193,7 @@ class _DetailTransactionViewState extends State<DetailTransactionView> {
                       Text(
                         "Total Payment",
                         style: TextStyle(
+                          color: Colors.black87,
                           fontSize: 14.0,
                           fontWeight: FontWeight.bold,
                         ),
@@ -174,6 +203,7 @@ class _DetailTransactionViewState extends State<DetailTransactionView> {
                                 locale: 'id', symbol: 'Rp ', decimalDigits: 0)
                             .format(int.parse(data.payment)),
                         style: TextStyle(
+                          color: Colors.black87,
                           fontSize: 14.0,
                           fontWeight: FontWeight.bold,
                         ),
@@ -189,6 +219,7 @@ class _DetailTransactionViewState extends State<DetailTransactionView> {
                       Text(
                         "Discount",
                         style: TextStyle(
+                          color: Colors.black87,
                           fontSize: 14.0,
                           fontWeight: FontWeight.bold,
                         ),
@@ -196,6 +227,7 @@ class _DetailTransactionViewState extends State<DetailTransactionView> {
                       Text(
                         '${data.discount}%',
                         style: TextStyle(
+                          color: Colors.black87,
                           fontSize: 14.0,
                           fontWeight: FontWeight.bold,
                         ),
@@ -205,7 +237,9 @@ class _DetailTransactionViewState extends State<DetailTransactionView> {
                   const SizedBox(
                     height: 10.0,
                   ),
-                  const Divider(),
+                  Divider(
+                    color: Colors.grey[300],
+                  ),
                   const SizedBox(
                     height: 10.0,
                   ),

@@ -56,6 +56,14 @@ dependencies:
   permission_handler: ^10.2.0
   flutter_slidable: ^0.6.0
   pdf: ^3.9.0
+  url_launcher: ^6.1.0
+  simple_animations: ^5.0.0+3
+  charts_flutter:
+    git:
+      url: https://github.com/google/charts.git
+      path: charts_flutter
+  table_calendar: ^3.0.8
+  flutter_staggered_grid_view: ^0.4.0
 
 dev_dependencies:
   flutter_test:

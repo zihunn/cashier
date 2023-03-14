@@ -49,7 +49,9 @@ class AuthProvider extends ChangeNotifier {
         goRemove(DashboardCashierView());
       }
       if (data.account.role == "owner") {
-        goRemove(DashboardOwnerView());
+        goRemove(DashboardOwnerView(
+          user: list,
+        ));
       }
       successSnackBar("berhasil");
     } else if (data is String) {

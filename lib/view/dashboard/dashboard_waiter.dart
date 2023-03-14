@@ -32,7 +32,7 @@ class _DashboardWaiterVIewState extends State<DashboardWaiterVIew> {
           var table = dashProv.listTable;
           var data = dashProv.cart;
           return Scaffold(
-            endDrawer: DrawerView(
+            endDrawer: NavigationDrawerView(
               data: user,
               // data: data,
             ),
@@ -46,8 +46,20 @@ class _DashboardWaiterVIewState extends State<DashboardWaiterVIew> {
                     title: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("brunch", style: headingStyle),
-                        Text("Restaurnt", style: headingStyle),
+                        Text("brunch",
+                            style: headingStyle.copyWith(
+                              color: Theme.of(context).brightness ==
+                                      Brightness.light
+                                  ? Colors.black87
+                                  : Colors.white,
+                            )),
+                        Text("Restaurnt",
+                            style: headingStyle.copyWith(
+                              color: Theme.of(context).brightness ==
+                                      Brightness.light
+                                  ? Colors.black87
+                                  : Colors.white,
+                            )),
                       ],
                     ),
                     actions: [

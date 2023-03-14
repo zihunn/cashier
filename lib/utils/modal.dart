@@ -34,25 +34,28 @@ dialogAddTable(var provider) => showDialog(
                   Container(
                     padding: const EdgeInsets.all(12),
                     child: TextField(
+                      style: const TextStyle(
+                        color: Colors.black54,
+                      ),
                       controller: numberController,
                       decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        enabledBorder: const OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: kCyan,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
                           ),
-                        ),
-                        focusedBorder: const OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: kCyan,
+                          enabledBorder: const OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: kCyan,
+                            ),
                           ),
-                        ),
-                        filled: true,
-                        fillColor: Colors.white,
-                        hintText: "Add New Table",
-                      ),
+                          focusedBorder: const OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: kCyan,
+                            ),
+                          ),
+                          filled: true,
+                          fillColor: Colors.white,
+                          hintText: "Add New Table",
+                          hintStyle: TextStyle(color: Colors.black54)),
                     ),
                   ),
                   Padding(

@@ -7,10 +7,15 @@ import 'package:kasir/view/transactions/detail_transaction.dart';
 import 'package:kasir/view/transactions/payment.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+import 'package:table_calendar/table_calendar.dart';
 import '../../utils/color.dart';
 import '../../utils/constant.dart';
 import '../../utils/navigation_helper.dart';
 import '../../component/appbar.dart';
+
+var now = DateTime.now();
+var firstDay = DateTime(now.year, now.month - 3, now.day);
+var lastDay = DateTime(now.year, now.month + 3, now.day);
 
 class HistoryView extends StatefulWidget {
   final Account? user;
@@ -21,8 +26,14 @@ class HistoryView extends StatefulWidget {
 }
 
 class _HistoryViewState extends State<HistoryView> {
-  var date = new DateTime(2023, 2, 9);
+  var date = new DateTime(2023, 3, 1);
+
+  DateTime today = DateTime.now();
+
   final _colors = [kBlueSoft, kSecondaryColor];
+
+  CalendarFormat format = CalendarFormat.twoWeeks;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,39 +56,105 @@ class _HistoryViewState extends State<HistoryView> {
                 children: [
                   widget.user!.role == "admin"
                       ? Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 12),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 10),
                           child: Container(
-                              child: DatePicker(
-                            DateTime(date.year, date.month, date.day - 8),
-                            height: 100,
-                            width: 60,
-                            initialSelectedDate: DateTime.now(),
-                            selectionColor: kPrimaryColor,
-                            selectedTextColor: Colors.white,
-                            deactivatedColor: Colors.amber,
-                            onDateChange: (selectedDate) {
-                              var date = selectedDate;
-                              var date2 = date.toString().split(" ")[0];
-                              transactionProv.getHistoryPending(
-                                  "pending", date2);
-                              transactionProv.getHistoryCompleted(
-                                  "completed ", date2);
-                            },
-                            monthTextStyle: const TextStyle(
-                              color: Colors.grey,
+                            decoration: BoxDecoration(
+                              color: Color(0xff7DE5ED),
+                              borderRadius: BorderRadius.circular(10),
                             ),
-                            dayTextStyle: const TextStyle(
-                              color: Colors.grey,
+                            child: TableCalendar(
+                              focusedDay: now,
+                              firstDay: firstDay,
+                              lastDay: lastDay,
+                              calendarFormat: format,
+                              startingDayOfWeek: StartingDayOfWeek.monday,
+                              headerStyle: const HeaderStyle(
+                                leftChevronIcon: Icon(
+                                  Icons.chevron_left,
+                                  color: Colors.white,
+                                ),
+                                rightChevronIcon: Icon(
+                                  Icons.chevron_right,
+                                  color: Colors.white,
+                                ),
+                                headerPadding:
+                                    EdgeInsets.symmetric(vertical: 5),
+                                formatButtonVisible: false,
+                                titleCentered: true,
+                                titleTextStyle: TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
+                              calendarStyle: const CalendarStyle(
+                                  weekendDecoration: BoxDecoration(
+                                    color: Colors.transparent,
+                                  ),
+                                  weekendTextStyle: TextStyle(
+                                    color: Colors.white,
+                                  ),
+                                  defaultTextStyle: TextStyle(
+                                    color: Colors.white,
+                                  ),
+                                  selectedTextStyle: TextStyle(
+                                    color: Colors.black,
+                                  ),
+                                  selectedDecoration: BoxDecoration(
+                                      color: Colors.white,
+                                      shape: BoxShape.circle),
+                                  todayDecoration: BoxDecoration(
+                                      color: Color(0xffB3FFAE),
+                                      shape: BoxShape.circle),
+                                  todayTextStyle: TextStyle(
+                                    color: Colors.black,
+                                  )),
+                              calendarBuilders:
+                                  CalendarBuilders(dowBuilder: (context, day) {
+                                String text;
+                                if (day.weekday == DateTime.sunday) {
+                                  text = "Sun";
+                                } else if (day.weekday == DateTime.monday) {
+                                  text = "Mon";
+                                } else if (day.weekday == DateTime.tuesday) {
+                                  text = "Tue";
+                                } else if (day.weekday == DateTime.wednesday) {
+                                  text = "Wed";
+                                } else if (day.weekday == DateTime.thursday) {
+                                  text = "Thu";
+                                } else if (day.weekday == DateTime.friday) {
+                                  text = "Fri";
+                                } else if (day.weekday == DateTime.saturday) {
+                                  text = "Sat";
+                                } else {
+                                  text = " err";
+                                }
+                                return Center(
+                                  child: Text(
+                                    text,
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                );
+                              }),
+                              selectedDayPredicate: (day) =>
+                                  isSameDay(day, now),
+                              onDaySelected: ((selectedDay, focusedDay) {
+                                setState(() {
+                                  now = focusedDay;
+                                  var date = selectedDay;
+                                  var date2 = date.toString().split(" ")[0];
+                                  transactionProv.getHistoryPending(
+                                      "pending", date2);
+                                  transactionProv.getHistoryCompleted(
+                                      "completed ", date2);
+                                });
+                              }),
                             ),
-                            dateTextStyle: const TextStyle(
-                              color: Colors.grey,
-                            ),
-                            daysCount: 30,
-                          )),
+                          ),
                         )
                       : Container(),
-                  const TabBar(
+                  TabBar(
                     indicatorPadding: EdgeInsets.symmetric(horizontal: 70),
                     unselectedLabelColor: Colors.black38,
                     labelColor: Colors.black,
@@ -88,7 +165,12 @@ class _HistoryViewState extends State<HistoryView> {
                         child: Text(
                           "Completed",
                           style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.w600),
+                              color: Theme.of(context).brightness ==
+                                      Brightness.light
+                                  ? Colors.black54
+                                  : Colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600),
                         ),
                       ),
                       Padding(
@@ -96,7 +178,12 @@ class _HistoryViewState extends State<HistoryView> {
                         child: Text(
                           "In Progress",
                           style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.w600),
+                              color: Theme.of(context).brightness ==
+                                      Brightness.light
+                                  ? Colors.black54
+                                  : Colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600),
                         ),
                       ),
                     ],
@@ -190,13 +277,16 @@ class _HistoryViewState extends State<HistoryView> {
                                               ),
                                               trailing: Row(
                                                 mainAxisSize: MainAxisSize.min,
-                                                children: const [
-                                                  VerticalDivider(),
+                                                children: [
+                                                  VerticalDivider(
+                                                    color: Colors.black,
+                                                  ),
                                                   RotatedBox(
                                                       quarterTurns: -1,
                                                       child: Text(
                                                         "Succeed",
                                                         style: TextStyle(
+                                                            color: Colors.green,
                                                             fontSize: 10),
                                                       )),
                                                 ],
@@ -293,12 +383,15 @@ class _HistoryViewState extends State<HistoryView> {
                                               trailing: Row(
                                                 mainAxisSize: MainAxisSize.min,
                                                 children: const [
-                                                  VerticalDivider(),
+                                                  VerticalDivider(
+                                                    color: Colors.black,
+                                                  ),
                                                   RotatedBox(
                                                       quarterTurns: -1,
                                                       child: Text(
                                                         "Pending",
                                                         style: TextStyle(
+                                                            color: Colors.red,
                                                             fontSize: 10),
                                                       )),
                                                 ],

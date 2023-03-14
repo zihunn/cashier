@@ -34,9 +34,11 @@ class _DashboardAdminViewState extends State<DashboardAdminView> {
           var user = widget.data;
           var table = dashProv.listTable;
           var data = dashProv.cart;
+          var p = dashProv.listMenu;
           return Scaffold(
             endDrawer: NavigationDrawerView(
               data: user,
+              provider: dashProv,
               // data: data,
             ),
             //APPBAR
@@ -49,8 +51,20 @@ class _DashboardAdminViewState extends State<DashboardAdminView> {
                     title: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("brunch", style: headingStyle),
-                        Text("Restaurnt", style: headingStyle),
+                        Text("Zihun",
+                            style: headingStyle.copyWith(
+                              color: Theme.of(context).brightness ==
+                                      Brightness.light
+                                  ? Colors.black87
+                                  : Colors.white,
+                            )),
+                        Text("Restaurnt",
+                            style: headingStyle.copyWith(
+                              color: Theme.of(context).brightness ==
+                                      Brightness.light
+                                  ? Colors.black87
+                                  : Colors.white,
+                            )),
                       ],
                     ),
                     actions: [

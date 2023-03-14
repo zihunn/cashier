@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:kasir/model/cart_model.dart';
 import 'package:kasir/model/menu_model.dart';
 import 'package:kasir/model/table_model.dart';
@@ -33,6 +34,7 @@ class DashboardProvider extends ChangeNotifier {
   List<Datum>? listMenu;
   List<Meja>? listTable;
   bool _isLoading = false;
+  String currentTheme = 'system';
   bool get isLoading => _isLoading;
   set isLoading(bool val) {
     _isLoading = val;
@@ -61,7 +63,9 @@ class DashboardProvider extends ChangeNotifier {
         ));
       }
       if (data.account.role == "owner") {
-        goRemove(DashboardOwnerView());
+        goRemove(DashboardOwnerView(
+          user: list,
+        ));
       }
       successSnackBar("berhasil");
     } else if (data is String) {
@@ -153,6 +157,21 @@ class DashboardProvider extends ChangeNotifier {
       print(res);
     }
     _isLoading = false;
+    notifyListeners();
+  }
+
+  ThemeMode get themeMode {
+    if (currentTheme == 'light') {
+      return ThemeMode.light;
+    } else if (currentTheme == 'dark') {
+      return ThemeMode.dark;
+    } else {
+      return ThemeMode.system;
+    }
+  }
+
+  changeTheme(String theme) {
+    currentTheme = theme;
     notifyListeners();
   }
 }

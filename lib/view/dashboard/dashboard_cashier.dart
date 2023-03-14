@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:kasir/component/drawer.dart';
+import 'package:kasir/component/navigationDrawer.dart';
 import 'package:kasir/model/account_model.dart';
 import 'package:kasir/provider/transaction_provider.dart';
 import 'package:kasir/view/transactions/detail_transaction.dart';
@@ -34,7 +35,7 @@ class _DashboardCashierViewState extends State<DashboardCashierView> {
           var listCompleted = transactionProv.completed;
           var listPending = transactionProv.pending;
           return Scaffold(
-            endDrawer: DrawerView(
+            endDrawer: NavigationDrawerView(
               data: widget.user,
             ),
             appBar: PreferredSize(
@@ -47,8 +48,10 @@ class _DashboardCashierViewState extends State<DashboardCashierView> {
                   elevation: 0,
                   title: Text(
                     "Cashier",
-                    style: const TextStyle(
-                      color: Colors.black,
+                    style: TextStyle(
+                      color: Theme.of(context).brightness == Brightness.light
+                          ? Colors.black87
+                          : Colors.white,
                     ),
                   ),
                   actions: [
@@ -78,7 +81,9 @@ class _DashboardCashierViewState extends State<DashboardCashierView> {
                       horizontal: 12.0,
                     ),
                     decoration: BoxDecoration(
-                      color: Colors.grey[200],
+                      color: Theme.of(context).brightness == Brightness.light
+                          ? Colors.grey[200]
+                          : Colors.white,
                       borderRadius: const BorderRadius.all(
                         Radius.circular(12.0),
                       ),
@@ -91,17 +96,25 @@ class _DashboardCashierViewState extends State<DashboardCashierView> {
                       children: [
                         const Padding(
                           padding: EdgeInsets.all(8.0),
-                          child: Icon(Icons.search),
+                          child: Icon(
+                            Icons.search,
+                            color: Colors.grey,
+                          ),
                         ),
                         Expanded(
                           child: TextFormField(
+                            style: const TextStyle(
+                              color: Colors.black87,
+                            ),
                             initialValue: null,
                             decoration: const InputDecoration.collapsed(
-                              filled: true,
-                              fillColor: Colors.transparent,
-                              hoverColor: Colors.transparent,
-                              hintText: "Search",
-                            ),
+                                filled: true,
+                                fillColor: Colors.transparent,
+                                hoverColor: Colors.transparent,
+                                hintText: "Search",
+                                hintStyle: TextStyle(
+                                  color: Colors.grey,
+                                )),
                             onFieldSubmitted: (value) {},
                           ),
                         ),
@@ -119,12 +132,17 @@ class _DashboardCashierViewState extends State<DashboardCashierView> {
                           transactionProv.getHistoryCompleted(
                               "completed ", date2);
                         },
-                        child: const Padding(
+                        child: Padding(
                           padding: EdgeInsets.only(bottom: 10, top: 10),
                           child: Text(
                             "Completed",
                             style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.w600),
+                                color: Theme.of(context).brightness ==
+                                        Brightness.light
+                                    ? Colors.black87
+                                    : Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600),
                           ),
                         ),
                       ),
@@ -132,12 +150,17 @@ class _DashboardCashierViewState extends State<DashboardCashierView> {
                         onTap: () {
                           transactionProv.getHistoryPending("pending", date2);
                         },
-                        child: const Padding(
+                        child: Padding(
                           padding: EdgeInsets.only(bottom: 10, top: 10),
                           child: Text(
                             "In Progress",
                             style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.w600),
+                                color: Theme.of(context).brightness ==
+                                        Brightness.light
+                                    ? Colors.black87
+                                    : Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600),
                           ),
                         ),
                       ),
@@ -233,12 +256,15 @@ class _DashboardCashierViewState extends State<DashboardCashierView> {
                                               trailing: Row(
                                                 mainAxisSize: MainAxisSize.min,
                                                 children: const [
-                                                  VerticalDivider(),
+                                                  VerticalDivider(
+                                                    color: Colors.black,
+                                                  ),
                                                   RotatedBox(
                                                       quarterTurns: -1,
                                                       child: Text(
                                                         "Succeed",
                                                         style: TextStyle(
+                                                            color: Colors.green,
                                                             fontSize: 10),
                                                       )),
                                                 ],
@@ -335,12 +361,15 @@ class _DashboardCashierViewState extends State<DashboardCashierView> {
                                               trailing: Row(
                                                 mainAxisSize: MainAxisSize.min,
                                                 children: const [
-                                                  VerticalDivider(),
+                                                  VerticalDivider(
+                                                    color: Colors.black,
+                                                  ),
                                                   RotatedBox(
                                                       quarterTurns: -1,
                                                       child: Text(
                                                         "Pending",
                                                         style: TextStyle(
+                                                            color: Colors.red,
                                                             fontSize: 10),
                                                       )),
                                                 ],

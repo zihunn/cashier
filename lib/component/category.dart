@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:kasir/model/account_model.dart';
 import 'package:kasir/model/menu_model.dart';
 import 'package:kasir/utils/color.dart';
+import 'package:kasir/utils/constant.dart';
 import 'package:math_expressions/math_expressions.dart';
 
 import '../utils/custom_snackbar.dart';
@@ -44,122 +45,145 @@ class _CategoryCardState extends State<CategoryCard> {
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: 1, horizontal: 5),
         decoration: BoxDecoration(borderRadius: BorderRadius.circular(15)),
-        child: Column(
-          children: [
-            Container(
-              width: 90,
-              height: 90,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15),
-              ),
-              child: Image.network(
-                widget.data!.image,
-              ),
-            ),
-            const SizedBox(
-              height: 2,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 1),
-              child: Column(
-                children: [
-                  Text(
-                    widget.data!.name,
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                  ),
-                  const SizedBox(
-                    height: 8.0,
-                  ),
-                  Row(
-                    children: [
-                      Container(
-                        margin: EdgeInsets.only(left: 44),
-                        height: 8,
-                        width: 8,
-                        decoration: const BoxDecoration(
-                            color: Colors.amber, shape: BoxShape.circle),
-                      ),
-                      const SizedBox(
-                        width: 5.0,
-                      ),
-                      Text(
-                        NumberFormat.currency(
-                          locale: 'id',
-                          symbol: 'Rp ',
-                          decimalDigits: 0,
-                        ).format(int.parse(amount)),
-                        style: const TextStyle(
-                            fontSize: 12,
-                            color: kCyan,
-                            fontWeight: FontWeight.w400),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      IconButton(
-                        onPressed: _decrementCount,
-                        icon: Image.asset(
-                          "assets/images/minus.png",
-                          width: 24.0,
-                        ),
-                      ),
-                      Text("${_count}"),
-                      IconButton(
-                        onPressed: () {
-                          setState(() {
-                            _count < stock ? _count++ : null;
-                          });
-                        },
-                        icon: Image.asset(
-                          "assets/images/add.png",
-                          width: 24.0,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: ElevatedButton(
-                onPressed: () {
-                  print(widget.user!.id);
-                  print(_count);
-                  if (_count != 0) {
-                    var requestBody = {
-                      "menu_id": widget.data!.id,
-                      "qty": _count,
-                      "waiter_id": widget.user!.id,
-                    };
-                    widget.provider.addCart(requestBody);
-                    widget.provider.getCart(widget.user!.id.toString());
-                    _count = 0;
-                  } else {
-                    errorSnackBar("Qty cannot be empty");
-                  }
-                },
+        child: Stack(children: [
+          Positioned(
+              top: 10,
+              child: Container(
+                padding: EdgeInsets.symmetric(vertical: 2, horizontal: 2),
+                decoration: BoxDecoration(
+                    color: Colors.amber,
+                    borderRadius: BorderRadius.circular(2)),
                 child: Text(
-                  "Add to cart",
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 12),
+                  "Stock ${widget.data!.stock}",
+                  style: subtitleStyle.copyWith(
+                    fontSize: 7,
+                    color: Colors.white,
+                  ),
                 ),
-                style: ElevatedButton.styleFrom(
-                  elevation: 0,
-                  primary: kPrimaryColor,
-                  side: const BorderSide(color: kCyan),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15),
+              )),
+          Column(
+            children: [
+              Container(
+                width: 90,
+                height: 90,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: Image.network(
+                  widget.data!.image,
+                ),
+              ),
+              const SizedBox(
+                height: 2,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 1),
+                child: Column(
+                  children: [
+                    Text(
+                      widget.data!.name,
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black87),
+                    ),
+                    const SizedBox(
+                      height: 8.0,
+                    ),
+                    Row(
+                      children: [
+                        Container(
+                          margin: EdgeInsets.only(left: 44),
+                          height: 8,
+                          width: 8,
+                          decoration: const BoxDecoration(
+                              color: Colors.amber, shape: BoxShape.circle),
+                        ),
+                        const SizedBox(
+                          width: 5.0,
+                        ),
+                        Text(
+                          NumberFormat.currency(
+                            locale: 'id',
+                            symbol: 'Rp ',
+                            decimalDigits: 0,
+                          ).format(int.parse(amount)),
+                          style: const TextStyle(
+                              fontSize: 12,
+                              color: kCyan,
+                              fontWeight: FontWeight.w400),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        IconButton(
+                          onPressed: _decrementCount,
+                          icon: Image.asset(
+                            "assets/images/minus.png",
+                            width: 24.0,
+                          ),
+                        ),
+                        Text(
+                          "${_count}",
+                          style: TextStyle(color: Colors.black87),
+                        ),
+                        IconButton(
+                          onPressed: () {
+                            setState(() {
+                              _count < stock ? _count++ : null;
+                            });
+                          },
+                          icon: Image.asset(
+                            "assets/images/add.png",
+                            width: 24.0,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: ElevatedButton(
+                  onPressed: () {
+                    print(widget.user!.id);
+                    print(_count);
+                    if (_count != 0) {
+                      var requestBody = {
+                        "menu_id": widget.data!.id,
+                        "qty": _count,
+                        "waiter_id": widget.user!.id,
+                      };
+                      widget.provider.addCart(requestBody);
+                      widget.provider.getCart(widget.user!.id.toString());
+                      _count = 0;
+                    } else {
+                      errorSnackBar("Qty cannot be empty");
+                    }
+                  },
+                  child: Text(
+                    "Add to cart",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 12),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    elevation: 0,
+                    primary: kPrimaryColor,
+                    side: const BorderSide(color: kCyan),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
-        ),
+            ],
+          ),
+        ]),
       ),
     );
     ;
